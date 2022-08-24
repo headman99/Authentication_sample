@@ -1,0 +1,14 @@
+#mainContainer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+
+#content{
+    font-size: 30;
+    font-weight: bold;
+    margin-top: 400px;
+}
