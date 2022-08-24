@@ -1,8 +1,9 @@
 import React,{useContext} from 'react'
-import { api, logout, resetHeaders } from '../../../components/api/api';
-import { UserContext } from '../../../App';
+import {logout } from '../../components/api/api';
+import { UserContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage'
+import styles from '../../css/dashboard.module.css'
 const Dashboard = () => {
 
   const {user} = useContext(UserContext);
@@ -16,11 +17,13 @@ const Dashboard = () => {
   }
  
   return (
-    <>
-      <div>Dashboard</div>
-      <button type='button' onClick={handleLogout} >logout</button>
-    </>
-
+      <div id="mainContainer">
+        <div id="header"></div>
+        <div id='mainContent'>
+          <button className={styles.button}>Ordini Ricevuti</button>
+          <button className={styles.button}>Ingredienti</button>
+        </div>
+      </div>
   )
 }
 

@@ -1,10 +1,10 @@
 import React, { useState, useContext,useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
-import './login.css'
-import { login, api } from '../../../components/api/api'
-import { UserContext } from '../../../App';
+import '../../css/login.css'
+import { login, api } from '../../components/api/api'
+import { UserContext } from '../../App';
 import secureLocalStorage from 'react-secure-storage';
-import { motion, useMotionValue } from "framer-motion"
+import { motion } from "framer-motion"
 
 const Login = () => {
   const {setUser } = useContext(UserContext);
@@ -80,7 +80,7 @@ return (
   <div className='background'>
     <div className='mainContainer'>
       <div className='formContainer'>
-        <label>
+        <label className='label'>
           Username
         </label>
 
@@ -113,7 +113,7 @@ return (
         </motion.div>
 
         <br />
-        <label>
+        <label className='label'>
           Password
         </label>
         <motion.div className='textboxContainer'
@@ -144,6 +144,7 @@ return (
         </motion.div>
 
         <button type='button'
+          className='button'
           onClick={handleSubmit}
         >
           Login
@@ -154,5 +155,6 @@ return (
 
 )
 }
+
 
 export default Login

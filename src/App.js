@@ -1,12 +1,12 @@
 import './App.css';
-import './screens/public/login/Login'
-import Login from './screens/public/login/Login';
+import Login from './screens/public/Login';
 import { Route, Routes } from "react-router-dom"
-import NotFound from './screens/public/NotFound/NotFound';
-import Home from './screens/Client/Home/Home';
+import NotFound from './screens/public/NotFound';
 import { createContext, useState } from 'react';
 import { AdminRoutes } from './Routes/AdminRoutes';
-import Loading from './screens/public/Loading/Loading';
+import Loading from './screens/public/Loading';
+import PrivateRoutes from './components/api/PrivateRoutes';
+import { ClientRoutes } from './Routes/ClientRoutes';
 
 export const UserContext = createContext();
 function App() {
@@ -14,26 +14,24 @@ function App() {
 
   return (
     <UserContext.Provider value={{
-      user:user,
-      setUser:setUser
+      user: user,
+      setUser: setUser
     }}>
       <Routes>
-        <Route path='/' element={<Loading />} />
+        <Route path='/' element={<Loading />} exact />
         <Route path='/login' element={<Login />} />
-
-        <Route path='/client'>
-          <Route path='home' element={<Home />} />
-        </Route>
-        <Route path='/admin/*' element={<AdminRoutes />} />
         <Route path='*' element={<NotFound />} />
+        {/* percorsi privati */}
+        <Route element={<PrivateRoutes admin={false} />}>
+          <Route path='/client/*' element={<ClientRoutes />} />
+        </Route>
+
+        <Route element={<PrivateRoutes admin={true} />}>
+          <Route path='/admin/*' element={<AdminRoutes />} />
+        </Route>
+
       </Routes>
     </UserContext.Provider>
-
-    /*<div className="App">
-      <header className="App-header">
-        <Login></Login>
-      </header>
-    </div>*/
   );
 }
 

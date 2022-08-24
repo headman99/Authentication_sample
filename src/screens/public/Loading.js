@@ -1,16 +1,16 @@
 import React, { useEffect, useContext } from 'react'
-import { UserContext } from '../../../App';
+import { UserContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage'
-import { login, api, resetHeaders } from '../../../components/api/api';
-import './loading.css'
+import '../../css/loading.module.css'
 import { Audio } from 'react-loader-spinner'
+import { api } from '../../components/api/api';
 const Loading = () => {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
 
     useEffect(() => {
-        console.log('entro')
+        console.log('user' , user)
         setTimeout(() => {
             if (user) {
                 const route = user.isadmin ? 'admin' : 'client'
