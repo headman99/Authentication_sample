@@ -11,7 +11,6 @@ import { ClientRoutes } from './Routes/ClientRoutes';
 export const UserContext = createContext();
 function App() {
   const [user, setUser] = useState();
-
   return (
     <UserContext.Provider value={{
       user: user,

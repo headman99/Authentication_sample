@@ -1,6 +1,6 @@
 .mainContainer{
-    width: 30vw;
-    height: 32vh;
+    width: 40vw;
+    height: 50vh;
     min-width: 300px;
     min-height: 350px;
     background-color: white;
@@ -18,12 +18,21 @@
     height: 90%;
 }
 
+.contentContainer{
+    height: 42%;
+    width: 100%;
+    
+}
 .textbox{
     border: none;
     width: 95%;
     height: 100%;
     outline: none;
-    font-size: 16px;
+    font-size: 18px;
+}
+
+.label{
+    float: left;
 }
 
 
@@ -32,8 +41,9 @@
     border-radius: 7px;
     border: 0.5px solid ;
     width: 100%;
-    height: 50px;
+    height: 60px;
     overflow: hidden;
+    margin-top: 60px;
 }
 
 .focused{
@@ -48,20 +58,19 @@
 
 .label{
     float: left;
-    margin: 15px 0 5px 0;
-    font-size: 18px;
+    margin: 30px 0 5px 0;
+    font-size: 22px;
+    font-weight: bold;
 }
 
 .button{
-    float: right;
-    margin-top: 40px;
-    padding: 8px 30px 8px 30px;
+    padding: 13px 35px 13px 35px;
     border: none;
     box-shadow:  0 4px 2px -1px rgba(0, 0, 0, 0.1);
     background-color: black;
     color: white;
     border-radius: 5px;
-    font-size: 15px
+    font-size: 17px
 }
 
 button:active{

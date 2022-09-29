@@ -1,0 +1,9 @@
+.button{
+    padding: 10px 32px 10px 32px;
+    border: none;
+    box-shadow: 0 4px 2px -1px rgba(0, 0, 0, 0.1);
+    background-color: black;
+    color: white;
+    font-size: 17px;
+    margin: 20px;
+}

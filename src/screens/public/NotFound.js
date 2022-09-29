@@ -3,9 +3,9 @@ import '../../css/notFound.css'
 
 const NotFound = () => {
   return (
-    <div className='error'>
-      <button className='button'></button>
-    </div>
+    <span>
+      Not NotFound
+    </span>
   )
 }
 

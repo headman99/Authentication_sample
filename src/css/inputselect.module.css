@@ -1,0 +1,36 @@
+.mainContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.input {
+    padding: 5px;
+    font-size: 27px;
+}
+
+.select {
+    padding: 5.6px;
+    font-size: 27px;
+}
+
+.suggestions {
+    border: 1px solid lightgrey;
+    background-color: white;
+    position: absolute;
+    width: 100%;
+}
+
+.suggestions div {
+    padding: 5px;
+}
+
+.suggestions div:hover{
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+.suggestions div:focus{
+    background-color: lightgray;
+    cursor: pointer;
+}
+

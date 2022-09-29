@@ -1,0 +1,16 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    height: 42px;
+}
+.addButton{
+    width: 200px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    font-weight: bold;
+    border: 0.5px solid black;
+    cursor: pointer;
+}

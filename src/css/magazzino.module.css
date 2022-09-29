@@ -1,0 +1,59 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+   
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.filterInput {
+    width: 250px;
+    font-size: 25px;
+    margin-left: 120px;
+}
+
+.filtersContainer {
+    flex: 1;
+    height: 45%;
+    justify-content: center;
+    display: flex;
+
+}
+
+.button {
+    padding: 13px 35px 13px 35px;
+    border: none;
+    box-shadow: 0 4px 2px -1px rgba(0, 0, 0, 0.1);
+    background-color: black;
+    color: white;
+    font-size: 17px;
+    margin: 20px;
+}
+
+.contentContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    width: 100%;
+}
+
+.select {
+    font-size: 25px;
+    padding: 5px;
+    border:none;
+    color: #686868;
+}
+.select:focus{
+    border: 1px solid;
+}
+
+option{
+    color: black;
+}

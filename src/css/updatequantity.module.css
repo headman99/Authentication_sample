@@ -1,0 +1,48 @@
+.main{
+    
+    flex-direction: column;
+}
+
+.header{
+    width: 100%;
+    text-align: center;
+}
+
+.contentContainer{
+    padding-left: 5%;
+    padding-top: 3%;
+    display: flex;
+    gap: 150px;
+    flex-direction: column;
+}
+
+.button{
+    width: 250px;
+    height: 40px;
+    border: 2px grey dashed;
+    background-color: white;
+    font-size: 30px;
+}
+.button:hover{
+    background-color: #ebebeb;
+}
+.inputNumber{
+    font-size: 27px;
+    padding: 5px;
+    width: 150px;
+}
+
+.quantityButton{
+    height: 100%;
+    width: 150px;
+    background-color: white;
+    border: 0.5px solid black;
+    cursor: pointer;
+    font-size: 30px;
+    font-weight: bold;
+    color: grey;
+    text-align: center;
+}
+
+
+

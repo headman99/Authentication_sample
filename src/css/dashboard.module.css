@@ -1,3 +1,71 @@
+.mainContainer{
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
 .button{
+    width: 40%;
+    height: 28%;
+    border: none;
+    background-color: black;
+    color: white;
+    margin: 20px;
+    font-size: 2.2em;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.logout{
+    float: right;
+    width: 100px;
+    height: 50px;
+}
+
+.buttonIcon{
+    display: block;
     
 }
+
+.logout:active{
+    opacity: 0.5;
+}
+#header{
+    width: 100%;
+}
+
+.contentContainer{
+    justify-content: space-around;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 80vw;
+    height: 90vh;
+    min-width: 300px;
+    
+}
+
+@media only screen and (max-width:1000px){
+    .button{
+        font-size: 1em;
+        width: 75%;
+        min-height: 150px;
+        height: 20%;
+    }
+
+    .contentContainer{
+        margin-bottom: 20px;
+        height: auto;
+    }
+    .mainContainer{
+        height: auto;
+    }
+}
+
