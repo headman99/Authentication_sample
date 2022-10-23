@@ -70,4 +70,49 @@ export async function getProductsCatalog(){
 export async function removeProduct(data){
     return api.post(ROUTES.ADMIN.REMOVE_PRODUCT,data)
 }
+export async function registerProduct(data){
+    return api.post(ROUTES.ADMIN.REGISTER_PRODUCT,data)
+}
+export async function getProductGroups(){
+    return api.get(ROUTES.ADMIN.GET_PRODUCT_GROUPS)
+}
+export async function getMenuCatalog(data){
+    return api.post(ROUTES.USER.GET_MENU_CATALOG,data)
+}
+export async function getMenuDetails(){
+    return api.get(ROUTES.USER.GET_MENU_DETAILS)
+}
+export async function addMenuRecipe(data){
+    return api.post(ROUTES.ADMIN.ADD_MENU_RECIPE,data)
+}
+export async function removeMenuRecipe(data){
+    return api.post(ROUTES.ADMIN.REMOVE_MENU_RECIPE,data)
+}
+export async function updateMenuRecipeGroup(data){
+    return api.post(ROUTES.ADMIN.UPDATE_MENU_RECIPE_GROUP,data)
+}
+
+export async function updateMenuRecipeSection(data){
+    return api.post(ROUTES.ADMIN.UPDATE_MENU_RECIPE_SECTION,data)
+}
+export async function removeMenuRecipeSection(data){
+    return api.post(ROUTES.ADMIN.REMOVE_MENU_RECIPE_SECTION,data)
+}
+export async function removeMenuRecipeGroup(data){
+    return api.post(ROUTES.ADMIN.REMOVE_MENU_RECIPE_GROUP,data)
+}
+export async function getOrdersList(data){
+    return api.post(ROUTES.ADMIN.GET_ORDERS_LIST,data)
+}
+export async function getOrdersListByDate(data){
+    return api.post(ROUTES.ADMIN.GET_ORDERS_LIST_BY_DATE,data)
+}
+
+
+/************************************************** CUSTOMER *************************************************************** */
+export async function addOrderMenu(data){
+    return api.post(ROUTES.CUSTOMER.ADD_ORDER_MENU,data)
+}
+
+
 

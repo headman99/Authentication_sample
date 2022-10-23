@@ -1,0 +1,9 @@
+.textArea{
+    width: 100%;
+    resize: none;
+}
+.inputNumber{
+    width: 50%;
+    padding: 5px;
+    font-size: 20px;
+}

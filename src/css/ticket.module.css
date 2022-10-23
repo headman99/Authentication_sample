@@ -1,0 +1,16 @@
+.mainContainer{
+    width: 97%;
+    height: 200px;
+    border: 1px solid lightgray;
+    padding: 10px;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.content{
+    flex:0.8;
+}
+.footer{
+    flex:0.2
+}

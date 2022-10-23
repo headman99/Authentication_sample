@@ -1,46 +1,21 @@
-.headerOption{
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    width: 100%;
-}
-
-.button{
-    padding: 13px 35px 13px 35px;
+.PathButton {
+    width: 40%;
+    height: 28%;
     border: none;
-    box-shadow: 0 4px 2px -1px rgba(0, 0, 0, 0.1);
     background-color: black;
     color: white;
-    font-size: 20px;
     margin: 20px;
-}
-
-.mainContainer{
+    font-size: 2.2em;
+    font-weight: bold;
     display: flex;
     flex-direction: column;
-}
-.filtersContainer {
-    flex: 1;
-    height: 45%;
     justify-content: center;
-    display: flex;
-
+    align-items: center;
+    gap: 30px;
 }
-.filterInput {
-    width: 250px;
-    font-size: 25px;
-    margin-left: 120px;
-}
-.select {
-    font-size: 25px;
-    padding: 5px;
-    border:none;
-    color: #686868;
-}
-.select:focus{
-    border: 1px solid;
-}
-
-option{
-    color: black;
+.content{
+  width: 100%;display:flex;
+  justify-content:center;
+  align-items:center;
+  flex:1  
 }

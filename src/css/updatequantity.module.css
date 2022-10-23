@@ -4,8 +4,16 @@
 }
 
 .header{
+    display: flex;
+    flex-direction: row;
     width: 100%;
     text-align: center;
+}
+.title{
+    flex: 1;
+}
+.backButtonContainer{
+    position: absolute;
 }
 
 .contentContainer{

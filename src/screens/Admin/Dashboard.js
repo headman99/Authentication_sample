@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { logout } from '../../components/api/api';
 import { UserContext } from '../../App';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage'
 import styles from '../../css/dashboard.module.css'
 import { BiLogOut } from 'react-icons/bi'
@@ -26,7 +26,10 @@ const Dashboard = () => {
         <BiLogOut className={styles.logout} onClick={handleLogout} />
       </div>
       <div className={styles.contentContainer}>
-        <button className={styles.button}>
+        <button className={styles.button} 
+          onClick={()=>{
+            navigate("/admin/orders")
+          }}>
           Ordini Ricevuti
           <FaCartArrowDown size={50} className={styles.buttonIcon} />
         </button>

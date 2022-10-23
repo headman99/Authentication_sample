@@ -1,0 +1,24 @@
+.header{
+    width: 100%;
+    text-align: center;
+    display: flex;
+
+}
+
+.title{
+    flex:1;
+    display: flex;
+    justify-content: center;
+}
+
+.input {
+    padding: 5px;
+    font-size: 27px;
+}
+.inputContainer{
+    margin: 50px;
+}
+
+::-webkit-scrollbar {
+    width: 2px;
+  }

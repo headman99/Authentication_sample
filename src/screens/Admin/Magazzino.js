@@ -39,7 +39,7 @@ const Magazzino = () => {
       alert("Quantità modificata con successo")
     }).catch(err => {
       console.log(err);
-      alert(err.response.data.errore)
+      alert(err.response.data.message)
     }).then(()=>{
       window.location.reload();
     })
@@ -53,8 +53,7 @@ const Magazzino = () => {
         const arr = stock.filter(elem => elem.ingredient_id == parseInt(filter))
         setFilteredArray(arr)
       } else {
-
-        const arr = stock.filter(elem => (elem.name.startsWith(filter) || elem.category?.startsWith(filter)))
+        const arr = stock.filter(elem => (elem.name.includes(filter) || elem.category?.includes(filter)))
         if (JSON.stringify(arr) !== JSON.stringify(filteredArray)) {
           setFilteredArray(arr)
         }
@@ -131,9 +130,9 @@ const Magazzino = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
+      <div className="_header">
         <BackButton path={"/admin"} />
-        <div className={styles.filtersContainer}>
+        <div className="_filtersContainer">
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
             <BsSortUp size={25} />
             <select className={styles.select} value={selected} onChange={(e) => setSelected(e.target.value)}>
@@ -153,21 +152,21 @@ const Magazzino = () => {
           </div>
 
           <input type='text'
-            className={styles.filterInput}
+            className="_filterInput"
             placeholder='Filtra'
             onChange={(text) => {
               filterContent(text.target.value);
             }}
           ></input>
         </div>
-        <button className={styles.button}
+        <button className="optionButton"
           onClick={goToAddIngredient}
           disabled={!stock}
         >
           <IoIosCreate size={22} />
         </button>
 
-        <button className={styles.button}
+        <button className="optionButton"
           onClick={goToUpdateQuantity}
           disabled={!stock}
         >
@@ -178,7 +177,7 @@ const Magazzino = () => {
         {
           !filteredArray
             ?
-            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center',height:'100%' }}>
               <Audio color='black' />
             </div>
             :

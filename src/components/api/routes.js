@@ -13,9 +13,23 @@ export const ROUTES = {
         UPDATE_INGREDIENT_DESCRIPTION:'admin/updateIngredientDescription',
         ADD_INGREDIENT_QUANTITY:'admin/addIngredientQuantity',
         GET_PRODUCTS_CATALOG:'admin/getProductsCatalog',
-        REMOVE_PRODUCT:'admin/removeProduct'
+        REMOVE_PRODUCT:'admin/removeProduct',
+        REGISTER_PRODUCT:'admin/registerProduct',
+        GET_PRODUCT_GROUPS:'admin/getProductGroups',
+        ADD_MENU_RECIPE :'admin/addMenuRecipe',
+        REMOVE_MENU_RECIPE:'admin/removeMenuRecipe',
+        UPDATE_MENU_RECIPE_GROUP:'admin/updateMenuRecipeGroup',
+        UPDATE_MENU_RECIPE_SECTION:'admin/updateMenuRecipeSection',
+        REMOVE_MENU_RECIPE_SECTION:'admin/removeMenuRecipeSection',
+        REMOVE_MENU_RECIPE_GROUP:'/admin/removeMenuRecipeGroup',
+        GET_ORDERS_LIST:'/admin/getOrdersList',
+        GET_ORDERS_LIST_BY_DATE:'/admin/getOrdersListByDate'
     },
     CUSTOMER:{
-
+        ADD_ORDER_MENU:'client/addOrderMenu'
+    },
+    USER:{
+        GET_MENU_CATALOG:'user/getMenuCatalog',
+        GET_MENU_DETAILS:'user/getMenuDetails',
     }
 }

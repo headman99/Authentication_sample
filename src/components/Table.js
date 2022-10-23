@@ -1,19 +1,32 @@
-import React, {  useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../css/table.module.css'
-import { HiOutlineTrash } from 'react-icons/hi'
 import { BsArrowDownRight } from 'react-icons/bs'
-const Table = ({data, headers, editable, handleRemoveItem }) => {
+import { BsArrowDownCircleFill } from 'react-icons/bs'
+import { FaTrashAlt } from 'react-icons/fa'
+const Table = ({ data, headers, editable, handleRemoveItem }) => {
 
     console.log('render')
-
+    const [shownElements, setShownElements] = useState([])
+    const [shownIndex, setShownIndex] = useState(20)
+    const increment = 50;
     const [modalText, setModalText] = useState('');
-
+    const {innerWidth} = window;
     const [modalCoords, setModalCoords] = useState({
         left: 0,
         top: -300
     });
 
+    const handleIncrementElements = () =>{
+        const remainingElements = data.length - shownElements.length
+        setShownIndex(previous => remainingElements>=increment?previous+increment: previous+remainingElements)
+    }
 
+    useEffect(() => {
+        const newData = data.slice(0, shownIndex - 1)
+        if (JSON.stringify(shownElements) !== JSON.stringify(newData)) {
+            setShownElements(newData)
+        }
+    }, [data, shownIndex])
 
     return (
         <div style={{ width: '100%', height: '100%' }}
@@ -49,7 +62,7 @@ const Table = ({data, headers, editable, handleRemoveItem }) => {
                         {headers.map((header, index) => {
                             return (
                                 <th key={index}
-                                    style={{ paddingLeft: index === 0 ? 30 : 0 }}
+                                    style={{ paddingLeft: (index === 0 && handleRemoveItem) ? 30 : 0 }}
                                 >
                                     {header}
                                 </th>
@@ -58,7 +71,7 @@ const Table = ({data, headers, editable, handleRemoveItem }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((item, index) => {
+                    {shownElements.map((item, index) => {
                         const backrow = index % 2 == 0 ? '#e8e8e8' : 'white'
                         return (
                             <tr
@@ -74,27 +87,29 @@ const Table = ({data, headers, editable, handleRemoveItem }) => {
                                                 height={80}
                                                 onDoubleClick={(e) => {
                                                     if (isOverflowing) {
-                                                        setModalCoords({
+                                                        const cellWidth = innerWidth/headers.length
+                                                        const spacing = cellWidth + 20
+                                                        const position = {
                                                             top: e.pageY,
-                                                            left: e.pageX
-                                                        })
+                                                            left:e.pageX>=innerWidth-cellWidth?(e.pageX-spacing):e.pageX
+                                                        }
+                                                        setModalCoords(position)
                                                         setModalText(el)
                                                     }
 
-                                                }} 
+                                                }}
                                                 style={{
                                                     maxWidth: 200,
                                                     whiteSpace: 'nowrap',
-                                                    cursor: allowEditing&& 'text',
+                                                    cursor: allowEditing ? 'text' : isOverflowing && 'pointer'
                                                 }} align='center' key={i}
                                             >
 
                                                 <div
-                                                    style={{ width: '90%',fontSize: 25,overflow:'hidden' }}
+                                                    style={{ width: '90%', fontSize: 25, overflow: 'hidden' }}
                                                     contentEditable={allowEditing}
                                                     suppressContentEditableWarning={true}
                                                     onKeyDown={(e) => {
-                                                        console.log(e.key)
                                                         if (e.key == 'Enter') {
                                                             e.preventDefault();
                                                             e.currentTarget.blur();
@@ -102,11 +117,11 @@ const Table = ({data, headers, editable, handleRemoveItem }) => {
                                                     }}
 
                                                     onBlur={(e) => {
-                                                        if ( e.target.innerText !== el.toString()) {
+                                                        if (e.target.innerText !== el.toString()) {
                                                             const handleModify = editable.filter(elem => elem.index == i)[0].handler
                                                             handleModify({
-                                                                id:item.id,
-                                                                data:e.target.innerText
+                                                                id: item.id,
+                                                                data: e.target.innerText
                                                             })
 
                                                         }
@@ -115,8 +130,8 @@ const Table = ({data, headers, editable, handleRemoveItem }) => {
                                                     {
                                                         (i == 0 && handleRemoveItem) &&
                                                         <div style={{ paddingLeft: 10, display: 'inline-block', float: 'left', height: '100%' }}>
-                                                            <HiOutlineTrash size={30}
-
+                                                            <FaTrashAlt size={30}
+                                                                className="trashIcon"
                                                                 onClick={() => handleRemoveItem({
                                                                     id: parseInt(item.id)
                                                                 })}
@@ -135,6 +150,19 @@ const Table = ({data, headers, editable, handleRemoveItem }) => {
                             </tr>
                         )
                     })}
+                    {
+                        data.length>=shownIndex &&
+                        <tr>
+                            <td
+                            onClick={handleIncrementElements}
+                            className={styles.IncreaseElementsButton} 
+                            height={100}
+                            align='center'
+                            colSpan={headers.length}>
+                                <BsArrowDownCircleFill size={50} color='grey'/>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
 
             </table>

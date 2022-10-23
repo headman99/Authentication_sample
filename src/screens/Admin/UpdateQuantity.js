@@ -6,6 +6,7 @@ import { addIngredientQuantity } from '../../components/api/api'
 import { FaPlus } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import PlusMinusSelect from '../../components/PlusMinusSelect'
+import BackButton from '../../components/BackButton'
 const UpdateQuantity = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -57,7 +58,7 @@ const UpdateQuantity = () => {
             }
         }).catch((e) => {
             console.log(e);
-            alert(e.response.data.errore);
+            alert(e.response.data.message);
         });
 
     }
@@ -65,7 +66,12 @@ const UpdateQuantity = () => {
     return (
         <div className={styles.main}>
             <div className={styles.header}>
-                <h1>Aggiorna scorte magazzino</h1>
+                <div className={styles.backButtonContainer}>
+                    <BackButton path={"/admin/magazzino"}/>
+                </div>
+                <div className={styles.title}>
+                    <h1>Modifica scorte</h1>
+                </div>
             </div>
             <div className={styles.contentContainer}>
                 {

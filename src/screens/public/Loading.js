@@ -48,9 +48,6 @@ const Loading = () => {
                     ariaLabel='three-dots-loading'
                 />
             </div>
-
-
-
         </div>
     )
 }

@@ -1,47 +1,36 @@
-.container {
-    width: 100vw;
-    height: 100vh;
+.headerOption{
     display: flex;
-    flex-direction: column;
-}
-
-.header {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
     align-items: center;
+    flex-direction: row;
+    width: 100%;
 }
 
-.filterInput {
-    width: 250px;
-    font-size: 25px;
-    margin-left: 120px;
-}
-
-.filtersContainer {
-    flex: 1;
-    height: 45%;
-    justify-content: center;
-    display: flex;
-}
-
-.button {
+.button{
     padding: 13px 35px 13px 35px;
     border: none;
     box-shadow: 0 4px 2px -1px rgba(0, 0, 0, 0.1);
     background-color: black;
     color: white;
-    font-size: 17px;
+    font-size: 20px;
     margin: 20px;
 }
 
-.contentContainer {
+.mainContainer{
     display: flex;
-    flex: 1;
     flex-direction: column;
-    width: 100%;
 }
+.filtersContainer {
+    flex: 1;
+    height: 45%;
+    justify-content: center;
+    display: flex;
 
+}
+.filterInput {
+    width: 250px;
+    font-size: 25px;
+    margin-left: 120px;
+}
 .select {
     font-size: 25px;
     padding: 5px;
@@ -55,6 +44,8 @@
 option{
     color: black;
 }
+/* width */
 ::-webkit-scrollbar {
     width: 0px;
   }
+  

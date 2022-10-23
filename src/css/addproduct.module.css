@@ -1,3 +1,33 @@
+.select {
+    font-size: 25px;
+    padding: 5px;
+    border:1px solid;
+    color: #686868;
+    min-width: 220px;
+}
+.mainContainer{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.filterContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+
+}
+.contentContainer{
+    display: flex;
+    flex-direction: column;
+    min-width: 600px;
+    width: 100%;
+    gap: 20px;
+    justify-content: space-around;
+    align-items: center;
+    flex:1;
+}
 .mainContainer{
     width: 100vw;
     height: 100vh;
@@ -68,6 +98,7 @@
     font-weight: bold;
     font-size: 15px;
 }
+
 .header{
     display: flex;
     flex-direction: row;

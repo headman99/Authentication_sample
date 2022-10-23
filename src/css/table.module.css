@@ -7,8 +7,11 @@
   font-size: 20px;
   padding: 10px;
 }
-table{
-  cursor: pointer;
+
+.IncreaseElementsButton:active{
+  opacity: 0.7;
+  background-color: rgb(218, 218, 218);
 }
+
 
 

@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import styles from '../../css/addIngredient.module.css'
-import { api, registerIngredient } from '../../components/api/api';
+import { registerIngredient } from '../../components/api/api';
+import BackButton from '../../components/BackButton';
 
 const AddIngredient = () => {
     const [description, setDescription] = useState('');
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
     const [quantity, setQuantity] = useState(0);
+
 
     const checkInput = () => {
         if (!name) {
@@ -29,7 +31,7 @@ const AddIngredient = () => {
             description: description,
             name: name,
             quantity: parseInt(quantity),
-            category:category
+            category: category
         }).then(resp => {
             console.log(resp);
             alert('Ingrediente inserito');
@@ -38,62 +40,75 @@ const AddIngredient = () => {
             setQuantity(0);
         }).catch((err) => {
             console.log(err)
-            alert(err.response.data.errore)
+            alert(err.response.data.message)
         })
 
     }
 
     return (
         <div className={styles.mainContainer}>
-            <h1>Aggiungi Ingrediente</h1>
-        <div className={styles.contentContainer}>
-
-            <div className={styles.inputContainer}>
-                <label className={styles.label}>Nome</label>
-                <input className={styles.textbox} type='text'
-                    value={name}
-                    placeholder='Nome'
-                    onChange={(text) => setName(text.target.value)}
-                ></input>
-            </div>
-
-            <div className={styles.inputContainer}>
-                <label className={styles.label}>Categoria</label>
-                <input className={styles.textbox} type='text'
-                    value={category}
-                    placeholder='Categoria'
-                    onChange={(text) => setCategory(text.target.value)}
-                ></input>
-            </div>
-        </div>
-            
-            <div className={styles.descriptionContainer}>
-                <label className={styles.label}>Descrizione</label>
-                <textarea
-                    maxLength={250}
-                    className={styles.textArea}
-                    rows={7}
-                    placeholder='Descrizione'
-                    value={description}
-                    onChange={(text) => setDescription(text.target.value)}
-                >
-                </textarea>
-                <div>
-                    <span style={{ float: 'right' }}>{`${description.length}/250`}</span>
+            <div className={styles.header}>
+                <div className={styles.backButtonContainer}>
+                    <BackButton path={"/admin/magazzino"} />
                 </div>
+                <div className={styles.title}>
+                    <h1>Aggiungi Ingrediente</h1>
+                </div>
+            </div>
 
+            <div className={styles.contentContainer}>
+                <div className={styles.filterContainer}>
+                    <div className={styles.inputContainer}>
+                        <label className={styles.label}>Nome</label>
+                        <input className={styles.textbox} type='text'
+                            value={name}
+                            placeholder='Nome'
+                            onChange={(text) => setName(text.target.value)}
+                        ></input>
+                    </div>
+
+                    <div className={styles.inputContainer}>
+                        <label className={styles.label}>Categoria</label>
+                        <input className={styles.textbox}
+                            type='text'
+                            maxLength={20}
+                            value={category}
+                            placeholder='Categoria'
+                            onChange={(text) => setCategory(text.target.value)}
+                        ></input>
+                        <div>
+                            <span style={{ float: 'right' }}>{`${category.length}/20`}</span>
+                        </div>
+                    </div>
+                </div>
+                <div className={styles.descriptionContainer}>
+                    <label className={styles.label}>Descrizione</label>
+                    <textarea
+                        maxLength={250}
+                        className={styles.textArea}
+                        rows={7}
+                        placeholder='Descrizione'
+                        value={description}
+                        onChange={(text) => setDescription(text.target.value)}
+                    >
+                    </textarea>
+                    <div>
+                        <span style={{ float: 'right' }}>{`${description.length}/250`}</span>
+                    </div>
+
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                    <label className={styles.label}>Quantità (g)</label>
+                    <input className={styles.numberArea} type='number'
+                        value={quantity}
+                        placeholder='g'
+                        onChange={(number) => setQuantity(number.target.value)}
+                    ></input>
+                </div>
+                <button type='button' className='button' onClick={handleAddIngredient}>
+                    Crea
+                </button>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-                <label className={styles.label}>Quantità (g)</label>
-                <input className={styles.numberArea} type='number'
-                    value={quantity}
-                    placeholder='g'
-                    onChange={(number) => setQuantity(number.target.value)}
-                ></input>
-            </div>
-            <button type='button' className='button' onClick={handleAddIngredient}>
-                Crea
-            </button>
         </div>
     )
 }
