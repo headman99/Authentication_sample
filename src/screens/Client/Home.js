@@ -41,8 +41,6 @@ const Home = () => {
       if (data?.quantity && data?.date)
         choosenMenu.current.push(data)
     }
-
-    console.log(choosenMenu.current)
   }, [])
 
   const handleChangeMenuQuantity = useCallback((data) => {
@@ -69,8 +67,6 @@ const Home = () => {
       if (!isNaN(data?.quantity) && data?.quantity !== 0)
         choosenMenu.current.push(data)
     }
-
-    console.log(choosenMenu.current)
   }, [])
 
   const handleChangeMenuDate = useCallback((data) => {
@@ -100,29 +96,39 @@ const Home = () => {
 
     }
 
-    console.log(choosenMenu.current)
   }, [])
 
   const checkValidity = () => {
     const quantities = choosenMenu.current.map(menu => menu.quantity)
     const dates = choosenMenu.current.map(menu => menu.date)
     if (quantities.includes(undefined) || quantities.includes(null))
-      return false
-    if (dates.includes(undefined) || quantities.includes(null))
-      return false
+      return {
+        state:false,
+        error:"Specificare la quantità desiderata per ogni menù selezionato"
+      }
+    if (dates.includes(undefined) || dates.includes(null) || dates.includes(''))
+      return  {
+        state:false,
+        error:"Specificare la data desiderata per ogni menù selezionato"
+      }
 
-    return true
+    return {
+      state:true,
+      message:'ok'
+    }
   }
 
   const handleClickConfirm = () => {
-    console.log(choosenMenu.current)
     if (choosenMenu.current.length === 0)
       return
+    
+    const {state,error} = checkValidity();
 
-    if (!checkValidity()) {
-      alert("Specificare la quantità desiderata per ogni menù selezionato")
+    if(!state){
+      alert(error)
       return
     }
+      
 
     addOrderMenu({
       data: choosenMenu.current

@@ -9,12 +9,10 @@ const MenuPage = ({data}) => {
     const { id } = useParams()
     const [recipes,setRecipes] = useState()
     useEffect(()=>{
-        console.log('eseguo')
         getMenuCatalog({
             menu_id:id
         }).then(resp =>{
             if(resp.data){
-                console.log(resp.data)
                 setRecipes(resp.data)
             }
         }).catch(err =>{
