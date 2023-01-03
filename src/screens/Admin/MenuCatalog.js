@@ -29,6 +29,8 @@ const MenuCatalog = () => {
       } catch (err) {
         console.log(err)
         alert(err.response.data.message)
+        if(err.response.data.message==="Unauthorized." || err.response.data.message==="Unauthenticated.")
+                navigate("/login")
       }
     })()
   }, [selectedMenu])
@@ -41,8 +43,10 @@ const MenuCatalog = () => {
     }).catch((err) => {
       console.log(err)
       alert(err.response.data.message)
+      if(err.response.data.message==="Unauthorized." || err.response.data.message==="Unauthenticated.")
+                navigate("/login")
     })
-  }, [])
+  },[])
 
   return (
     <div className={styles.mainContainer}>

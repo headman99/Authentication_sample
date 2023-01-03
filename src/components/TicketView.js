@@ -6,11 +6,11 @@ const TicketView = ({ data, labels, shadow }) => {
     return (
         <div className={styles.mainContainer}>
             {
-                data.map(order => {
+                data.map((order,index) => {
                     return (
                         <Ticket
                             shadow={shadow}
-                            key={order.id}
+                            key={index}
                             data={order} 
                             labels={labels}    
                         />
@@ -21,4 +21,4 @@ const TicketView = ({ data, labels, shadow }) => {
     )
 }
 
-export default TicketView
+export default React.memo(TicketView)

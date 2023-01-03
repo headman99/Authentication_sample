@@ -2,7 +2,8 @@ import axios from 'axios';
 import { ROUTES } from './routes'
 
 
-export const PATH = 'http://localhost/gestionale_dolci/public/api';
+//export const PATH = 'http://localhost/gestionale_dolci/public/api';
+export const PATH = 'http://192.168.1.5/api';
 
 export const api = axios.create({
     baseURL: PATH,
@@ -106,6 +107,21 @@ export async function getOrdersList(data){
 }
 export async function getOrdersListByDate(data){
     return api.post(ROUTES.ADMIN.GET_ORDERS_LIST_BY_DATE,data)
+}
+
+export async function getOpenProductsInstance(data){
+    return api.post(ROUTES.ADMIN.GET_OPEN_PRODUCTS_INSTANCE,data)
+}
+export async function getOrderListCodes(data){
+    return api.post(ROUTES.ADMIN.GET_ORDER_LIST_CODES,data)
+}
+
+export async function scanProduct(data){
+    return api.post(ROUTES.ADMIN.SCAN_PRODUCT,data)
+}
+
+export async function getProductsInstanceByFilter(data){
+    return api.post(ROUTES.ADMIN.GET_PRODUCTS_INSTANCE_BY_FILTER,data)
 }
 
 

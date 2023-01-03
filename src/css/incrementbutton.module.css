@@ -1,0 +1,17 @@
+.IncreaseElementsButton:active{
+    opacity: 0.7;
+    background-color: rgb(218, 218, 218);
+  }
+
+.IncreaseElementsButton{
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+  .Increment{
+    width: 100%;
+    height: 100px;
+  }

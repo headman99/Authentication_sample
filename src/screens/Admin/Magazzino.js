@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from '../../css/magazzino.module.css'
 import { useNavigate } from 'react-router-dom'
-import { getStock, removeIngredient, updateIngredientQuantity, updateIngredientDescription } from '../../components/api/api'
+import { getStock, removeIngredient, updateIngredientQuantity } from '../../components/api/api'
 import { Audio } from 'react-loader-spinner'
 import Table from '../../components/Table'
 import { FaPlus } from 'react-icons/fa'
@@ -12,7 +12,7 @@ import BackButton from '../../components/BackButton'
 const Magazzino = () => {
   const navigate = useNavigate();
   const [stock, setStock] = useState();
-  const headers = ['Codice', 'Ingrediente', 'Quantità (g)', 'Descrizione', 'Categoria', 'Ultima modifica']
+  const headers = ['Codice', 'Ingrediente', 'Quantità (g)', 'Descrizione', 'Fornitore', 'Ultima modifica']
   const [filteredArray, setFilteredArray] = useState();
   const [selected, setSelected] = useState(0);
 
@@ -67,10 +67,14 @@ const Magazzino = () => {
         setStock(resp.data)
         setFilteredArray(resp.data)
       }).catch((err) => {
+        console.log(err)
         alert(err)
+        if(err.response.data.message==="Unauthorized." || err.response.data.message==="Unauthenticated.")
+                navigate("/login")
+
       });
     }
-  }, []);
+  });
 
 
   useEffect(() => {
@@ -88,7 +92,7 @@ const Magazzino = () => {
       return;
     }
     removeIngredient(ingredient).then((resp) => {
-      if (resp.data.state == 1) {
+      if (resp.data.state === 1) {
         window.location.reload();
         alert('Ingrediente rimosso con successo');
       }
@@ -100,7 +104,7 @@ const Magazzino = () => {
   const handleSort = (mode) => {
     let arr = [...filteredArray]
     //Alfabetico
-    if (mode == 0) {
+    if (mode === 0) {
       arr = arr.sort((el1, el2) => {
         if (el1.name.toUpperCase()  < el2.name.toUpperCase() ) return -1
         if (el1.name.toUpperCase()  > el2.name.toUpperCase() ) return 1;
@@ -108,15 +112,15 @@ const Magazzino = () => {
       })
     }
     //Quantità crescente
-    if (mode == 1) {
+    if (mode === 1) {
       arr = arr.sort((el1, el2) => el1.quantity - el2.quantity)
     }
     //Quantità decrescente
-    if (mode == 2) {
+    if (mode === 2) {
       arr = arr.sort((el1, el2) => el2.quantity - el1.quantity)
     }
     //Ultima modifica
-    if (mode == 3) {
+    if (mode === 3) {
       arr = arr.sort((el1, el2) => Date.parse(el2.updated_at) - Date.parse(el1.updated_at))
     }
 
@@ -159,14 +163,14 @@ const Magazzino = () => {
             }}
           ></input>
         </div>
-        <button className="optionButton"
+        <button className="button"
           onClick={goToAddIngredient}
           disabled={!stock}
         >
           <IoIosCreate size={22} />
         </button>
 
-        <button className="optionButton"
+        <button className="button"
           onClick={goToUpdateQuantity}
           disabled={!stock}
         >

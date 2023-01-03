@@ -1,0 +1,71 @@
+.mainContainer{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    min-width: 1000px;
+}
+.contentContainer{
+   display: flex;
+   flex: 1;
+   flex-direction: column;
+   overflow-y: scroll;
+   overflow-x: hidden;
+}
+
+.select {
+    font-size: 25px;
+    padding: 5px;
+    border:none;
+    color: #686868;
+}
+.select:focus{
+    border: 1px solid;
+}
+
+option{
+    color: black;
+}
+.page{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.page *:active{
+    opacity: 0.7;
+}
+
+.inputTextContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.inputTextContainer > div{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+
+}
+
+.inputTextContainer > div:active{
+    opacity: 0.5;
+}
+
+.viewerContainer{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+}
+
+

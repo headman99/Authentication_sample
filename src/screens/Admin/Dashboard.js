@@ -26,8 +26,8 @@ const Dashboard = () => {
         <BiLogOut className={styles.logout} onClick={handleLogout} />
       </div>
       <div className={styles.contentContainer}>
-        <button className={styles.button} 
-          onClick={()=>{
+        <button className={styles.button}
+          onClick={() => {
             navigate("/admin/orders")
           }}>
           Ordini Ricevuti
@@ -41,11 +41,15 @@ const Dashboard = () => {
           Magazzino
           <FaWarehouse size={50} className={styles.buttonIcon} />
         </button>
-        <button className={styles.button}>
+        <button className={styles.button}
+          onClick={() => navigate("/admin/production")}
+        >
           In Produzione
           <FaHammer size={50} className={styles.buttonIcon} />
         </button>
-        <button className={styles.button}>
+        <button className={styles.button}
+          onClick={() => navigate("/admin/evasi")}
+        >
           Evasi
           <TbPackgeExport size={50} className={styles.buttonIcon} />
         </button>

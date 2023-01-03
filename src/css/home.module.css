@@ -5,6 +5,7 @@
     flex-direction: row;
     align-items: center;
     overflow-x: scroll;
+    overflow-y: hidden;
 }
 .mainContainer{
     display: flex;

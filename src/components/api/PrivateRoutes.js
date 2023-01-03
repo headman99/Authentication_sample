@@ -7,7 +7,6 @@ const PrivateRoutes = ({ admin }) => {
     const { user,setUser } = useContext(UserContext);
     const [flag, setFlag] = useState(false)
     const allowUser = useRef(false)
-    console.log('privateRoutes render')
     useEffect(()=>{
         var usr = user;
         if(!usr){

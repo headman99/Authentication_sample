@@ -28,6 +28,11 @@ code {
   gap: 30px;
 }
 
+.link{
+  text-decoration: none;
+  color: black;
+}
+
 .BackButtonContainer {
   position: absolute;
   float: left;
@@ -45,14 +50,22 @@ code {
 }
 
 .button{
-  padding: 15px 37px 15px 37px;
+  width: 100px;
+  height: 60px;
   border: none;
-  box-shadow:  0 4px 2px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 2px -1px rgba(0, 0, 0, 0.1);
   background-color: black;
   color: white;
-  border-radius: 5px;
-  font-size: 20px
+  font-size: 17px;
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+.button:active{
+  opacity: 0.7;
+}
+
 .trashIcon:active{
   opacity: 0.5;
 }
@@ -84,4 +97,8 @@ code {
   justify-content: center;
   display: flex;
 
+}
+._checkbox{
+  transform: scale(2);
+  margin: 15px;
 }

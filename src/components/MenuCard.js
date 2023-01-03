@@ -17,10 +17,12 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Link } from "react-router-dom";
 
-const MenuCard = ({ menu, handleChangeMenuQuantity }) => {
+const MenuCard = ({ menu, handleChangeMenuQuantity, handleChangeRequest, handleChangeMenuDate }) => {
     const [expanded, setExpanded] = React.useState(false);
     const { nome, descrizione, id } = menu
     const [richiesta, setRichiesta] = React.useState('')
+    const [quantity, setQuantity] = React.useState()
+    const [date, setDate] = React.useState('')
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -71,27 +73,60 @@ const MenuCard = ({ menu, handleChangeMenuQuantity }) => {
                 </IconButton>  
                 */
                 }
-                <CardContent>
-                    <Typography paragraph>Quantità:</Typography>
-                    <input type="number"
-                        onBlur={(e) => {
-                            if (e.target.value) {
+                <CardContent style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+                    <div>
+                        <Typography paragraph>Quantità:</Typography>
+                        <input type="number"
+                            onChange={(e) => setQuantity(e.target.value)}
+                            value={quantity}
+                            onBlur={(e) => {
                                 let data = {
                                     quantity: parseInt(e.target.value),
+                                    date: date ? date : null,
                                     menu_id: id,
-                                }
-
-                                if (richiesta) {
-                                    data = {
-                                        ...data,
-                                        richiesta: richiesta
-                                    }
+                                    richiesta: richiesta ? richiesta : null
                                 }
 
                                 handleChangeMenuQuantity(data)
+
+                            }}
+                            className={styles.inputNumber} placeholder="N" />
+                    </div>
+                    <div>
+                        <Typography paragraph>Data:</Typography>
+                        <input type="date"
+                            onChange={(e) => {
+                                if (new Date(e.target.value) <= new Date()) {
+                                    alert("inserisci una data postuma a quella odierna")
+                                    setDate("")
+                                    return
+                                }
+
+                                setDate(e.target.value)
                             }
-                        }}
-                        className={styles.inputNumber} placeholder="N" />
+
+                            }
+                            value={date}
+                            style={{ width: '80%' }}
+                            onBlur={(e) => {
+                                if (new Date(e.target.value) <= new Date()) {
+                                    alert("inserisci una data postuma a quella odierna")
+                                    setDate("")
+                                    return
+                                }
+
+                                let data = {
+                                    quantity: quantity ? quantity : null,
+                                    date: e.target.value,
+                                    menu_id: id,
+                                    richiesta: richiesta ? richiesta : null
+                                }
+                                handleChangeMenuDate(data)
+
+                            }}
+                            className={styles.inputNumber} placeholder="Data" />
+                    </div>
+
                 </CardContent>
 
                 <ExpandMore
@@ -111,6 +146,25 @@ const MenuCard = ({ menu, handleChangeMenuQuantity }) => {
                         className={styles.textArea}
                         rows={7}
                         placeholder='Richieste'
+                        value={richiesta}
+                        onBlur={(e) => {
+                            let data = {
+                                quantity: quantity ? quantity : null,
+                                date: date ? date : null,
+                                richiesta: richiesta,
+                                menu_id: id
+                            }
+
+                            if (quantity) {
+                                data = {
+                                    ...data,
+                                    quantity: parseInt(quantity)
+                                }
+                            }
+
+                            handleChangeRequest(data)
+
+                        }}
                         onChange={(e) => { setRichiesta(e.target.value) }}
                     >
                     </textarea>

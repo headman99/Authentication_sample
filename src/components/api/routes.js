@@ -23,7 +23,11 @@ export const ROUTES = {
         REMOVE_MENU_RECIPE_SECTION:'admin/removeMenuRecipeSection',
         REMOVE_MENU_RECIPE_GROUP:'/admin/removeMenuRecipeGroup',
         GET_ORDERS_LIST:'/admin/getOrdersList',
-        GET_ORDERS_LIST_BY_DATE:'/admin/getOrdersListByDate'
+        GET_ORDERS_LIST_BY_DATE:'/admin/getOrdersListByDate',
+        GET_OPEN_PRODUCTS_INSTANCE:'/admin/getOpenProductsInstance',
+        GET_ORDER_LIST_CODES:'/admin/getOrderListCodes',
+        SCAN_PRODUCT:'/admin/scanProduct',
+        GET_PRODUCTS_INSTANCE_BY_FILTER:'/admin/getProductsInstanceByFilter'
     },
     CUSTOMER:{
         ADD_ORDER_MENU:'client/addOrderMenu'

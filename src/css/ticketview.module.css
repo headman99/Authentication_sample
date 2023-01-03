@@ -1,8 +1,8 @@
 .mainContainer{
     width: 100%;
     display: flex;
-    justify-content: center;
-    flex-direction: column;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
     align-items: center;
     gap: 12px;
 }

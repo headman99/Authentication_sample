@@ -6,7 +6,7 @@ const BackButton = ({path,replace}) => {
     const navigate = useNavigate();
     return (
         <button
-            className={styles.button}
+            className='button'
             onClick={() => {
                 navigate(path,{
                     replace:replace

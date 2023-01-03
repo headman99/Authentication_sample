@@ -14,7 +14,7 @@ const ProductCatalog = () => {
   const [filteredArray, setFilteredArray] = useState();
   const [selected, setSelected] = useState(0);
   const navigate = useNavigate();
-  const headers = ['id', 'nome', 'categoria', 'gruppo', 'barcode', 'descrizione']
+  const headers = ['id', 'nome', 'categoria', 'gruppo', 'descrizione']
   const [availableProductGroups, setAvailableProductGroups] = useState([])
 
 
@@ -104,6 +104,8 @@ const ProductCatalog = () => {
       }).catch(e => {
         console.log(e)
         alert(e.response.data.message)
+        if(e.response.data.message==="Unauthorized." || e.response.data.message==="Unauthenticated.")
+                navigate("/login")
       })
     }
     if (products.length === 0) {
@@ -113,6 +115,8 @@ const ProductCatalog = () => {
       }).catch((e) => {
         console.log(e);
         alert(e);
+        if(e.response.data.message==="Unauthorized." || e.response.data.message==="Unauthenticated.")
+                navigate("/login")
       })
     }
   })
