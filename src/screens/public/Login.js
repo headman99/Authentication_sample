@@ -143,13 +143,18 @@ const Login = () => {
               />
             </motion.div>
           </div>
-              
-          <button type='button'
-            className='button'
-            onClick={handleSubmit}
+          <div
+            style={{width:'100%',display:'flex',justifyContent:'center',alignItems:'center'}}
           >
-            Login
-          </button>
+            <button
+              className='button'
+              style={{margin:0,width:120}}
+              onClick={handleSubmit}
+            >
+              Login
+            </button>
+          </div>
+
         </div>
       </div>
     </div>

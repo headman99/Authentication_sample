@@ -61,6 +61,8 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: large;
+  font-weight: bold;
 }
 .button:active{
   opacity: 0.7;

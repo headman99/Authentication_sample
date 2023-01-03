@@ -184,6 +184,7 @@ const Home = () => {
             </div>
             <div style={{ display: 'block', width: '100%', display: 'flex', justifyContent: 'center' }}>
               <button className="button"
+                style={{width:150}}
                 onClick={handleClickConfirm}
               > Conferma</button>
             </div>
