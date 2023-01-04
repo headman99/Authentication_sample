@@ -55,7 +55,7 @@ const MenuCard = ({ menu, handleChangeMenuQuantity, handleChangeRequest, handleC
                     component="img"
                     height="180"
                     image="https://write.geeksforgeeks.org/static/media/Group%20210.08204759.svg"
-                    alt={nome}
+                    alt='Immagine da caricare in seguito'
                 />
                 <CardContent>
                     <Typography variant="body2" color="text.secondary">

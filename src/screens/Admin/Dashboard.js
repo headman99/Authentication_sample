@@ -17,6 +17,9 @@ const Dashboard = () => {
       await logout();
       secureLocalStorage.removeItem('user');
       navigate('/login');
+    } else {
+      alert("effettua il login")
+      navigate("/login")
     }
   }
 
