@@ -68,4 +68,8 @@ option{
     height: 100vh;
 }
 
+.scanButton{
+    background-color: black;
+}
+
 

@@ -148,7 +148,7 @@ const Login = () => {
           >
             <button
               className='button'
-              style={{margin:0,width:120}}
+              style={{margin:0,width:120,borderRadius:10}}
               onClick={handleSubmit}
             >
               Login

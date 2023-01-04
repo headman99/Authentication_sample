@@ -29,27 +29,39 @@ const ProdBarcodeCard = ({ product, labels, refreshAction }) => {
             <div
                 className={styles.details}
             >
-                {
-                    labels.map((label, index) => {
-                        return (
-                            <div key={index}>
-                                {
-                                    product_obj[index] && <><b>{label} :</b> <span>{product_obj[index]}</span></>
-                                }
-                            </div>
-                        )
-                    })
-                }
-            </div>
-            <div
-                className={styles.barcode}
-            >
-                {
-                    product?.barcode && <Barcode value={product.barcode} width={1.5} />
-                }
+                <div className={styles.textDetails}>
+                    {
+                        labels.map((label, index) => {
+                            return (
+                                <div key={index}>
+                                    {
+                                        `${product_obj[index]}`.length >= 30 ?
+                                            <><b>{label} :</b> <span>{`${product_obj[index]}`.slice(0, 230)} ...</span></>
+                                            :
+                                            <><b>{label} :</b> <span>{`${product_obj[index]}`}</span></>
+                                            
+                                    }
+                                </div>
+                            )
+                        })
+                    }
+                </div>
 
+                <div
+                    className={styles.barcode}
+                >
+                    {
+                        product?.barcode && <Barcode value={product.barcode} width={1.5} />
+                    }
+
+                </div>
             </div>
-            <input type="button" value="scan" onClick={() => handleScan(product.barcode)} />
+
+            <button
+                className={styles.scanButton}
+                onClick={() => handleScan(product.barcode)} >
+                scan
+            </button>
         </div>
     )
 }
