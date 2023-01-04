@@ -28,9 +28,11 @@ const MenuCatalog = () => {
 
       } catch (err) {
         console.log(err)
-        alert(err.response.data.message)
-        if(err.response.data.message==="Unauthorized." || err.response.data.message==="Unauthenticated.")
-                navigate("/login")
+        console.log(err.response.data.message)
+        if(err.response.data.message==="Unauthorized." || err.response.data.message==="Unauthenticated."){
+            alert("effettua il login")
+            navigate("/login")
+        }
       }
     })()
   }, [selectedMenu])
@@ -42,9 +44,11 @@ const MenuCatalog = () => {
       }
     }).catch((err) => {
       console.log(err)
-      alert(err.response.data.message)
-      if(err.response.data.message==="Unauthorized." || err.response.data.message==="Unauthenticated.")
-                navigate("/login")
+      console.log(err.response.data.message)
+      if(err.response.data.message==="Unauthorized." || err.response.data.message==="Unauthenticated."){
+          alert("effettua il login")
+          navigate("/login")
+      }
     })
   },[])
 

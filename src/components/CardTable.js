@@ -5,7 +5,7 @@ import IncrementButton from './IncrementButton'
 
 const CardTable = ({ data, handleIncrements,refreshAction }) => {
 
-  const labels = ["id","prodotto","ordine","Creato il","barcode","operatore"]
+  const labels = ["id","prodotto","ordine","Creato il","operatore"]
 
   return (
     <div className={styles.contentContainer}>

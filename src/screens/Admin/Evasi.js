@@ -92,9 +92,11 @@ const Evasi = () => {
             }
         }).catch(err =>{
             console.log(err)
-            alert(err)
-            if(err.response.data.message==="Unauthorized." || err.response.data.message==="Unauthenticated.")
+            console.log(err.response.data.message)
+            if(err.response.data.message==="Unauthorized." || err.response.data.message==="Unauthenticated."){
+                alert("effettua il login")
                 navigate("/login")
+            }
         })
     }, [])
 

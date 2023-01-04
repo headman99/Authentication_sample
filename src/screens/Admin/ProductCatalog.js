@@ -103,9 +103,11 @@ const ProductCatalog = () => {
         }
       }).catch(e => {
         console.log(e)
-        alert(e.response.data.message)
-        if(e.response.data.message==="Unauthorized." || e.response.data.message==="Unauthenticated.")
-                navigate("/login")
+        console.log(e.response.data.message)
+        if(e.response.data.message==="Unauthorized." || e.response.data.message==="Unauthenticated."){
+            alert("effettua il login")
+            navigate("/login")
+        }
       })
     }
     if (products.length === 0) {
@@ -114,9 +116,11 @@ const ProductCatalog = () => {
         setFilteredArray(resp.data)
       }).catch((e) => {
         console.log(e);
-        alert(e);
-        if(e.response.data.message==="Unauthorized." || e.response.data.message==="Unauthenticated.")
-                navigate("/login")
+        console.log(e.response.data.message)
+        if(e.response.data.message==="Unauthorized." || e.response.data.message==="Unauthenticated."){
+            alert("effettua il login")
+            navigate("/login")
+        }
       })
     }
   })

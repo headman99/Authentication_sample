@@ -89,11 +89,11 @@ const OrdiniRicevuti = () => {
                 setFilteredArray(resp)
             }
         }).catch(err =>{
-            console.log(err)
-            alert(err)
             console.log(err.response.data.message)
-            if(err.response.data.message==="Unauthorized." || err.response.data.message==="Unauthenticated.")
+            if(err.response.data.message==="Unauthorized." || err.response.data.message==="Unauthenticated."){
+                alert("effettua il login")
                 navigate("/login")
+            }
         })
     },[])
 

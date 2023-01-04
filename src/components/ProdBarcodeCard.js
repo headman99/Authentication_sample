@@ -32,14 +32,17 @@ const ProdBarcodeCard = ({ product, labels, refreshAction }) => {
                 <div className={styles.textDetails}>
                     {
                         labels.map((label, index) => {
+                            if(product_obj[index]===null)
+                                return
                             return (
                                 <div key={index}>
                                     {
-                                        `${product_obj[index]}`.length >= 30 ?
-                                            <><b>{label} :</b> <span>{`${product_obj[index]}`.slice(0, 230)} ...</span></>
+                                          
+                                            `${product_obj[index]}`.length >= 50 ?
+                                            <><b>{label} :</b> <span>{`${product_obj[index]}`.slice(0, 50)} ...</span></>
                                             :
                                             <><b>{label} :</b> <span>{`${product_obj[index]}`}</span></>
-                                            
+
                                     }
                                 </div>
                             )

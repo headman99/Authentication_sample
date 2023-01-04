@@ -34,10 +34,6 @@ const ProductionProductList = () => {
     }
   }, [contextBarcode])
 
-  const handleBackFunction = () => {
-    console.log('ciao')
-  }
-
   const handleShowPdf = () => {
     const newWindow = window.open();
     newWindow.document.body.innerHTML = '<div id="root"></div>';
