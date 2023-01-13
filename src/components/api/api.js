@@ -4,7 +4,7 @@ import { ROUTES } from './routes'
 
 //export const PATH = 'http://localhost/gestionale_dolci/public/api';
 //export const PATH = 'http://192.168.1.5/api';
-export const PATH = 'http://gestionale.hopto.org/api';
+export const PATH = 'https://gestionale.hopto.org/api';
 //export const PATH = 'https://2.47.119.204/api';
 
 export const api = axios.create({
