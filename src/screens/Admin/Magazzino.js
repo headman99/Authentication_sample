@@ -12,7 +12,7 @@ import BackButton from '../../components/BackButton'
 const Magazzino = () => {
   const navigate = useNavigate();
   const [stock, setStock] = useState();
-  const headers = ['Codice', 'Ingrediente', 'Quantità (g)', 'Descrizione', 'Fornitore', 'Ultima modifica']
+  const headers = ['Codice', 'Ingrediente', 'Quantità (g)', 'Categoria', 'Fornitore', 'Ultima modifica']
   const [filteredArray, setFilteredArray] = useState();
   const [selected, setSelected] = useState(0);
 
@@ -53,7 +53,7 @@ const Magazzino = () => {
         const arr = stock.filter(elem => elem.ingredient_id == parseInt(filter))
         setFilteredArray(arr)
       } else {
-        const arr = stock.filter(elem => (elem.name.includes(filter) || elem.category?.includes(filter)))
+        const arr = stock.filter(elem => (elem.name.includes(filter) || elem.category?.includes(filter) || elem.provider?.includes(filter)))
         if (JSON.stringify(arr) !== JSON.stringify(filteredArray)) {
           setFilteredArray(arr)
         }
@@ -105,6 +105,7 @@ const Magazzino = () => {
 
   const handleSort = (mode) => {
     let arr = [...filteredArray]
+    
     //Alfabetico
     if (mode === 0) {
       arr = arr.sort((el1, el2) => {
@@ -114,19 +115,19 @@ const Magazzino = () => {
       })
     }
     //Quantità crescente
-    if (mode === 1) {
+    if (mode === '1') {
       arr = arr.sort((el1, el2) => el1.quantity - el2.quantity)
     }
     //Quantità decrescente
-    if (mode === 2) {
+    if (mode === '2') {
       arr = arr.sort((el1, el2) => el2.quantity - el1.quantity)
     }
     //Ultima modifica
-    if (mode === 3) {
+    if (mode === '3') {
       arr = arr.sort((el1, el2) => Date.parse(el2.updated_at) - Date.parse(el1.updated_at))
     }
 
-    setFilteredArray(arr)
+    setFilteredArray([...arr])
   }
 
 

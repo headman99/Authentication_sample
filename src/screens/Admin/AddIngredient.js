@@ -8,6 +8,7 @@ const AddIngredient = () => {
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
     const [quantity, setQuantity] = useState(0);
+    const [provider, setProvider] = useState('');
 
 
     const checkInput = () => {
@@ -31,16 +32,18 @@ const AddIngredient = () => {
             description: description,
             name: name,
             quantity: parseInt(quantity),
-            category: category
-        }).then(resp => {
-            console.log(resp);
+            category: category,
+            provider: provider
+        }).then(() => {
             alert('Ingrediente inserito');
             setDescription('');
             setName('');
             setQuantity(0);
+            setCategory('')
+            setProvider('')
         }).catch((err) => {
             console.log(err)
-            alert(err.response.data.message)
+            alert(err.response?.data?.message)
         })
 
     }
@@ -63,8 +66,12 @@ const AddIngredient = () => {
                         <input className={styles.textbox} type='text'
                             value={name}
                             placeholder='Nome'
+                            maxLength={50}
                             onChange={(text) => setName(text.target.value)}
                         ></input>
+                        <div>
+                            <span style={{ float: 'right' }}>{`${name.length}/50`}</span>
+                        </div>
                     </div>
 
                     <div className={styles.inputContainer}>
@@ -80,6 +87,22 @@ const AddIngredient = () => {
                             <span style={{ float: 'right' }}>{`${category.length}/20`}</span>
                         </div>
                     </div>
+
+                    <div className={styles.inputContainer}>
+                        <label className={styles.label}>Fornitore</label>
+                        <input className={styles.textbox}
+                            type='text'
+                            maxLength={50}
+                            value={provider}
+                            placeholder='fornitore'
+                            onChange={(text) => setProvider(text.target.value)}
+                        ></input>
+                        <div>
+                            <span style={{ float: 'right' }}>{`${provider.length}/50`}</span>
+                        </div>
+                    </div>
+
+
                 </div>
                 <div className={styles.descriptionContainer}>
                     <label className={styles.label}>Descrizione</label>

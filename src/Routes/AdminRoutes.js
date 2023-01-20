@@ -42,7 +42,9 @@ export function AdminRoutes() {
 
     useEffect(() => {
         if (!barcode)
-            return
+            return;
+        if(!barcode.startsWith("Shift"))
+            return;
         const newBar = barcode.split("Shift").join("")
         if (newBar)
             handleReadBarcode(newBar)
