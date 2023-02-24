@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import styles from "../../css/productcatalog.module.css"
-import { getProductsCatalog, removeProduct, getProductGroups } from '../../components/api/api';
+import { getProductsCatalog, removeProduct, getProductGroups, updateProduct } from '../../components/api/api';
 import Table from '../../components/Table';
 import { Audio } from 'react-loader-spinner';
 import BackButton from '../../components/BackButton';
 import { BsSortUp } from 'react-icons/bs'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IoIosCreate } from 'react-icons/io';
+import { useRef } from 'react';
+
 
 
 const ProductCatalog = () => {
@@ -14,16 +16,12 @@ const ProductCatalog = () => {
   const [filteredArray, setFilteredArray] = useState();
   const [selected, setSelected] = useState(0);
   const navigate = useNavigate();
-  const headers = ['id', 'nome', 'categoria', 'gruppo', 'descrizione']
-  const [availableProductGroups, setAvailableProductGroups] = useState([])
+  const headers = ['Id', 'Nome', 'Categoria', 'Gruppo']
+  const availableProductGroups = useRef([])
 
-
-  const goToAddProduct = () => {
-    navigate("/admin/catalog/productCatalog/addProduct")
-  }
 
   const filterContent = (filter) => {
-
+    console.log(products)
     if (!filter) {
       setFilteredArray(products)
     } else {
@@ -31,10 +29,10 @@ const ProductCatalog = () => {
       if (!isNaN(parseInt(filter))) {
         arr = products.filter(elem => elem.id == parseInt(filter))
       } else {
-        if (availableProductGroups.map(element => element.gruppo).includes(filter.toUpperCase())) {
+        if (availableProductGroups.current.map(element => element.gruppo).includes(filter.toUpperCase())) {
           arr = products.filter(elem => elem.gruppo === filter.toUpperCase())
         } else {
-          arr = products.filter(elem => (elem.nome.toUpperCase().includes(filter.toUpperCase()) || elem.category?.toUpperCase().includes(filter.toUpperCase())))
+          arr = products.filter(elem => (elem.nome.toUpperCase().includes(filter.toUpperCase()) || elem.category?.toUpperCase().includes(filter.toUpperCase()) ))
         }
       }
       if (JSON.stringify(arr) !== JSON.stringify(filteredArray)) {
@@ -79,7 +77,6 @@ const ProductCatalog = () => {
           if (el1.nome.toUpperCase() < el2.nome.toUpperCase()) return 1;
           return 0;
         })
-        console.log(arr)
       }
       //ID
       if (m == 2) {
@@ -96,34 +93,60 @@ const ProductCatalog = () => {
   }, [selected])
 
   useEffect(() => {
-    if (availableProductGroups.length === 0) {
+    let isApiSubscribed = true;
+    if (availableProductGroups.current.length === 0) {
       getProductGroups().then(resp => {
-        if (resp.data) {
-          setAvailableProductGroups(resp.data)
+        if (isApiSubscribed && resp.data) {
+          availableProductGroups.current =  resp.data
         }
       }).catch(e => {
         console.log(e)
         console.log(e.response.data.message)
-        if(e.response.data.message==="Unauthorized." || e.response.data.message==="Unauthenticated."){
-            alert("effettua il login")
-            navigate("/login")
+        if (e.response.data.message === "Unauthorized." || e.response.data.message === "Unauthenticated.") {
+          alert("effettua il login")
+          navigate("/login")
         }
       })
     }
+
     if (products.length === 0) {
       getProductsCatalog().then(resp => {
-        setProducts(resp.data);
-        setFilteredArray(resp.data)
+        if (isApiSubscribed) {
+          setProducts(resp.data.data);
+          setFilteredArray(resp.data.data)
+        }
+
       }).catch((e) => {
         console.log(e);
         console.log(e.response.data.message)
-        if(e.response.data.message==="Unauthorized." || e.response.data.message==="Unauthenticated."){
-            alert("effettua il login")
-            navigate("/login")
+        if (e.response.data.message === "Unauthorized." || e.response.data.message === "Unauthenticated.") {
+          alert("effettua il login")
+          navigate("/login")
         }
       })
     }
-  })
+    return () => {
+      // cancel the subscription
+      isApiSubscribed = false;
+    };
+
+  },[])
+
+  const handleModifyRow = (params) => {
+    console.log(params)
+    updateProduct(params).then((resp) => {
+      alert("Modifica avvenuta con successo")
+      window.location.reload()
+    }).catch((err) => {
+      console.log(err)
+      console.log(err.response.data.message)
+      if (err.response.data.message === "Unauthorized." || err.response.data.message === "Unauthenticated.") {
+        alert("effettua il login")
+        navigate("/login")
+      }
+
+    })
+  }
 
 
   return (
@@ -154,19 +177,19 @@ const ProductCatalog = () => {
             }}
           ></input>
         </div>
-        <button className={styles.button}
-          onClick={goToAddProduct}
+        <Link className='button'
+          to='/admin/catalog/productCatalog/addProduct'
           disabled={!products}
         >
           <IoIosCreate size={22} />
-        </button>
+        </Link>
       </div>
       <div className={styles.contentContainer}>
         <div>
           {
             products.length === 0
               ?
-              <div style={{ width: '100%', flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <div className='AudioContainer'>
                 <Audio color='black' />
               </div>
               :
@@ -174,6 +197,13 @@ const ProductCatalog = () => {
                 data={filteredArray}
                 headers={headers}
                 handleRemoveItem={handleRemoveItem}
+                handleModifyRow={handleModifyRow}
+                modalOptions={{
+                  modalLables: ['Nome', 'Categoria', 'Gruppo'],
+                  updatableKeys: ['nome', 'categoria', 'gruppo'],
+                  types: [{ type: 'text' }, { type: 'text' }, { type: 'select',values:availableProductGroups.current.map(el => el.gruppo) }],
+                  title:'Modifica prodotto'
+                }}
               />
           }
         </div>

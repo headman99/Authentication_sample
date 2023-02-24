@@ -6,7 +6,6 @@
 }
 
 .button{
-    padding: 13px 35px 13px 35px;
     border: none;
     box-shadow: 0 4px 2px -1px rgba(0, 0, 0, 0.1);
     background-color: black;
@@ -14,6 +13,8 @@
     font-size: 20px;
     margin: 20px;
 }
+
+
 
 .mainContainer{
     display: flex;
@@ -48,4 +49,12 @@ option{
 ::-webkit-scrollbar {
     width: 0px;
 }
-  
+
+.modalUI{
+    display: flex;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    width: 50vw;
+    flex-direction: column;
+    padding: 20px;
+}

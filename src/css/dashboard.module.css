@@ -38,6 +38,15 @@
 }
 #header{
     width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#header div{
+    justify-content: center;
+    align-items:center;
+    display: flex;
+    
 }
 
 .contentContainer{
@@ -50,6 +59,21 @@
     height: 90vh;
     min-width: 300px;
     
+}
+
+.select{
+    font-size: 25px;
+    padding: 10px;
+    border: none;
+    color: #686868;
+    border:2px solid;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+}
+
+.select *{
+    color: white;
 }
 
 @media only screen and (max-width:1000px){

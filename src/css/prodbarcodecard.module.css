@@ -1,11 +1,7 @@
 .product {
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    background-color: white;
     display: flex;
-    width: 48%;
-    margin: 5px;
-    min-height: 25vh;
-    flex-direction: row;
+    flex-direction: column;
+    flex: 1;
 }
 
 .details {
@@ -23,6 +19,10 @@
 .textDetails{
     overflow: hidden;
     flex: 1;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .barcode {
@@ -43,4 +43,23 @@
     align-items: center;
     font-size: large;
     font-weight: bold;
+}
+
+.header{
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+    font-size: 20px;
+    padding-top: 10px;
+
+}
+
+.container{
+    display: flex;
+    flex-direction: row;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-color: white;
+    width: 48%;
+    margin: 5px;
+    min-height: 25vh;
 }

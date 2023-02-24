@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from '../css/plusminusselect.module.css'
 import {AiOutlineMinus,AiOutlinePlus} from 'react-icons/ai'
-const PlusMinusSelect = ({data,setData,index}) => {
+const PlusMinusSelect = ({data,setData,index,width,height}) => {
     const [active, setActive] = useState(2);
     
     const handleClick = (value) =>{
@@ -18,7 +18,7 @@ const PlusMinusSelect = ({data,setData,index}) => {
     return (
         <div className={styles.container}>
             <div className={styles.addButton}
-                style={{backgroundColor:active===1 && 'black',color:active===1 && 'white'}}
+                style={{backgroundColor:active===1 && 'black',color:active===1 && 'white', width:width,height:height}}
                 onClick={()=>{
                     setActive(1)
                     handleClick(1)
@@ -27,7 +27,7 @@ const PlusMinusSelect = ({data,setData,index}) => {
                 <AiOutlinePlus size={25} />
             </div>
             <div className={styles.addButton}
-                style={{backgroundColor:active===2 && 'black',color:active===2 && 'white'}}
+                style={{backgroundColor:active===2 && 'black',color:active===2 && 'white',width:width,height:height}}
                 onClick={()=>{
                     setActive(2)
                     handleClick(2)

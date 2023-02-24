@@ -27,7 +27,21 @@ export const ROUTES = {
         GET_OPEN_PRODUCTS_INSTANCE:'/admin/getOpenProductsInstance',
         GET_ORDER_LIST_CODES:'/admin/getOrderListCodes',
         SCAN_PRODUCT:'/admin/scanProduct',
-        GET_PRODUCTS_INSTANCE_BY_FILTER:'/admin/getProductsInstanceByFilter'
+        GET_PRODUCTS_INSTANCE_BY_FILTER:'/admin/getProductsInstanceByFilter',
+        GET_TEAMS:'/admin/getTeams',
+        GET_PRODUCT_LIST_BY_TEAM:'/admin/getProductListByTeam',
+        CHECK_PRODUCT_LIST:'/admin/checkProductList',
+        UPDATE_INGREDIENT:'/admin/updateIngredient',
+        UPDATE_PRODUCT:'/admin/updateProduct',
+        REMOVE_TEAM:'/admin/removeTeam',
+        UPDATE_TEAM:'/admin/updateTeam',
+        ADD_TEAM:'/admin/addTeam',
+        GET_PRODUCTS_BY_TEAM:'/admin/getProductstByTeam',
+        UPDATE_INGREDIENTS_TEAM:'/admin/updateIngredientsTeam',
+        GET_INGREDIENTS_TEAM:'/admin/getIngredientsTeam',
+        GET_PRODUCTS_LIST_BY_ORDER:'/admin/getTeamProductListByOrder',
+        GET_TEAM_INGREDIENTS_BY_PRODUCT_RECIPE:'/admin/getTeamIngredientsByProductRecipe',
+        GET_INGREDIENT_QUANTITY_BY_ORDER:'/admin/getIngredientQuantityByOrder'
     },
     CUSTOMER:{
         ADD_ORDER_MENU:'client/addOrderMenu'

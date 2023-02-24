@@ -1,8 +1,11 @@
 import React from 'react'
+import OrdersView from './OrdiniRicevuti'
 
 const Produzione = () => {
   return (
-    <div>Non ancora disponibile</div>
+    <div>
+      <OrdersView closed={false}/>
+    </div>
   )
 }
 

@@ -71,7 +71,7 @@ const AddMenuRecipe = () => {
       menu_id: state.menu.id
     }
 
-    const sect = section!=='vuoto'?section:''
+    const sect = section !== 'vuoto' ? section : ''
     if (!sectionsList.current.includes(sect)) {
       allow = window.confirm("La sezione non esiste per il gruppo corrente, si intende procedere?");
     }
@@ -94,22 +94,27 @@ const AddMenuRecipe = () => {
   }
 
   useEffect(() => {
+    let isApiSubscribed = true;
     getProductsCatalog().then(resp => {
-      if (resp?.data?.length > 0) {
-        productListNames.current = resp.data.map( p => p.nome)
-        setProductsList(resp.data.map(p => {
-          return({
-            id:p.id,
-            nome:p.nome
+      if (isApiSubscribed) {
+        productListNames.current = resp.data.data.map(p => p.nome)
+        setProductsList(resp.data.data.map(p => {
+          return ({
+            id: p.id,
+            nome: p.nome
           })
         }))
-      } else {
-        alert("non ci sono prodotti")
       }
+      
     }).catch((err) => {
       console.log(err)
       alert(err.response.data.message)
     })
+    return () => {
+      // cancel the subscription
+      isApiSubscribed = false;
+    };
+
   }, [])
 
   return (

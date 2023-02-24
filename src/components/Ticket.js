@@ -1,26 +1,28 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import styles from '../css/ticket.module.css'
-import { MdOutlineExpandMore } from "react-icons/md"
 import { confirmAlert } from 'react-confirm-alert'
 import "react-confirm-alert/src/react-confirm-alert.css"
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import useLongPress from '../hooks/useLongPress'
 const Ticket = ({ data, shadow, labels }) => {
   const { innerWidth, innerHeight } = window
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+
 
   function handleOnClick() {
-    navigate(`/admin/orders/${data.code}`)
+    navigate(`${pathname}/${data.code}`)
   }
 
   function handleLongPress() {
     openModal(data)
   }
 
-  const { action, handlers } = useLongPress({
+  const {handlers } = useLongPress({
     onClick: handleOnClick,
     onLongPress: handleLongPress
   });
+  
   const openModal = (data) => {
     /*confirmAlert({
       title: `${details.client} - ${details.code}`,
@@ -63,7 +65,7 @@ const Ticket = ({ data, shadow, labels }) => {
         {...handlers}
       >
         {
-          Object.values(data).map((v, index) => {
+          /*Object.values(data).map((v, index) => {
             return (
               <div key={index}>
                 {
@@ -74,14 +76,36 @@ const Ticket = ({ data, shadow, labels }) => {
                       <span style={{ fontWeight: 'bold', overflow: 'hidden' }}>{`${labels[index]}:`}</span><span>{`${v}`.slice(0, 15)}</span>
                     </>
 
+                  
+                  
                 }
+                
 
               </div>
             )
           })
 
-        }
+        */}
 
+        <table className={styles.table}>
+          <tbody>
+            <tr >
+              <td style={{color:'red',fontSize:28}}>{data.client}</td>
+              <td style={{color:'red',fontSize:28}}>{data.code}</td>
+            </tr>
+            <tr>
+              <td>Creato: {data.created_at}</td>
+              <td>Data evento: {data.event_date}</td>
+            </tr>
+            <tr>
+              <td>Menu: {data.menu_id}</td>
+              <td>Ospiti: {data.quantity}</td>
+            </tr>
+            <tr>
+              <td colSpan={2}>Richieste: {data?.richiesta.slice(0,30)}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div >
   )

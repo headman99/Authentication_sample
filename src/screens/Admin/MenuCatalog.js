@@ -29,28 +29,34 @@ const MenuCatalog = () => {
       } catch (err) {
         console.log(err)
         console.log(err.response.data.message)
-        if(err.response.data.message==="Unauthorized." || err.response.data.message==="Unauthenticated."){
-            alert("effettua il login")
-            navigate("/login")
+        if (err.response.data.message === "Unauthorized." || err.response.data.message === "Unauthenticated.") {
+          alert("effettua il login")
+          navigate("/login")
         }
       }
     })()
   }, [selectedMenu])
 
   useEffect(() => {
+
+    let isApiSubscribed = true;
     getMenuDetails().then((resp) => {
-      if (resp.data) {
+      if (isApiSubscribed && resp.data) {
         setMenuDetails(resp.data.menus)
       }
     }).catch((err) => {
       console.log(err)
       console.log(err.response.data.message)
-      if(err.response.data.message==="Unauthorized." || err.response.data.message==="Unauthenticated."){
-          alert("effettua il login")
-          navigate("/login")
+      if (err.response.data.message === "Unauthorized." || err.response.data.message === "Unauthenticated.") {
+        alert("effettua il login")
+        navigate("/login")
       }
     })
-  },[])
+    return () => {
+      // cancel the subscription
+      isApiSubscribed = false;
+    };
+  }, [])
 
   return (
     <div className={styles.mainContainer}>
@@ -80,7 +86,7 @@ const MenuCatalog = () => {
                   navigate("/admin/catalog/menuCatalog/addMenuRecipe", {
                     state: {
                       menu: menuDetails.find(el => el.id === selectedMenu),
-                      recipes:recipes
+                      recipes: recipes
                     }
                   })
                 }}
@@ -102,7 +108,7 @@ const MenuCatalog = () => {
             justifyContent: 'center',
             alignItems: 'center'
           }}>
-            <div style={{width:"100vw",height:"100vh",display:'flex',justifyContent:'center',alignItems:'center'}}>
+            <div style={{ width: "100vw", height: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Audio color="black" />
             </div>
 

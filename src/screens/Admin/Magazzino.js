@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from '../../css/magazzino.module.css'
-import { useNavigate } from 'react-router-dom'
-import { getStock, removeIngredient, updateIngredientQuantity } from '../../components/api/api'
+import { Link, useNavigate } from 'react-router-dom'
+import { getStock, removeIngredient, updateIngredientQuantity, updateIngredient, getTeams } from '../../components/api/api'
 import { Audio } from 'react-loader-spinner'
 import Table from '../../components/Table'
 import { FaPlus } from 'react-icons/fa'
 import { IoIosCreate } from 'react-icons/io'
 import { BsSortUp } from 'react-icons/bs'
 import BackButton from '../../components/BackButton'
+import { AiOutlineTeam } from 'react-icons/ai'
 
 const Magazzino = () => {
   const navigate = useNavigate();
   const [stock, setStock] = useState();
-  const headers = ['Codice', 'Ingrediente', 'Quantità (g)', 'Categoria', 'Fornitore', 'Ultima modifica']
+  const headers = ['Codice', 'Ingrediente', 'Quantità (g)', 'Categoria', 'Fornitore', 'Team']
   const [filteredArray, setFilteredArray] = useState();
   const [selected, setSelected] = useState(0);
+  const teams = useRef([]);
 
 
   const goToUpdateQuantity = () => {
@@ -24,23 +26,32 @@ const Magazzino = () => {
   }
 
   const modifyIngredientQuantity = (item) => {
-    if (isNaN(parseInt(item.data))){
+    if (isNaN(parseInt(item.data))) {
       alert("Il campo modificato deve essere un numero")
       return;
     }
-      const data = {
-        data: [{
-          ingredient:item.id,
-          quantity:parseInt(item.data)
-        }]
-      }
-      console.log("data ",data);
+    const data = {
+      data: [{
+        ingredient: item.id,
+        quantity: parseInt(item.data)
+      }]
+    }
+
     updateIngredientQuantity(data).then((resp) => {
       alert("Quantità modificata con successo")
     }).catch(err => {
       console.log(err);
       alert(err.response.data.message)
-    }).then(()=>{
+    }).then(() => {
+      window.location.reload();
+    })
+  }
+
+  const handleModifyRow = (data) => {
+    console.log(data)
+    updateIngredient(data).then(resp => {
+      alert("modifica avvenuta con successo");
+      console.log(resp.data)
       window.location.reload();
     })
   }
@@ -53,7 +64,7 @@ const Magazzino = () => {
         const arr = stock.filter(elem => elem.ingredient_id == parseInt(filter))
         setFilteredArray(arr)
       } else {
-        const arr = stock.filter(elem => (elem.name.includes(filter) || elem.category?.includes(filter) || elem.provider?.includes(filter)))
+        const arr = stock.filter(elem => (elem.name.toUpperCase().includes(filter.toUpperCase()) || elem.category?.toUpperCase().includes(filter.toUpperCase()) || elem.provider?.toUpperCase().includes(filter.toUpperCase())))
         if (JSON.stringify(arr) !== JSON.stringify(filteredArray)) {
           setFilteredArray(arr)
         }
@@ -62,20 +73,41 @@ const Magazzino = () => {
   }
 
   useEffect(() => {
+    let isApiSubscribed = true;
+
+    getTeams().then(resp => {
+      if (isApiSubscribed)
+        teams.current = resp.data
+    }).catch((err) => {
+      console.log(err)
+      console.log(err.response.data.message)
+      if (err.response.data.message === "Unauthorized." || err.response.data.message === "Unauthenticated.") {
+        alert("effettua il login")
+        navigate("/login")
+      }
+    })
+
     if (!stock) {
       getStock().then(resp => {
-        setStock(resp.data)
-        setFilteredArray(resp.data)
+        if (isApiSubscribed) {
+          setStock(resp.data.data)
+          setFilteredArray(resp.data.data)
+        }
+
       }).catch((err) => {
         console.log(err)
         console.log(err.response.data.message)
-        if(err.response.data.message==="Unauthorized." || err.response.data.message==="Unauthenticated."){
-            alert("effettua il login")
-            navigate("/login")
+        if (err.response.data.message === "Unauthorized." || err.response.data.message === "Unauthenticated.") {
+          alert("effettua il login")
+          navigate("/login")
         }
 
       });
     }
+    return () => {
+      // cancel the subscription
+      isApiSubscribed = false;
+    };
   });
 
 
@@ -105,12 +137,12 @@ const Magazzino = () => {
 
   const handleSort = (mode) => {
     let arr = [...filteredArray]
-    
+
     //Alfabetico
     if (mode === 0) {
       arr = arr.sort((el1, el2) => {
-        if (el1.name.toUpperCase()  < el2.name.toUpperCase() ) return -1
-        if (el1.name.toUpperCase()  > el2.name.toUpperCase() ) return 1;
+        if (el1.name.toUpperCase() < el2.name.toUpperCase()) return -1
+        if (el1.name.toUpperCase() > el2.name.toUpperCase()) return 1;
         return 0;
       })
     }
@@ -121,10 +153,6 @@ const Magazzino = () => {
     //Quantità decrescente
     if (mode === '2') {
       arr = arr.sort((el1, el2) => el2.quantity - el1.quantity)
-    }
-    //Ultima modifica
-    if (mode === '3') {
-      arr = arr.sort((el1, el2) => Date.parse(el2.updated_at) - Date.parse(el1.updated_at))
     }
 
     setFilteredArray([...arr])
@@ -166,6 +194,12 @@ const Magazzino = () => {
             }}
           ></input>
         </div>
+
+        <Link className='button'
+          to='/admin/magazzino/handleTeams'
+        >
+          <AiOutlineTeam size={30} />
+        </Link>
         <button className="button"
           onClick={goToAddIngredient}
           disabled={!stock}
@@ -184,7 +218,7 @@ const Magazzino = () => {
         {
           !filteredArray
             ?
-            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center',height:'100%' }}>
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
               <Audio color='black' />
             </div>
             :
@@ -192,6 +226,14 @@ const Magazzino = () => {
               data={filteredArray}
               headers={headers}
               handleRemoveItem={handleRemoveItem}
+              handleModifyRow={handleModifyRow}
+              modalOptions={{
+                modalLabels: ['Nome', 'Quantità', 'Categoria', 'Fornitore', "Team"],
+                updatableKeys: ['name', 'quantity', 'category', 'provider', "team"],
+                types: [{ type: 'text' }, { type: 'number' }, { type: 'text' }, { type: 'text' }, { type: 'select', values: teams.current.map(t => t.name) }],
+                title: 'Modifica Ingrediente'
+              }}
+
               editable={[{
                 index: 2,
                 handler: modifyIngredientQuantity,

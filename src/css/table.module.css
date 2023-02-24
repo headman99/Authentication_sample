@@ -8,10 +8,80 @@
   padding: 10px;
 }
 
+.IncreaseElementsButton:hover{
+  opacity: 0.7;
+  background-color: rgb(232, 232, 232);
+}
 .IncreaseElementsButton:active{
   opacity: 0.7;
-  background-color: rgb(218, 218, 218);
+  background-color: rgb(197, 197, 197);
 }
+
+.IncreaseElementsButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  height: 80px;
+}
+
+.mainContainer{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content th, td {
+  padding: 20px;
+  text-align: left;
+  border-bottom: 1px solid #dddddd;
+  font-size: 22px;
+}
+
+.content{
+  width: 98%;
+  height: 100%;
+}
+
+.content table {
+  flex:1;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  font-size: 22px;
+}
+
+.content table td{
+  padding: 17px;
+  max-width: 200;
+  white-space: nowrap;
+  text-align: center;
+}
+.content table th{
+  padding: 17px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.content tr:hover {
+  background-color: #f5f5f5;
+}
+
+.mainContainer div{
+  font-size: 22px;
+}
+
+.modalUi{
+  display: flex;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  width: 50vw;
+  padding: 10px;
+}
+
+
 
 
 

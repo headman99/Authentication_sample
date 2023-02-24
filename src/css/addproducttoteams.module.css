@@ -1,0 +1,83 @@
+.mainContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content {
+    width: 98%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: center;
+}
+
+.tableContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 5%;
+    height: 75vh;
+
+}
+
+.table {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    border-bottom: 1px solid #dddddd;
+    font-size: 22px;
+}
+
+.thead .row{
+    font-weight: bold;
+}
+
+.tbody .row {
+    background-color: white;
+}
+
+.tbody{
+    overflow-y: scroll;
+}
+
+.thead {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background-color: #e6c89a;
+    color: black;
+}
+
+
+.row>div {
+    height: 100%;
+    white-space: nowrap;
+    overflow-x: hidden;
+    padding: 20px;
+}
+
+.tbody .row:hover {
+    background-color: #f5f5f5;
+}
+.product{
+    width: 60%;
+}
+
+.team{
+    width: 30%;
+    text-align: center;
+    overflow-x: hidden;
+}
+.check{
+    width: 10%;
+    text-align: center;
+}

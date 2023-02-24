@@ -35,7 +35,7 @@ const UpdateQuantity = () => {
                 data.push({
                     ingredient: elem.value,
                     quantity: quantities[index].value,
-                    mode:parseInt(plusMinus[index])
+                    mode: parseInt(plusMinus[index])
                 });
             }
 
@@ -67,7 +67,7 @@ const UpdateQuantity = () => {
         <div className={styles.main}>
             <div className={styles.header}>
                 <div className={styles.backButtonContainer}>
-                    <BackButton path={"/admin/magazzino"}/>
+                    <BackButton path={"/admin/magazzino"} />
                 </div>
                 <div className={styles.title}>
                     <h1>Modifica scorte</h1>
@@ -77,33 +77,33 @@ const UpdateQuantity = () => {
                 {
                     Array.from({ length: count }, (_, index) => {
                         return (
-                            <span style={{ display: 'flex', flexDirection: 'row', gap: 200 }} key={index}>
+                            <div className={styles.row} key={index}>
                                 <InputSelect data={location.state.map(item => item.name)} placeholder='Ingrediente' />
                                 <input type='number' className={styles.inputNumber} placeholder='Quantità' />
-                                <PlusMinusSelect data={plusMinus} setData={setPlusMinus} index={index}/>
-                            </span>
+                                <PlusMinusSelect data={plusMinus} setData={setPlusMinus} index={index} width={100} />
+                            </div>
 
-            )
+                        )
                     })
                 }
-            <div >
-                <button className={styles.button}
-                    onClick={() => {
-                        setCount(p => p + 1);
-                    }}
-                >
-                    <FaPlus size={22} color='grey' />
-                </button>
+                <div >
+                    <button className={styles.button}
+                        onClick={() => {
+                            setCount(p => p + 1);
+                        }}
+                    >
+                        <FaPlus size={22} color='grey' />
+                    </button>
+                </div>
+                <div style={{ marginTop: 50, marginBottom: 20 }}>
+                    <button type='button' className='button'
+                        style={{ width: 120,fontSize:23 }}
+                        onClick={handleConfirm}
+                    >
+                        Conferma
+                    </button>
+                </div>
             </div>
-            <div style={{ marginTop: 50, marginBottom: 20 }}>
-                <button type='button' className='button'
-                    style={{ fontSize: 25 }}
-                    onClick={handleConfirm}
-                >
-                    Conferma
-                </button>
-            </div>
-        </div>
 
         </div >
     )

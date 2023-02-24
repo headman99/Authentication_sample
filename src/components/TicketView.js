@@ -12,7 +12,7 @@ const TicketView = ({ data, labels, shadow }) => {
                             shadow={shadow}
                             key={index}
                             data={order} 
-                            labels={labels}    
+                            labels={labels}  
                         />
                     )
                 })

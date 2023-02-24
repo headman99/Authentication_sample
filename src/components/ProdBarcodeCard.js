@@ -19,47 +19,60 @@ const ProdBarcodeCard = ({ product, labels, refreshAction }) => {
         refreshAction(product.barcode)
     }
 
-    const product_obj = Object.values(product)
+    //const product_obj = Object.values(product)
 
     return (
-        <div className={styles.product}
-            style={{ backgroundColor: product?.scanned_at ? '#fa98a1' : null }}
-            key={product.id}
-        >
-            <div
-                className={styles.details}
+        <div className={styles.container}>
+            <div className={styles.product}
+                style={{ backgroundColor: product?.scanned_at ? '#fa98a1' : null }}
+                key={product.id}
             >
-                <div className={styles.textDetails}>
+                <div className={styles.header}>
                     {
-                        labels.map((label, index) => {
-                            if(product_obj[index]===null)
-                                return
-                            return (
-                                <div key={index}>
-                                    {
-                                          
-                                            `${product_obj[index]}`.length >= 50 ?
-                                            <><b>{label} :</b> <span>{`${product_obj[index]}`.slice(0, 50)} ...</span></>
-                                            :
-                                            <><b>{label} :</b> <span>{`${product_obj[index]}`}</span></>
-
-                                    }
-                                </div>
-                            )
-                        })
+                        `${product?.prodotto}`.length >= 90 ?
+                            <span>{`${product.prodotto}`.slice(0, 50)} ...</span>
+                            :
+                            <span>{`${product.prodotto}`}</span>
                     }
                 </div>
-
                 <div
-                    className={styles.barcode}
+                    className={styles.details}
                 >
-                    {
-                        product?.barcode && <Barcode value={product.barcode} width={1.5} />
-                    }
+                    <div className={styles.textDetails}>
+                        {/*
+                            labels.map((label, index) => {
+                                if (product_obj[index] === null)
+                                    return
+                                return (
+                                    <div key={index}>
+                                        {
 
+                                            `${product_obj[index]}`.length >= 50 ?
+                                                <><b>{label} :</b> <span>{`${product_obj[index]}`.slice(0, 50)} ...</span></>
+                                                :
+                                                <><b>{label} :</b> <span>{`${product_obj[index]}`}</span></>
+
+                                        }
+                                    </div>
+                                )
+                            })
+                        */}
+
+                        <div><b>ID :</b> <span>{product.id}</span></div>
+                        <div><b>Ordine :</b> <span>{product.ordine}</span></div>
+                        <div><b>Creato il :</b> <span>{product.creato_il}</span></div>
+                    </div>
+
+                    <div
+                        className={styles.barcode}
+                    >
+                        {
+                            product?.barcode && <Barcode value={product.barcode} width={1.5} />
+                        }
+
+                    </div>
                 </div>
             </div>
-
             <button
                 className={styles.scanButton}
                 onClick={() => handleScan(product.barcode)} >

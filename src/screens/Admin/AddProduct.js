@@ -1,26 +1,45 @@
 import React, { useEffect, useState } from 'react'
 import styles from '../../css/addproduct.module.css'
-import { registerProduct, getProductGroups } from '../../components/api/api';
+import { registerProduct, getProductGroups, getTeams } from '../../components/api/api';
 import BackButton from '../../components/BackButton';
+
 const AddProduct = () => {
-    const [descrizione, setDescrizione] = useState('');
     const [nome, setNome] = useState('');
     const [categoria, setCategoria] = useState('');
-    const [peso, setPeso] = useState(0);
     const [gruppo, setGruppo] = useState('');
+    const [team, setTeam] = useState('');
     const [availableGroups, setAvailableGroups] = useState([])
+    const [availableTeams, setAvailableTeams] = useState([])
+    const [resultArray, setResultArray] = useState([])
 
     useEffect(() => {
+        let isApiSubscribed = true;
         if (availableGroups.length == 0) {
             getProductGroups().then((resp) => {
-                if (resp.data) {
+                if (isApiSubscribed && resp.data) {
                     setAvailableGroups(resp.data)
                 }
             }).catch((err) => {
                 console.log(err)
                 alert(err.response.data.message)
             })
+
+            if (availableTeams.length == 0) {
+                getTeams().then((resp) => {
+                    if (isApiSubscribed && resp.data) {
+                        setAvailableTeams(resp.data)
+                    }
+                }).catch((err) => {
+                    console.log(err)
+                    alert(err.response.data.message)
+                })
+            }
+
         }
+        return () => {
+            // cancel the subscription
+            isApiSubscribed = false;
+        };
     }, [])
 
     const checkInput = () => {
@@ -38,18 +57,21 @@ const AddProduct = () => {
         if (!checkInput()) {
             return;
         }
-        registerProduct({
-            descrizione: descrizione,
+
+        const product = {
             nome: nome,
-            peso: parseInt(peso),
             categoria: categoria,
-            gruppo: gruppo
-        }).then(resp => {
+            gruppo: gruppo,
+            team:availableTeams.find(t => t.name === team)?.id
+        }
+
+
+        registerProduct(product).then(resp => {
             console.log(resp);
             alert('Prodotto inserito');
-            setDescrizione('');
             setNome('');
-            setPeso(0);
+            setCategoria('')
+            setResultArray(prev => [...prev, {...product,team:team}])
         }).catch((err) => {
             console.log(err)
             alert(err.response.data.message)
@@ -58,7 +80,7 @@ const AddProduct = () => {
     }
 
     return (
-        <div className={styles.mainContainer}>
+        <div className={styles.main}>
             <div className={styles.header}>
                 <div className={styles.backButtonContainer}>
                     <BackButton path={"/admin/catalog/productCatalog"} />
@@ -67,20 +89,24 @@ const AddProduct = () => {
                     <h1>Aggiungi Prodotto</h1>
                 </div>
             </div>
-            <div className={styles.contentContainer}>
-                <div className={styles.filterContainer}>
-                    <div className={styles.inputContainer}>
-                        <label className={styles.label}>Nome</label>
-                        <input className={styles.textbox} type='text'
+            <div className={styles.content}>
+                <div className={styles.filter}>
+                    <div className={styles.inp}>
+                        <label className={styles.labell}>Nome</label>
+                        <input className={styles.text} type='text'
                             value={nome}
+                            maxLength={150}
                             placeholder='Nome'
                             onChange={(text) => setNome(text.target.value)}
                         ></input>
+                        <div>
+                            <span style={{ float: 'right' }}>{`${nome?.length ? nome.length : 0}/150`}</span>
+                        </div>
                     </div>
 
-                    <div className={styles.inputContainer}>
-                        <label className={styles.label}>Categoria</label>
-                        <input className={styles.textbox} type='text'
+                    <div className={styles.inp}>
+                        <label className={styles.labell}>Categoria</label>
+                        <input className={styles.text} type='text'
                             maxLength={20}
                             value={categoria}
                             placeholder='Categoria'
@@ -91,47 +117,48 @@ const AddProduct = () => {
                         </div>
                     </div>
 
-                    <div className={styles.inputContainer}>
-                        <label className={styles.label}>Gruppo</label>
+                    <div className={styles.inp}>
+                        <label className={styles.labell}>Gruppo</label>
                         <select value={gruppo} onChange={(e) => setGruppo(e.target.value)} className={styles.select}>
                             <option value={''}> </option>
                             {
                                 availableGroups.map(g => <option key={g.gruppo} value={g.gruppo}>{g.gruppo}</option>)
                             }
                         </select>
-                    </div>
-                </div>
 
-                <div className={styles.descriptionContainer}>
-                    <label className={styles.label}>Descrizione</label>
-                    <textarea
-                        maxLength={250}
-                        className={styles.textArea}
-                        rows={7}
-                        placeholder='Descrizione'
-                        value={descrizione}
-                        onChange={(text) => setDescrizione(text.target.value)}
-                    >
-                    </textarea>
-                    <div>
-                        <span style={{ float: 'right' }}>{`${descrizione?.length ? descrizione.length : 0}/250`}</span>
                     </div>
 
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-                    <label className={styles.label}>Peso (g)</label>
-                    <input className={styles.numberArea} type='number'
-                        value={peso}
-                        placeholder='g'
-                        onChange={(number) => setPeso(number.target.value)}
-                    ></input>
-                </div>
+                    <div className={styles.inp}>
+                        <label className={styles.labell}>Team</label>
+                        <select value={team} onChange={(e) => setTeam(e.target.value)} className={styles.select}>
+                            <option value={''}> </option>
+                            {
+                                availableTeams.map(t => <option key={t.id} value={t.name}>{t.name}</option>)
+                            }
+                        </select>
 
+                    </div>
+                </div>
+                    <div className={styles.results} >
+                        <div className={styles.table}>
+                            {resultArray.map(el => (
+                                <div key={el.name} className={styles.row}>
+                                    {
+                                        Object.values(el).map((v, i) => <div key={i} className={styles.cell}>{v}</div>)
+                                    }
+                                </div>
+                            ))}
+                        </div>
+
+                    </div>
+            </div>
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                 <button type='button' className='button' onClick={handleAddProduct}>
                     Crea
                 </button>
-
             </div>
+
+
         </div>
     )
 }

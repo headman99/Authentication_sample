@@ -70,7 +70,6 @@ const InputSelect = ({ data, placeholder, disableSelect, value, onChangeText, di
                             suggestions?.length > 0 &&
                             suggestions?.map((item, index) => (
                                 <div key={index}
-                                    style={{ fontSize: 22, padding: 12 }}
                                     tabIndex="0"
                                     className='suggestions'
                                     onClick={() => {
@@ -88,7 +87,7 @@ const InputSelect = ({ data, placeholder, disableSelect, value, onChangeText, di
                                         }
                                     }}
                                 >
-                                    {item}
+                                    <div >{item} </div>
                                 </div>
                             ))
                         }

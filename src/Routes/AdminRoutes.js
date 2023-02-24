@@ -11,11 +11,16 @@ import AddMenuRecipe from "../screens/Admin/AddMenuRecipe"
 import OrdiniRicevuti from "../screens/Admin/OrdiniRicevuti"
 import Produzione from "../screens/Admin/Produzione"
 import Evasi from "../screens/Admin/Evasi"
-import ProductionProductList from "../screens/Admin/ProductionProductList"
+import OrdersProductList from "../screens/Admin/OrdersProductList"
 import { createContext, useEffect, useState } from "react"
 import useScanDetection from "use-scan-detection"
 import { scanProduct } from "../components/api/api"
 import MyPdf from "../components/MyPdf"
+import ProductionProductList from "../screens/Admin/ProductionProductList"
+import HandleTeams from "../screens/Admin/HandleTeams"
+import AddIngredientToTeam from "../screens/Admin/AddIngredientToTeam"
+import IngredientsProductList from "../screens/Admin/IngredientsProductList"
+import Calculator from "../screens/Admin/Calculator"
 
 export const BarcodeContext = createContext()
 
@@ -41,9 +46,10 @@ export function AdminRoutes() {
     }
 
     useEffect(() => {
+        console.log(barcode)
         if (!barcode)
             return;
-        if(!barcode.startsWith("Shift"))
+        if (!barcode.startsWith("Shift"))
             return;
         const newBar = barcode.split("Shift").join("")
         if (newBar)
@@ -60,6 +66,10 @@ export function AdminRoutes() {
                 <Route index element={<Dashboard />} />
                 <Route path="/magazzino">
                     <Route index element={<Magazzino />} />
+                    <Route path="handleTeams" >
+                        <Route index element={<HandleTeams />} />
+                        <Route path=":code" element={<AddIngredientToTeam />}></Route>
+                    </Route>
                     <Route path="addIngredient" element={<AddIngredient />} />
                     <Route path="updateQuantity" element={<UpdateQuantity />}></Route>
                 </Route>
@@ -76,18 +86,26 @@ export function AdminRoutes() {
                 </Route>
                 <Route path="/orders">
                     <Route index element={<OrdiniRicevuti />} />
-                    <Route path=":code" element={<ProductionProductList />}></Route>
+                    <Route path=":code" element={<OrdersProductList />}></Route>
                 </Route>
                 <Route path="/production">
                     <Route index element={<Produzione />} />
+                    <Route path=":code">
+                        <Route index element={<ProductionProductList />} />
+                        <Route path=":ing" element={<IngredientsProductList />} />
+                    </Route>
                 </Route>
 
                 <Route path="/evasi" >
                     <Route index element={<Evasi />} />
+                    <Route path=":code" element={<OrdersProductList />}></Route>
                 </Route>
 
                 <Route path="/pdfViewer">
                     <Route index element={<MyPdf />} />
+                </Route>
+                <Route path="/calculator" >
+                    <Route index element={<Calculator />} />
                 </Route>
             </Routes>
         </BarcodeContext.Provider >

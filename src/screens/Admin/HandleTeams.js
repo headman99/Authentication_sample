@@ -1,0 +1,136 @@
+import React from 'react'
+import Header from '../../components/Header'
+import styles from '../../css/handleteams.module.css'
+import Table from '../../components/Table'
+import { useEffect } from 'react'
+import { addTeam, getTeams, removeTeam, updateTeam } from '../../components/api/api'
+import { useState } from 'react'
+import { useCallback } from 'react'
+import { Audio } from 'react-loader-spinner'
+import { useNavigate } from 'react-router-dom'
+import { AiOutlinePlus } from "react-icons/ai"
+import { confirmAlert } from 'react-confirm-alert'
+import ModalForm from '../../components/ModalForm'
+
+const HandleTeams = () => {
+    const [teams, setTeams] = useState()
+    const navigate = useNavigate();
+    
+    const handleClickRow = (resp) =>{
+        navigate(`/admin/magazzino/handleTeams/${resp.id}`,{
+            state:resp
+        })
+    }
+
+    const onConfirmRowEditing = (data) =>{
+        addTeam(data).then(resp => {
+            if(resp.data.state ===1){
+                window.location.reload()
+            }
+                
+        }).catch( (e) =>{
+            console.log(e)
+            console.log(e.response.data.message)
+        }) 
+    }
+
+    const openModal = () => {
+        confirmAlert({
+            title: "Modifica riga",
+            message: 'messaggio',
+            closeOnEscape: true,
+            closeOnClickOutside: false,
+            customUI: ({ onClose }) => {
+                return (
+                    <ModalForm
+                        options={{
+                            modalLables: ["Team"],
+                            updatableKeys: ['name'],
+                            types: [{ type: 'text' }]
+                        }}
+                        onConfirm={onConfirmRowEditing}
+                        onCancel={onClose}
+                        title="Crea team"
+                    />
+                )
+            }
+
+        })
+    }
+
+    useEffect(() => {
+        let isApiSubscribed = true;
+        getTeams().then(resp => {
+            if (isApiSubscribed && resp.data)
+                setTeams(resp.data)
+        }).catch((e) => {
+            console.log(e)
+            console.log(e.response.data.message)
+            if (e.response.data.message === "Unauthorized." || e.response.data.message === "Unauthenticated.") {
+                alert("effettua il login")
+                navigate("/login")
+            }
+        })
+
+        return () => {
+            // cancel the subscription
+            isApiSubscribed = false;
+        };
+
+    }, [])
+
+    const handleRemoveItem = useCallback((resp) => {
+        const allow = window.confirm("Eliminare definitivamente l\'elemento ? ")
+        if (!allow)
+            return
+        removeTeam(resp).then((resp) => {
+            window.location.reload()
+        }).catch((e) => {
+            console.log(e)
+            console.log(e.response.data.message)
+        })
+    }, [])
+
+    const handleModifyRow = (resp) => {
+        updateTeam(resp).then((resp) => {
+            console.log(resp.data)
+            window.location.reload()
+        }).catch((e) => {
+            console.log(e)
+            console.log(e.response.data.message)
+        })
+    }
+
+    return (
+        <div className={StyleSheet.mainContainer}>
+            <Header >
+                <button className='button'><AiOutlinePlus size={30} onClick={() => openModal()} /></button>
+            </Header>
+            <div className={styles.content}>
+                {
+                    !teams ?
+                        <div className='AudioContainer'>
+                            <Audio color='black' />
+                        </div>
+                        :
+                        <Table
+                            data={teams}
+                            headers={["ID", 'Team']}
+                            handleRemoveItem={handleRemoveItem}
+                            handleModifyRow={handleModifyRow}
+                            modalOptions={{
+                                modalLables: ["Team"],
+                                updatableKeys: ['name'],
+                                types: [{ type: 'text' }],
+                                title:'Modifica Nome Team'
+                            }}
+                            onCLickRow={handleClickRow}
+                        />
+                }
+
+            </div>
+        </div>
+    )
+}
+
+export default HandleTeams
