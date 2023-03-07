@@ -7,6 +7,7 @@ import { AdminRoutes } from './Routes/AdminRoutes';
 import Loading from './screens/public/Loading';
 import PrivateRoutes from './components/api/PrivateRoutes';
 import { ClientRoutes } from './Routes/ClientRoutes';
+import CompleteRegistration from './screens/public/CompleteRegistration';
 
 export const UserContext = createContext();
 function App() {
@@ -18,7 +19,10 @@ function App() {
     }}>
       <Routes>
         <Route path='/' element={<Loading />} exact />
-        <Route path='/login' element={<Login />} />
+        <Route path='/login'>
+          <Route index element={<Login />} />
+          <Route path='complete' element={<CompleteRegistration />} />
+        </Route>
         <Route path='*' element={<NotFound />} />
         {/* percorsi privati */}
         <Route element={<PrivateRoutes admin={false} />}>

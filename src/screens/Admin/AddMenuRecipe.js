@@ -18,6 +18,10 @@ const AddMenuRecipe = () => {
   const [group, setGroup] = useState('')
   const [section, setSection] = useState('')
   const navigate = useNavigate();
+  const [ratio1, setRatio1] = useState(1);
+  const [ratio2, setRatio2] = useState(1)
+
+
 
   useEffect(() => {
     if (menuGroupsList.current.includes(group)) {
@@ -40,21 +44,32 @@ const AddMenuRecipe = () => {
 
   const handleSetGroup = useCallback((txt) => {
     setGroup(txt)
-  }, [group])
+  }, [])
 
   const handleSetSection = useCallback((txt) => {
     setSection(txt)
-  }, [section])
+  }, [])
 
   const handleSetProduct = useCallback((txt) => {
     setProduct(txt)
-  }, [product])
+  }, [])
 
   const checkInput = () => {
-    if (!(product && group && section)) {
+    if (!(product && group)) {
       alert("I campi non devono essere vuoti")
       return false
     }
+
+    if(!productListNames.current.find(el => el === product) || !menuGroupsList.current.find(m => m===group)){
+      alert("Inserisci dei prodotti o gruppi gia esistenti")
+      return false;
+    }
+
+    if ((ratio1 === 0 || ratio2 === 0)) {
+      alert("Scegli un ratio diverso da 0")
+      return false;
+    }
+
     return true
   }
 
@@ -68,7 +83,8 @@ const AddMenuRecipe = () => {
       product_id: productsList.find(p => p.nome === product).id,
       gruppo: group,
       sezione: section,
-      menu_id: state.menu.id
+      menu_id: state.recipes.menu.id,
+      ratio: parseFloat(ratio1 / ratio2)
     }
 
     const sect = section !== 'vuoto' ? section : ''
@@ -83,9 +99,11 @@ const AddMenuRecipe = () => {
           setProduct('')
           setSection('')
           setGroup('')
-          navigate(-1)
+          setRatio1(1)
+          setRatio2(1)
+
         }
-      }).then((err) => {
+      }).catch((err) => {
         console.log(err)
         alert(err.response.data.message)
       })
@@ -105,7 +123,7 @@ const AddMenuRecipe = () => {
           })
         }))
       }
-      
+
     }).catch((err) => {
       console.log(err)
       alert(err.response.data.message)
@@ -117,6 +135,7 @@ const AddMenuRecipe = () => {
 
   }, [])
 
+
   return (
     <div className={styles.mainContainer}>
       {
@@ -124,33 +143,58 @@ const AddMenuRecipe = () => {
           <div>
             <div className={styles.header}>
               <div className='BackButtonContainer'>
-                <BackButton path="/admin/catalog/menuCatalog" />
+                <BackButton path="/admin/catalog/menuCatalog" state={{
+                  menu_id: state.recipes.menu.id
+                }} />
               </div>
               <div className={styles.title}>
                 <h1>Aggiungi Prodotto al Menù</h1>
               </div>
+              <div className={styles.title} style={{ display: 'flex', alignItems: 'center' }}>
+                <h1>{state.recipes.menu.nome}</h1>
+              </div>
             </div>
             <div className={styles.content}>
               <div className={styles.inputContainer}>
-                <InputSelect onChangeText={handleSetProduct} placeholder="Prodotto" data={productListNames.current} />
+                <InputSelect onChangeText={handleSetProduct} value={product} placeholder="Prodotto" data={productListNames.current} />
               </div>
               <div className={styles.inputContainer}>
-                <InputSelect onChangeText={handleSetGroup} data={menuGroupsList.current} placeholder="Gruppo" />
+                <InputSelect onChangeText={handleSetGroup} value={group} data={menuGroupsList.current} placeholder="Gruppo" />
               </div>
               <div className={styles.inputContainer}>
-                <InputSelect disabled={!menuGroupsList.current.includes(group)} onChangeText={handleSetSection} data={sections} placeholder="Sezione" />
+                <InputSelect disabled={!menuGroupsList.current.includes(group)} value={section} onChangeText={handleSetSection} data={sections} placeholder="Sezione" />
+                <span style={{ visibility: (section!=='' && sections.findIndex(el => el === section) === -1) ? 'visible' : 'hidden' }} >Stai per creare una nuova sezione</span>
               </div>
               <div className={styles.inputContainer}>
                 <input
                   className={styles.input}
-                  value={state.menu?.nome}
+                  value={state.recipes.menu.nome}
                   disabled={true}
                 ></input>
               </div>
+              <div className={styles.inputContainer} >
+                <div style={{ display: 'inline-block' }}>
+                  <input className={styles.input} style={{ width: 100, marginRight: 10 }} type='number'
+                    value={ratio1}
+                    onChange={(e) => setRatio1(e.target.value)}
+                  ></input>
+                  <span style={{ fontSize: 32, fontWeight: 'bold' }}>/</span>
+                  <div>Prodotto</div>
+                </div>
 
+                <div style={{ display: 'inline-block', marginLeft: 10 }}>
+                  <input className={styles.input} style={{ width: 100 }} type='number'
+                    value={ratio2}
+                    onChange={(e) => setRatio2(e.target.value)}
+                  ></input>
+                  <div>Persona</div>
+                </div>
+
+
+              </div>
             </div>
             <div style={{ width: '100%', justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
-              <button className='button' style={{ fontSize: 25 }}
+              <button className='button' style={{ fontSize: 20 }}
                 onClick={handleAddMenuRecipe}
               >
                 Aggiungi

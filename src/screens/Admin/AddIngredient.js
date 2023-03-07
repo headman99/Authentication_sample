@@ -1,18 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import styles from '../../css/addIngredient.module.css'
-import { registerIngredient } from '../../components/api/api';
+import { registerIngredient,getTeams } from '../../components/api/api';
 import BackButton from '../../components/BackButton';
 
 const AddIngredient = () => {
-    const [description, setDescription] = useState('');
-    const [name, setName] = useState('');
-    const [category, setCategory] = useState('');
+    const [nome, setNome] = useState('');
+    const [categoria, setCategoria] = useState('');
     const [quantity, setQuantity] = useState(0);
-    const [provider, setProvider] = useState('');
+    const [fornitore, setFornitore] = useState('');
+    const [team, setTeam] = useState();
+    const [availableTeams, setAvailableTeams] = useState([])
+    const [resultArray, setResultArray] = useState([])
 
 
     const checkInput = () => {
-        if (!name) {
+        if (!nome) {
             alert('Inserire un nome valido')
             return false;
         }
@@ -27,20 +29,21 @@ const AddIngredient = () => {
         if (!checkInput()) {
             return;
         }
+        const ingredient = {
+            name: nome,
+            quantity: parseFloat(quantity),
+            category: categoria,
+            provider: fornitore,
+            team:availableTeams.find(t => t.name === team)?.id
+        }
 
-        registerIngredient({
-            description: description,
-            name: name,
-            quantity: parseInt(quantity),
-            category: category,
-            provider: provider
-        }).then(() => {
+        registerIngredient(ingredient).then(() => {
             alert('Ingrediente inserito');
-            setDescription('');
-            setName('');
+            setNome('');
             setQuantity(0);
-            setCategory('')
-            setProvider('')
+            setCategoria('')
+            setFornitore('')
+            setResultArray(prev => [...prev,{...ingredient,team:team}])
         }).catch((err) => {
             console.log(err)
             alert(err.response?.data?.message)
@@ -48,8 +51,29 @@ const AddIngredient = () => {
 
     }
 
+
+    useEffect(() => {
+        let isApiSubscribed = true;
+    
+            if (availableTeams.length == 0) {
+                getTeams().then((resp) => {
+                    if (isApiSubscribed && resp.data) {
+                        setAvailableTeams(resp.data)
+                    }
+                }).catch((err) => {
+                    console.log(err)
+                    alert(err.response.data.message)
+                })
+            }
+
+        return () => {
+            // cancel the subscription
+            isApiSubscribed = false;
+        };
+    }, [])
+
     return (
-        <div className={styles.mainContainer}>
+        < div className = { styles.main } >
             <div className={styles.header}>
                 <div className={styles.backButtonContainer}>
                     <BackButton path={"/admin/magazzino"} />
@@ -58,81 +82,86 @@ const AddIngredient = () => {
                     <h1>Aggiungi Ingrediente</h1>
                 </div>
             </div>
-
-            <div className={styles.contentContainer}>
-                <div className={styles.filterContainer}>
-                    <div className={styles.inputContainer}>
-                        <label className={styles.label}>Nome</label>
-                        <input className={styles.textbox} type='text'
-                            value={name}
+            <div className={styles.content}>
+                <div className={styles.filter}>
+                    <div className={styles.inp}>
+                        <label className={styles.labell}>Nome</label>
+                        <input className={styles.text} type='text'
+                            value={nome}
+                            maxLength={50}
                             placeholder='Nome'
-                            maxLength={50}
-                            onChange={(text) => setName(text.target.value)}
+                            onChange={(text) => setNome(text.target.value)}
                         ></input>
                         <div>
-                            <span style={{ float: 'right' }}>{`${name.length}/50`}</span>
+                            <span style={{ float: 'right' }}>{`${nome?.length ? nome.length : 0}/50`}</span>
                         </div>
                     </div>
 
-                    <div className={styles.inputContainer}>
-                        <label className={styles.label}>Categoria</label>
-                        <input className={styles.textbox}
-                            type='text'
+                    <div className={styles.inp}>
+                        <label className={styles.labell}>Quantità</label>
+                        <input className={styles.text} type='number'
+                            value={quantity}
+                            placeholder='Nome'
+                            onChange={(text) => setQuantity(parseFloat(text.target.value))}
+                        ></input>
+                        <div>
+                            <span style={{ float: 'right' }}>{`${nome?.length ? nome.length : 0}/50`}</span>
+                        </div>
+                    </div>
+
+                    <div className={styles.inp}>
+                        <label className={styles.labell}>Categoria</label>
+                        <input className={styles.text} type='text'
                             maxLength={20}
-                            value={category}
+                            value={categoria}
                             placeholder='Categoria'
-                            onChange={(text) => setCategory(text.target.value)}
+                            onChange={(text) => setCategoria(text.target.value)}
                         ></input>
                         <div>
-                            <span style={{ float: 'right' }}>{`${category.length}/20`}</span>
+                            <span style={{ float: 'right' }}>{`${categoria?.length ? categoria.length : 0}/20`}</span>
                         </div>
                     </div>
 
-                    <div className={styles.inputContainer}>
-                        <label className={styles.label}>Fornitore</label>
-                        <input className={styles.textbox}
-                            type='text'
-                            maxLength={50}
-                            value={provider}
-                            placeholder='fornitore'
-                            onChange={(text) => setProvider(text.target.value)}
+                    <div className={styles.inp}>
+                        <label className={styles.labell}>Fornitore</label>
+                        <input className={styles.text} type='text'
+                            maxLength={20}
+                            value={fornitore}
+                            placeholder='Fornitore'
+                            onChange={(text) => setFornitore(text.target.value)}
                         ></input>
-                        <div>
-                            <span style={{ float: 'right' }}>{`${provider.length}/50`}</span>
+                    </div>
+
+                    <div className={styles.inp}>
+                        <label className={styles.labell}>Team</label>
+                        <select value={team} onChange={(e) => setTeam(e.target.value)} className={styles.select}>
+                            <option value={''}> </option>
+                            {
+                                availableTeams.map(t => <option key={t.id} value={t.name}>{t.name}</option>)
+                            }
+                        </select>
+
+                    </div>
+                </div>
+                    <div className={styles.results} >
+                        <div className={styles.table}>
+                            {resultArray.map(el => (
+                                <div key={el.name} className={styles.row}>
+                                    {
+                                        Object.values(el).map((v, i) => <div key={i} className={styles.cell}>{v}</div>)
+                                    }
+                                </div>
+                            ))}
                         </div>
+
                     </div>
-
-
-                </div>
-                <div className={styles.descriptionContainer}>
-                    <label className={styles.label}>Descrizione</label>
-                    <textarea
-                        maxLength={250}
-                        className={styles.textArea}
-                        rows={7}
-                        placeholder='Descrizione'
-                        value={description}
-                        onChange={(text) => setDescription(text.target.value)}
-                    >
-                    </textarea>
-                    <div>
-                        <span style={{ float: 'right' }}>{`${description.length}/250`}</span>
-                    </div>
-
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-                    <label className={styles.label}>Quantità (g)</label>
-                    <input className={styles.numberArea} type='number'
-                        value={quantity}
-                        placeholder='g'
-                        onChange={(number) => setQuantity(number.target.value)}
-                    ></input>
-                </div>
+            </div>
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                 <button type='button' className='button' onClick={handleAddIngredient}>
                     Crea
                 </button>
             </div>
-        </div>
+        </div >
     )
 }
 

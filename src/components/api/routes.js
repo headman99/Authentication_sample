@@ -3,7 +3,8 @@ export const ROUTES = {
         LOGIN:'login',
         LOGOUT:'logout',
         GET_ACCESS_TOKEN:'accessToken',
-        CSRF_TOKEN:'csrfToken'
+        CSRF_TOKEN:'csrfToken',
+        COMPLETE_CLIENT_REGISTRATION:'completeClientRegistration'
     },
     ADMIN:{
         REGISTER_INGREDIENT:'admin/registerIngredient',
@@ -41,7 +42,22 @@ export const ROUTES = {
         GET_INGREDIENTS_TEAM:'/admin/getIngredientsTeam',
         GET_PRODUCTS_LIST_BY_ORDER:'/admin/getTeamProductListByOrder',
         GET_TEAM_INGREDIENTS_BY_PRODUCT_RECIPE:'/admin/getTeamIngredientsByProductRecipe',
-        GET_INGREDIENT_QUANTITY_BY_ORDER:'/admin/getIngredientQuantityByOrder'
+        GET_INGREDIENT_QUANTITY_BY_ORDER:'/admin/getIngredientQuantityByOrder',
+        UPDATE_PRODUCT_RECIPE:'/admin/updateProductRecipe',
+        DELETE_INGREDIENT_PRODUCT_RECIPE:'/admin/deleteIngredientProductRecipe',
+        ADD_PRODUCT_RECIPE:'/admin/addProductRecipe',
+        REGISTER_CLIENT:'/admin/registerClient',
+        REGISTER_ADMIN:'/admin/registerAdmin',
+        CHANGE_USER_PSW:'/admin/changeUserPsw',
+        GET_USER_INFO:'/admin/getUsersInfo',
+        DELETE_USER:'/admin/deleteUser',
+        UPDATE_USER:'/admin/updateUser',
+        GET_MENU_RECIPE_ALTERNATIVE:'/admin/getMenuRecipeAlternative',
+        SCAN_ALL:'/admin/scanAll',
+        UPDATE_MENU_RECIPE_RATIO:'/admin/updateMenuRecipeRatio',
+        ADD_MENU_RECIPE_GROUP:'/admin/addMenuRecipeGroup',
+        CREATE_MENU:'/admin/createMenu',
+        UPDATE_MENU_ACTIVE:'/admin/updateMenuActive'
     },
     CUSTOMER:{
         ADD_ORDER_MENU:'client/addOrderMenu'

@@ -4,7 +4,7 @@ const Checkbox = ({ size, isChecked, onChange }) => {
     return (
         <div>
             <input type='checkbox' checked={isChecked} style={{ height: size?size:25, width:size?size:25 }}
-                onChange={onChange}>
+                onChange={() => onChange(isChecked)}>
             </input>
         </div>
     );

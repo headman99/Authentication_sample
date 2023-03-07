@@ -21,6 +21,13 @@ import HandleTeams from "../screens/Admin/HandleTeams"
 import AddIngredientToTeam from "../screens/Admin/AddIngredientToTeam"
 import IngredientsProductList from "../screens/Admin/IngredientsProductList"
 import Calculator from "../screens/Admin/Calculator"
+import OrdersCalculator from "../screens/Admin/OrdersCalculator"
+import ProductRecipe from "../screens/Admin/ProductRecipe"
+import AddProductRecipe from "../screens/Admin/AddProductRecipe"
+import Users from "../screens/Admin/Users"
+import AddUser from "../screens/Admin/AddUser"
+import ProductAlternatives from "../screens/Admin/ProductAlternatives"
+import AddProductAlternative from "../screens/Admin/AddProductAlternative"
 
 export const BarcodeContext = createContext()
 
@@ -77,11 +84,20 @@ export function AdminRoutes() {
                     <Route index element={<Catalog />} />
                     <Route path="productCatalog" >
                         <Route index element={<ProductCatalog />} />
+                        <Route path=':code'>
+                            <Route index element={<ProductRecipe />} />
+                            <Route path="addRecipe" element={<AddProductRecipe />} />
+                        </Route>
                         <Route path="addProduct" element={<AddProduct />} />
                     </Route>
                     <Route path="menuCatalog">
                         <Route index element={<MenuCatalog />} />
                         <Route path="addMenuRecipe" element={<AddMenuRecipe />} />
+                        <Route path="alternatives">
+                            <Route index element={<ProductAlternatives />} />
+                            <Route path='addAlternative' element={<AddProductAlternative />} />
+                        </Route>
+                        
                     </Route>
                 </Route>
                 <Route path="/orders">
@@ -104,8 +120,14 @@ export function AdminRoutes() {
                 <Route path="/pdfViewer">
                     <Route index element={<MyPdf />} />
                 </Route>
+
                 <Route path="/calculator" >
-                    <Route index element={<Calculator />} />
+                    <Route index element={<OrdersCalculator />} />
+                    <Route path=":code" element={<Calculator />} />
+                </Route>
+                <Route path="/users" >
+                    <Route index element={<Users />} />
+                    <Route path="addUser" element={<AddUser />} />
                 </Route>
             </Routes>
         </BarcodeContext.Provider >

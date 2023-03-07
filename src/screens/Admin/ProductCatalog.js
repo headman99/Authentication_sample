@@ -8,6 +8,7 @@ import { BsSortUp } from 'react-icons/bs'
 import { Link, useNavigate } from 'react-router-dom';
 import { IoIosCreate } from 'react-icons/io';
 import { useRef } from 'react';
+import { PanoramaSharp } from '@mui/icons-material';
 
 
 
@@ -148,6 +149,12 @@ const ProductCatalog = () => {
     })
   }
 
+  const handleOnClickRow = (item) =>{
+    navigate(`/admin/catalog/productCatalog/${item.id}`,{
+      state:item
+    });
+  }
+
 
   return (
     <div className={styles.mainContainer} >
@@ -204,6 +211,7 @@ const ProductCatalog = () => {
                   types: [{ type: 'text' }, { type: 'text' }, { type: 'select',values:availableProductGroups.current.map(el => el.gruppo) }],
                   title:'Modifica prodotto'
                 }}
+                onCLickRow = {handleOnClickRow}
               />
           }
         </div>

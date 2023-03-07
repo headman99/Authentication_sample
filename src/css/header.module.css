@@ -1,22 +1,28 @@
-.mainContainer{
+.mainContainer {
     width: 100%;
     display: flex;
     flex-direction: row;
+    text-align: center;
 }
 
-.backButtonContainer{
+.backButtonContainer {
     width: 20%;
 }
 
-.others{
-    flex:1;
+.backButton {
+    width: 10%;
+}
+
+.titleContainer{
+    width: 80%;
+    text-align: center;
+}
+
+.others {
+    flex: 1;
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding-right: 20px;
     justify-content: flex-end;
-}
-.title{
-    flex: 1;
-    text-align: center;
+    gap: 20;
 }

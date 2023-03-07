@@ -10,9 +10,10 @@ import { BsBook } from "react-icons/bs"
 import { TbPackgeExport } from 'react-icons/tb'
 import { useEffect } from 'react';
 import { Audio } from 'react-loader-spinner';
+import { GrUserSettings } from "react-icons/gr"
 
 const Dashboard = () => {
-  const { user,setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [teams, setTeams] = useState();
   const [selectTeam, setSelectTeam] = useState('');
@@ -24,7 +25,7 @@ const Dashboard = () => {
 
     if (selectTeam === newteam)
       return
-    if(!newteam)
+    if (!newteam)
       secureLocalStorage.removeItem("team");
     else
       secureLocalStorage.setItem("team", JSON.stringify(teams.find(t => t.name === newteam)))
@@ -78,16 +79,18 @@ const Dashboard = () => {
           :
           <>
             <div id={styles.header}>
-              <div style={{ flex: 1 }}>
+              <div style={{flex:0.1}} >
+                <GrUserSettings className={styles.logout} size={45} onClick={() => navigate('users')}/>
+              </div>
+              <div >
                 <select className={styles.select} value={selectTeam} onChange={e => handleChangeteam(e.target.value)} >
-
                   <option value={selectTeam}>
-                    {selectTeam}
+                    {selectTeam.length>30?`${selectTeam.slice(0,30)}...`:selectTeam}
                   </option>
 
                   {
 
-                    teams.filter(e => e.name!==selectTeam).map(team => (
+                    teams.filter(e => e.name !== selectTeam).map(team => (
                       <option value={team.name} key={team.id} >
                         {team.name}
                       </option>
@@ -99,8 +102,8 @@ const Dashboard = () => {
                 </select>
               </div>
 
-              <div style={{ position: 'absolute', right: 10 }}>
-                <BiLogOut className={styles.logout} onClick={handleLogout} />
+              <div style={{flex:0.1}}>
+                <BiLogOut className={styles.logout} onClick={handleLogout} size={55}/>
               </div>
 
             </div>
@@ -133,7 +136,7 @@ const Dashboard = () => {
                 <TbPackgeExport size={50} className={styles.buttonIcon} />
               </button>
               <button className={styles.button}
-                  onClick = {() =>navigate("/admin/calculator")}
+                onClick={() => navigate("/admin/calculator")}
               >
                 Calcolatore
                 <FaPlusSquare size={50} className={styles.buttonIcon} />

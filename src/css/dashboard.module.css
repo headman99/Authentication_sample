@@ -22,12 +22,6 @@
     gap: 30px;
 }
 
-.logout{
-    float: right;
-    width: 100px;
-    height: 50px;
-}
-
 .buttonIcon{
     display: block;
     
@@ -40,13 +34,15 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 #header div{
     justify-content: center;
     align-items:center;
     display: flex;
-    
+    flex:1;
 }
 
 .contentContainer{
@@ -70,6 +66,7 @@
     border-radius: 5px;
     background-color: black;
     color: white;
+    max-width: 300px;
 }
 
 .select *{

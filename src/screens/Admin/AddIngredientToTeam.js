@@ -8,12 +8,17 @@ import { useState } from 'react'
 import { Audio } from 'react-loader-spinner'
 import { MdDone } from "react-icons/md"
 import { useRef } from 'react'
+import { useCallback } from 'react'
 
 const AddIngredientToTeam = () => {
     const { id, name } = useLocation().state
     const navigate = useNavigate()
     const [ingredients, setIngredients] = useState();
     const oldSelectedIngredients = useRef([]);
+    const [filtro1, setFiltro1] = useState('')
+    const [filtro2, setFiltro2] = useState('')
+    const [filteredArray1, setFilteredArray1] = useState([])
+    const [filteredArray2, setFilteredArray2] = useState([])
 
 
     useEffect(() => {
@@ -25,7 +30,6 @@ const AddIngredientToTeam = () => {
                 oldSelectedIngredients.current = [...selectedIngredients];
                 const selectedIngredientsIDs = selectedIngredients.map(el => el.id)
                 const ingrs = (await getStock()).data.data
-                console.log(ingrs)
                 if (isApiSubscribed) {
                     setIngredients([...ingrs.map(el => {
                         if (selectedIngredientsIDs.includes(el.id))
@@ -49,7 +53,7 @@ const AddIngredientToTeam = () => {
             }
 
         })();
-       
+
         return () => {
             // cancel the subscription
             isApiSubscribed = false;
@@ -69,12 +73,12 @@ const AddIngredientToTeam = () => {
         if (JSON.stringify(oldSelectedIngredients.current) === JSON.stringify(selected))
             return;
 
-        
-        
+
+
         updateIngredientsTeam({
             team_id: id,
             add_ingredients_id: selected.map(i => i.id).filter(e => !oldSelectedIngredients.current.map(i => i.id).includes(e)),
-            remove_ingredients_id:oldSelectedIngredients.current.map(i => i.id).filter(e => !selected.map(i => i.id).includes(e))
+            remove_ingredients_id: oldSelectedIngredients.current.map(i => i.id).filter(e => !selected.map(i => i.id).includes(e))
         }).then(resp => {
             alert("modifica avvenuta")
             oldSelectedIngredients.current = selected
@@ -94,6 +98,34 @@ const AddIngredientToTeam = () => {
         setIngredients([...copy])
     }
 
+    const filter = (value,arr) => {
+        if (!value || value === '')
+            return [...arr];
+
+        return [...arr.filter(el => el.name.toUpperCase().startsWith(value.toUpperCase()))]
+    }
+
+   
+
+    useEffect(() => {
+        if (ingredients?.length > 0) {
+            setFilteredArray1([...ingredients.filter(item => item.check === true)])
+            setFilteredArray2([...ingredients.filter(item => item.check === false)])
+        }
+    }, [ingredients])
+
+    const handleChangeFiltro1 = (txt) => {
+        setFiltro1(txt)
+        const arr = filter(txt,ingredients.filter(el => el.check ===true));
+        setFilteredArray1(arr)
+    }
+
+    const handleChangeFiltro2 = useCallback((txt) => {
+        setFiltro2(txt)
+        const arr = filter(txt,ingredients.filter(el => el.check ===false));
+        setFilteredArray2(arr)
+    }, [])
+
     return (
         <div className={styles.mainContainer}>
             <Header title={name} />
@@ -108,6 +140,9 @@ const AddIngredientToTeam = () => {
                             <div className={styles.table}
                                 style={{ width: '40%' }}
                             >
+                                <div className={styles.inputContainer}>
+                                    <input type='text' value={filtro1} className='textInput' placeholder='Filtra' onChange={e => handleChangeFiltro1(e.target.value)}></input>
+                                </div>
                                 <div className={styles.thead}>
                                     <div className={styles.row}>
                                         <div className={styles.product}>Ingredienti selezionati</div>
@@ -116,7 +151,7 @@ const AddIngredientToTeam = () => {
                                 </div>
                                 <div className={styles.tbody}>
                                     {
-                                        ingredients.filter(item => item.check === true).map(item => (
+                                        filteredArray1.map(item => (
                                             <div key={item.id} className={styles.row}>
                                                 <div className={styles.product}>{item.name.substring(0, 50)}</div>
                                                 <div style={{ flex: 1, textAlign: 'right' }}>
@@ -130,9 +165,16 @@ const AddIngredientToTeam = () => {
                                     }
                                 </div>
                             </div>
+
+
                             <div className={styles.table}
                                 style={{ width: '60%' }}
                             >
+                                <div className={styles.inputContainer}>
+                                    <input type='text' value={filtro2} onChange={e => handleChangeFiltro2(e.target.value)}
+                                        className='textInput'
+                                        placeholder='Filtra'></input>
+                                </div>
                                 <div className={styles.thead}>
                                     <div className={styles.row}>
                                         <div className={styles.product}>Ingredienti Disponibili</div>
@@ -142,7 +184,7 @@ const AddIngredientToTeam = () => {
                                 </div>
                                 <div className={styles.tbody}>
                                     {
-                                        ingredients.filter(item => item.check === false).map(item => (
+                                        filteredArray2.map(item => (
                                             <div key={item.id} className={styles.row}>
                                                 <div className={styles.product}>{item.name.length > 60 ? `${item.name.substring(0, 60)}...` : item.name}</div>
                                                 <div className={styles.team}>{item?.team}</div>
@@ -159,7 +201,7 @@ const AddIngredientToTeam = () => {
                             </div>
                         </div>
                 }
-                <button  className='button' onClick={handleConfirm}>Conferma</button>
+                <button className='button' onClick={handleConfirm}>Conferma</button>
             </div>
 
         </div>

@@ -37,10 +37,15 @@ export async function login(data) {
 }
 
 
+export async function completeClientRegistration(data) {
+    return api.post(ROUTES.AUTH.COMPLETE_CLIENT_REGISTRATION,data);
+}
+
 export async function logout() {
     return api.get(ROUTES.AUTH.LOGOUT);
 }
 
+/*ADMIN */
 export async function registerIngredient(data) {
     return api.post(ROUTES.ADMIN.REGISTER_INGREDIENT, data);
 }
@@ -174,6 +179,60 @@ export async function getTeamIngredientsByProductRecipe(data) {
 
 export async function getIngredientQuantityByOrder(data) {
     return api.post(ROUTES.ADMIN.GET_INGREDIENT_QUANTITY_BY_ORDER,data)
+}
+
+export async function updateProductRecipe(data) {
+    return api.post(ROUTES.ADMIN.UPDATE_PRODUCT_RECIPE,data)
+}
+
+export async function deleteIngredientProductRecipe(data) {
+    return api.post(ROUTES.ADMIN.DELETE_INGREDIENT_PRODUCT_RECIPE,data)
+}
+
+export async function addProductRecipe(data) {
+    return api.post(ROUTES.ADMIN.ADD_PRODUCT_RECIPE,data)
+}
+export async function registerClient(data) {
+    return api.post(ROUTES.ADMIN.REGISTER_CLIENT,data)
+}
+export async function registerAdmin(data) {
+    return api.post(ROUTES.ADMIN.REGISTER_ADMIN,data)
+}
+export async function changeUserPsw(data) {
+    return api.post(ROUTES.ADMIN.CHANGE_USER_PSW,data)
+}
+export async function getUsersInfo() {
+    return api.get(ROUTES.ADMIN.GET_USER_INFO)
+}
+export async function deleteUser(data) {
+    return api.post(ROUTES.ADMIN.DELETE_USER,data)
+}
+
+export async function updateUser(data) {
+    return api.post(ROUTES.ADMIN.UPDATE_USER,data)
+}
+
+export async function getMenuRecipeAlternative(data) {
+    return api.post(ROUTES.ADMIN.GET_MENU_RECIPE_ALTERNATIVE,data)
+}
+export async function scanAll(data) {
+    return api.post(ROUTES.ADMIN.SCAN_ALL,data)
+}
+
+export async function updateMenuRecipeRatio(data) {
+    return api.post(ROUTES.ADMIN.UPDATE_MENU_RECIPE_RATIO,data)
+}
+
+export async function addMenuRecipeGroup(data) {
+    return api.post(ROUTES.ADMIN.ADD_MENU_RECIPE_GROUP,data)
+}
+
+export async function createMenu(data) {
+    return api.post(ROUTES.ADMIN.CREATE_MENU,data)
+}
+
+export async function updateMenuActive(data) {
+    return api.post(ROUTES.ADMIN.UPDATE_MENU_ACTIVE,data)
 }
 
 

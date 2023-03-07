@@ -81,3 +81,9 @@
     width: 10%;
     text-align: center;
 }
+
+.inputContainer input{
+    padding: 10px;
+    font-size: 25px;
+    margin-bottom: 10px;
+}

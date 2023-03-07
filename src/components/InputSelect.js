@@ -6,12 +6,14 @@ const InputSelect = ({ data, placeholder, disableSelect, value, onChangeText, di
     //const [text, setText] = useState('')
     const inputRef = useRef();
     const [suggestions, setSuggestions] = useState([]);
+    const suggestionsRef = useRef();
+
+
+    //const [inputValue, setInputValue] = useState(value ? value : '');
 
     const handleChangeText = (txt) => {
-        inputRef.current.value = txt;
-        if (onChangeText) {
+        if (onChangeText)
             onChangeText(txt)
-        }
         if (txt) {
             setSuggestions(data.filter(item => (item.toUpperCase().startsWith(txt.toUpperCase()))))
         } else {
@@ -20,25 +22,16 @@ const InputSelect = ({ data, placeholder, disableSelect, value, onChangeText, di
     }
 
     useEffect(() => {
-        inputRef.current.value = selected;
-        if (onChangeText) {
+        if (onChangeText)
             onChangeText(selected)
-        }
+        setSuggestions([]);
     }, [selected])
 
     const handleCLickSuggestion = (item) => {
-        inputRef.current.value = item
-        if (onChangeText) {
+        if (onChangeText)
             onChangeText(item)
-        }
         setSuggestions([])
     }
-
-    useEffect(() => {
-        if (value) {
-            inputRef.current.value = value;
-        }
-    }, [value])
 
     return (
         <div className={styles.mainContainer}>
@@ -51,30 +44,44 @@ const InputSelect = ({ data, placeholder, disableSelect, value, onChangeText, di
                     onChange={(e) => {
                         handleChangeText(e.target.value)
                     }}
+                    value={value}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                             inputRef.current.blur();
                             setSuggestions([]);
                         }
                         if (e.key === 'ArrowDown') {
-                            document.getElementById('suggestionsContainer').childNodes[0]?.focus();
+                            //document.getElementById('suggestionsContainer').childNodes[0]?.focus();
+                            suggestionsRef.current.childNodes[0]?.focus();
                         }
 
+                    }}
+                    onBlur={() => {
+                        new Promise(resolve => setTimeout(resolve, 200)).then(() => {
+                            if (!(document.activeElement.className === 'suggest'))
+                                setSuggestions([])
+                        })
                     }}
                     type='text'
                 ></input>
 
-                <div style={{ position: 'relative' }}>
-                    <div id='suggestionsContainer' className={styles.suggestions} style={{ borderWidth: suggestions.length == 0 && 0 }}>
+                <div style={{ position: 'relative' }} >
+                    <div id='suggestionsContainer' ref={suggestionsRef} className={styles.suggestions} style={{ borderWidth: suggestions.length == 0 && 0 }} >
                         {
                             suggestions?.length > 0 &&
                             suggestions?.map((item, index) => (
                                 <div key={index}
                                     tabIndex="0"
-                                    className='suggestions'
+                                    className='suggest'
                                     onClick={() => {
                                         handleCLickSuggestion(item)
                                     }}
+
+                                    onBlur={() => new Promise(resolve => setTimeout(resolve, 200)).then(() => {
+                                        if (!(document.activeElement.className === 'suggest' || document.activeElement === inputRef.current))
+                                            setSuggestions([]);
+                                    })}
+
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter') {
                                             handleCLickSuggestion(item)
@@ -86,8 +93,9 @@ const InputSelect = ({ data, placeholder, disableSelect, value, onChangeText, di
                                             e.target.previousSibling?.focus();
                                         }
                                     }}
+
                                 >
-                                    <div >{item} </div>
+                                    <div>{item} </div>
                                 </div>
                             ))
                         }
@@ -97,7 +105,7 @@ const InputSelect = ({ data, placeholder, disableSelect, value, onChangeText, di
             <div>
                 {
                     (!disableSelect && !disabled) &&
-                    <select style={{ maxWidth: 500 }} value={selected} onChange={(e) => setSelected(e.target.value)} className={styles.select}>
+                    <select style={{ maxWidth: 300, overflow: 'hidden' }} value={selected} onChange={(e) => setSelected(e.target.value)} className={styles.select}>
                         <option value=''></option>
                         {data.map((item, index) => <option key={index} value={item}>{item.length > 30 ? (item.slice(0, 100) + '...') : item}</option>)}
                     </select>

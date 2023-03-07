@@ -3,7 +3,7 @@ import styles from '../css/cardtable.module.css'
 import ProdBarcodeCard from './ProdBarcodeCard'
 import IncrementButton from './IncrementButton'
 
-const CardTable = ({ data, handleIncrements,refreshAction }) => {
+const CardTable = ({ data, handleIncrements,refreshAction,scanned }) => {
 
   const labels = ["id","prodotto","ordine","Creato il","operatore"]
 
@@ -11,7 +11,7 @@ const CardTable = ({ data, handleIncrements,refreshAction }) => {
     <div className={styles.contentContainer}>
       {
         data.map((product,index) => (
-          <ProdBarcodeCard product={product} key={index} labels ={labels} refreshAction={refreshAction}/>
+          <ProdBarcodeCard product={product} key={index} labels ={labels} refreshAction={refreshAction} scanned={scanned}/>
         ))        
       }
           <IncrementButton handleIncrementElements={handleIncrements}/>

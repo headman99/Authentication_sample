@@ -7,9 +7,7 @@ const AddProduct = () => {
     const [nome, setNome] = useState('');
     const [categoria, setCategoria] = useState('');
     const [gruppo, setGruppo] = useState('');
-    const [team, setTeam] = useState('');
     const [availableGroups, setAvailableGroups] = useState([])
-    const [availableTeams, setAvailableTeams] = useState([])
     const [resultArray, setResultArray] = useState([])
 
     useEffect(() => {
@@ -23,18 +21,6 @@ const AddProduct = () => {
                 console.log(err)
                 alert(err.response.data.message)
             })
-
-            if (availableTeams.length == 0) {
-                getTeams().then((resp) => {
-                    if (isApiSubscribed && resp.data) {
-                        setAvailableTeams(resp.data)
-                    }
-                }).catch((err) => {
-                    console.log(err)
-                    alert(err.response.data.message)
-                })
-            }
-
         }
         return () => {
             // cancel the subscription
@@ -62,7 +48,6 @@ const AddProduct = () => {
             nome: nome,
             categoria: categoria,
             gruppo: gruppo,
-            team:availableTeams.find(t => t.name === team)?.id
         }
 
 
@@ -71,7 +56,7 @@ const AddProduct = () => {
             alert('Prodotto inserito');
             setNome('');
             setCategoria('')
-            setResultArray(prev => [...prev, {...product,team:team}])
+            setResultArray(prev => [...prev, {...product}])
         }).catch((err) => {
             console.log(err)
             alert(err.response.data.message)
@@ -123,17 +108,6 @@ const AddProduct = () => {
                             <option value={''}> </option>
                             {
                                 availableGroups.map(g => <option key={g.gruppo} value={g.gruppo}>{g.gruppo}</option>)
-                            }
-                        </select>
-
-                    </div>
-
-                    <div className={styles.inp}>
-                        <label className={styles.labell}>Team</label>
-                        <select value={team} onChange={(e) => setTeam(e.target.value)} className={styles.select}>
-                            <option value={''}> </option>
-                            {
-                                availableTeams.map(t => <option key={t.id} value={t.name}>{t.name}</option>)
                             }
                         </select>
 

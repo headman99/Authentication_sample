@@ -4,16 +4,12 @@ import Barcode from 'react-barcode/lib/react-barcode'
 import { scanProduct } from './api/api'
 
 
-const ProdBarcodeCard = ({ product, labels, refreshAction }) => {
+const ProdBarcodeCard = ({ product, labels, refreshAction,scanned }) => {
 
     const handleScan = (barcode) => {
         scanProduct({
             barcode: barcode
-        }).then(resp => {
-            if (resp.data.state) {
-                alert("barcode scansionato con successo")
-            }
-        }).catch(exc => {
+        }).then().catch(exc => {
             alert(exc.response.data.message)
         })
         refreshAction(product.barcode)
@@ -24,7 +20,7 @@ const ProdBarcodeCard = ({ product, labels, refreshAction }) => {
     return (
         <div className={styles.container}>
             <div className={styles.product}
-                style={{ backgroundColor: product?.scanned_at ? '#fa98a1' : null }}
+                style={{ backgroundColor: (product?.scanned_at || scanned)? '#fa98a1' : null }}
                 key={product.id}
             >
                 <div className={styles.header}>

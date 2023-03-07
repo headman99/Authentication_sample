@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage'
 import { useContext } from 'react'
 import { UserContext } from '../../App'
+import { MenuAlternativesContext } from '../../Routes/ClientRoutes'
 
 const Home = () => {
 
@@ -16,6 +17,8 @@ const Home = () => {
   const navigate = useNavigate()
   const { user } = useContext(UserContext);
   const choosenMenu = useRef([])
+  const { contextRecipe } = useContext(MenuAlternativesContext);
+  const [wait,setWait] = useState(false)
 
   const handleChangeRequest = useCallback((data) => {
     if (choosenMenu.current.find(menu => menu.menu_id === data.menu_id)?.richiesta === data.richiesta) {
@@ -44,102 +47,103 @@ const Home = () => {
   }, [])
 
   const handleChangeMenuQuantity = useCallback((data) => {
-
-    if (choosenMenu.current.find(menu => menu.menu_id === data.menu_id)?.quantity === data.quantity) {
+    const index = choosenMenu.current.findIndex(el => el.menu_id === data.menu_id);
+    if (index === -1) {
+      choosenMenu.current = [...choosenMenu.current, { ...data }]
       return
     }
-    if (choosenMenu.current.map(menu => menu.menu_id).includes(data.menu_id)) {
-      let temp = choosenMenu.current.filter(menu => menu.menu_id !== data.menu_id)
-      const { quantity, ...rest } = choosenMenu.current.find(menu => menu.menu_id === data.menu_id)
-      if (data?.quantity && data?.quantity !== 0 && !isNaN(data.quantity)) {
-        temp.push({
-          ...rest,
-          quantity: data.quantity
-        })
-      } else {
-        if (data?.date)
-          temp.push({
-            ...rest
-          })
-      }
-      choosenMenu.current = temp
-    } else {
-      if (!isNaN(data?.quantity) && data?.quantity !== 0)
-        choosenMenu.current.push(data)
-    }
+
+    if (choosenMenu.current[index]?.quantity === data?.quantity)
+      return;
+
+    choosenMenu.current[index] = { ...choosenMenu.current[index], quantity: data?.quantity }
+
+    if ((isNaN(choosenMenu.current[index]?.quantity) || !choosenMenu.current[index]?.quantity) && (!choosenMenu.current[index]?.date || choosenMenu.current[index]?.date === ''))
+      choosenMenu.current.splice(index, 1)
+
   }, [])
 
   const handleChangeMenuDate = useCallback((data) => {
-
-    if (choosenMenu.current.find(menu => menu.date === data.date)?.date === data.date) {
+    const index = choosenMenu.current.findIndex(el => el.menu_id === data.menu_id);
+    if (index === -1) {
+      choosenMenu.current = [...choosenMenu.current, { ...data }]
       return
     }
-    if (choosenMenu.current.map(menu => menu.menu_id).includes(data.menu_id)) {
-      let temp = choosenMenu.current.filter(menu => menu.menu_id !== data.menu_id)
-      const { date, ...rest } = choosenMenu.current.find(menu => menu.menu_id === data.menu_id)
-      if (data?.date)
-        temp.push({
-          ...rest,
-          date: data.date
-        })
-      else
-        if (data?.quantity)
-          temp.push({
-            ...rest
-          })
 
-      choosenMenu.current = temp
-    } else {
-      if (data?.date) {
-        choosenMenu.current.push(data)
-      }
+    if (choosenMenu.current[index]?.date === data?.date)
+      return;
 
-    }
+    choosenMenu.current[index] = { ...choosenMenu.current[index], date: data?.date }
 
+    if ((isNaN(choosenMenu.current[index]?.quantity) || !choosenMenu.current[index]?.quantity) && (!choosenMenu.current[index]?.date || choosenMenu.current[index]?.date === ''))
+      choosenMenu.current.splice(index, 1);
   }, [])
+
 
   const checkValidity = () => {
     const quantities = choosenMenu.current.map(menu => menu.quantity)
     const dates = choosenMenu.current.map(menu => menu.date)
     if (quantities.includes(undefined) || quantities.includes(null))
       return {
-        state:false,
-        error:"Specificare la quantità desiderata per ogni menù selezionato"
+        state: false,
+        error: "Specificare la quantità desiderata per ogni menù selezionato"
       }
     if (dates.includes(undefined) || dates.includes(null) || dates.includes(''))
-      return  {
-        state:false,
-        error:"Specificare la data desiderata per ogni menù selezionato"
+      return {
+        state: false,
+        error: "Specificare la data desiderata per ogni menù selezionato"
       }
 
     return {
-      state:true,
-      message:'ok'
+      state: true,
+      message: 'ok'
     }
   }
 
   const handleClickConfirm = () => {
+    const allow = window.confirm("Inviare l'ordine");
+    if(!allow)
+      return
+
     if (choosenMenu.current.length === 0)
       return
-    
-    const {state,error} = checkValidity();
 
-    if(!state){
+    const { state, error } = checkValidity();
+
+    if (!state) {
       alert(error)
       return
     }
-      
 
+    let data = choosenMenu.current.map(el => {
+      let alternative = [];
+      if (contextRecipe.current.length>0) {
+        alternative = new Set([...contextRecipe.current.find(i => i.menu.id === el.menu_id)?.products.filter(e => e.alternative !== null).map(s => ({
+          alternative: s.alternative,
+          gruppo: s.gruppo,
+          sezione: s.sezione?s.sezione:''
+        }))]);
+      }
+
+
+      return ({
+        ...el,
+        alternative:[...alternative]
+      });
+    });
+
+    setWait(true)
     addOrderMenu({
-      data: choosenMenu.current
+      data: data
     }).then(resp => {
-      if (resp.data.state == 1) {
         alert("Richiesta inviata con successo")
         window.location.reload()
-      }
+      
     }).catch(err => {
       console.log(err)
       alert(err.response.data.message)
+    }).finally(() => {
+      setWait(false);
     })
   }
 
@@ -166,6 +170,9 @@ const Home = () => {
   return (
     <div className={styles.mainContainer}>
       {
+        wait && <div className={styles.modal}></div>
+      }
+      {
         !menus ?
           <div className="AudioContainer">
             <Audio color="black" />
@@ -179,9 +186,9 @@ const Home = () => {
 
             <div className={styles.carusel}>
               {
-                menus.map((menu) =>
+                menus.map((menu, index) =>
                   <MenuCard
-                    key={menu.id}
+                    key={index}
                     handleChangeMenuQuantity={handleChangeMenuQuantity}
                     handleChangeRequest={handleChangeRequest}
                     handleChangeMenuDate={handleChangeMenuDate}
@@ -190,7 +197,7 @@ const Home = () => {
             </div>
             <div style={{ display: 'block', width: '100%', display: 'flex', justifyContent: 'center' }}>
               <button className="button"
-                style={{width:150}}
+                style={{ width: 150 }}
                 onClick={handleClickConfirm}
               > Conferma</button>
             </div>

@@ -11,18 +11,13 @@ import BackButton from './BackButton'
 const OrdersView = ({ closed }) => {
     const navigate = useNavigate()
     const orders = useRef([]);
-    const range = 20
+    const range = 40
     const [filteredArray, setFilteredArray] = useState();
     const startDate = useRef('')
     const endDate = useRef('')
     const filterValue = useRef('')
     const labels = ["Cliente", "Codice", "Effettuato", "Data evento", "Menu ID", "Ospiti", "Richieste aggiuntive"]
-    /*const fromITtoENdate = (date) => {
-        const arrDate = date.split(' ')[0].split('/')
-        const modifiedDate = arrDate[1] + '-' + arrDate[0] + '-' + arrDate[2]
-        return modifiedDate
-    }*/
-
+    
     const filterbyDate = () => {
         fetchData({
             start_date: startDate.current ? startDate.current : null,
@@ -56,12 +51,14 @@ const OrdersView = ({ closed }) => {
     const IncrementElements = () => {
         try {
             fetchData({
+                range:range,
                 start_from: orders.current.length,
                 start_date: startDate.current ? startDate.current : null,
                 end_date: endDate.current ? endDate.current : null
             }).then(resp => {
-                orders.current = orders.current.concat(resp)
-                filter()
+                if(resp?.length >0)
+                    orders.current = orders.current.concat(resp)
+                    filter()
             })
         } catch (err) {
             console.log(err)
@@ -121,7 +118,9 @@ const OrdersView = ({ closed }) => {
         <div className={styles.mainContainer}>
             <div className="_header" style={{ minHeight: 100, }}>
                 <BackButton path='/admin' replace={true} />
-                <div className="_filtersContainer">
+                <div className="_filtersContainer"
+                    style={{display:'flex',gap:20}}
+                >
                     <input type='text'
                         className="_filterInput"
                         placeholder='Filtra'
@@ -133,6 +132,7 @@ const OrdersView = ({ closed }) => {
 
                     <input
                         type='date'
+                        style={{fontSize:25}}
                         onChange={(e) => {
                             startDate.current = e.target.value ? new Date(e.target.value) : ''
                             filterbyDate()
@@ -140,6 +140,7 @@ const OrdersView = ({ closed }) => {
                     ></input>
 
                     <input
+                        style={{fontSize:25}}
                         type='date'
                         onChange={(e) => {
                             endDate.current = e.target.value ? new Date(e.target.value) : ''

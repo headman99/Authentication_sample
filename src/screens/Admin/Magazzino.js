@@ -12,8 +12,9 @@ import { AiOutlineTeam } from 'react-icons/ai'
 
 const Magazzino = () => {
   const navigate = useNavigate();
-  const [stock, setStock] = useState();
-  const headers = ['Codice', 'Ingrediente', 'Quantità (g)', 'Categoria', 'Fornitore', 'Team']
+  const [value,setValue] = useState('')
+  const stock = useRef([]);
+  const headers = ['ID', 'Ingrediente', 'Quantità', 'Categoria', 'Fornitore', 'Team']
   const [filteredArray, setFilteredArray] = useState();
   const [selected, setSelected] = useState(0);
   const teams = useRef([]);
@@ -21,22 +22,22 @@ const Magazzino = () => {
 
   const goToUpdateQuantity = () => {
     navigate('/admin/magazzino/updateQuantity', {
-      state: stock
+      state: stock.current
     })
   }
 
   const modifyIngredientQuantity = (item) => {
-    if (isNaN(parseInt(item.data))) {
+    if (isNaN(parseFloat(item.data))) {
       alert("Il campo modificato deve essere un numero")
       return;
     }
     const data = {
       data: [{
         ingredient: item.id,
-        quantity: parseInt(item.data)
+        quantity: parseFloat(item.data)
       }]
     }
-
+  
     updateIngredientQuantity(data).then((resp) => {
       alert("Quantità modificata con successo")
     }).catch(err => {
@@ -48,25 +49,28 @@ const Magazzino = () => {
   }
 
   const handleModifyRow = (data) => {
-    console.log(data)
     updateIngredient(data).then(resp => {
       alert("modifica avvenuta con successo");
-      console.log(resp.data)
-      window.location.reload();
-    })
+      let copy = [...stock.current];
+      const index = copy.findIndex(el => el.id === data.id);
+      copy[index] = {...data}
+      console.log(copy)
+      stock.current = [...copy];
+      filterContent(value)
+    });
   }
 
   const filterContent = (filter) => {
     if (!filter) {
-      setFilteredArray(stock)
+      setFilteredArray([...stock.current])
     } else {
       if (!isNaN(parseInt(filter))) {
-        const arr = stock.filter(elem => elem.ingredient_id == parseInt(filter))
-        setFilteredArray(arr)
+        const arr = stock.current.filter(elem => elem.ingredient_id == parseInt(filter))
+        setFilteredArray([...arr])
       } else {
-        const arr = stock.filter(elem => (elem.name.toUpperCase().includes(filter.toUpperCase()) || elem.category?.toUpperCase().includes(filter.toUpperCase()) || elem.provider?.toUpperCase().includes(filter.toUpperCase())))
+        const arr = stock.current.filter(elem => (elem.name.toUpperCase().includes(filter.toUpperCase()) || elem.category?.toUpperCase().includes(filter.toUpperCase()) || elem.provider?.toUpperCase().includes(filter.toUpperCase())))
         if (JSON.stringify(arr) !== JSON.stringify(filteredArray)) {
-          setFilteredArray(arr)
+          setFilteredArray([...arr])
         }
       }
     }
@@ -77,7 +81,8 @@ const Magazzino = () => {
 
     getTeams().then(resp => {
       if (isApiSubscribed)
-        teams.current = resp.data
+        teams.current = [...resp.data]
+        
     }).catch((err) => {
       console.log(err)
       console.log(err.response.data.message)
@@ -87,10 +92,10 @@ const Magazzino = () => {
       }
     })
 
-    if (!stock) {
+    if (stock.current.length ===0) {
       getStock().then(resp => {
         if (isApiSubscribed) {
-          setStock(resp.data.data)
+          stock.current = resp.data.data
           setFilteredArray(resp.data.data)
         }
 
@@ -189,7 +194,9 @@ const Magazzino = () => {
           <input type='text'
             className="_filterInput"
             placeholder='Filtra'
+            value={value}
             onChange={(text) => {
+              setValue(text.target.value)
               filterContent(text.target.value);
             }}
           ></input>
@@ -202,14 +209,14 @@ const Magazzino = () => {
         </Link>
         <button className="button"
           onClick={goToAddIngredient}
-          disabled={!stock}
+          disabled={!filteredArray}
         >
           <IoIosCreate size={22} />
         </button>
 
         <button className="button"
           onClick={goToUpdateQuantity}
-          disabled={!stock}
+          disabled={!filteredArray}
         >
           <FaPlus size={22} />
         </button>

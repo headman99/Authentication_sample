@@ -64,34 +64,11 @@ const Ticket = ({ data, shadow, labels }) => {
       <div className={styles.content}
         {...handlers}
       >
-        {
-          /*Object.values(data).map((v, index) => {
-            return (
-              <div key={index}>
-                {
-                  index === 0 || index === 1 ?
-                    <span style={{ fontWeight: 'bold', fontSize: 30, color: '#bf1515' }}>{`${v}`.slice(0, 20)}</span>
-                    :
-                    <>
-                      <span style={{ fontWeight: 'bold', overflow: 'hidden' }}>{`${labels[index]}:`}</span><span>{`${v}`.slice(0, 15)}</span>
-                    </>
-
-                  
-                  
-                }
-                
-
-              </div>
-            )
-          })
-
-        */}
-
         <table className={styles.table}>
           <tbody>
             <tr >
-              <td style={{color:'red',fontSize:28}}>{data.client}</td>
-              <td style={{color:'red',fontSize:28}}>{data.code}</td>
+              <td style={{color:'red',fontSize:25}}>{data.client}</td>
+              <td style={{color:'red',fontSize:25}}>{data.code}</td>
             </tr>
             <tr>
               <td>Creato: {data.created_at}</td>
@@ -99,10 +76,10 @@ const Ticket = ({ data, shadow, labels }) => {
             </tr>
             <tr>
               <td>Menu: {data.menu_id}</td>
-              <td>Ospiti: {data.quantity}</td>
+              <td>Invitati: {data.quantity}</td>
             </tr>
             <tr>
-              <td colSpan={2}>Richieste: {data?.richiesta.slice(0,30)}</td>
+              <td style={{borderBottomWidth:0}} colSpan={2}>Richieste: {data?.richiesta.slice(0,30)}</td>
             </tr>
           </tbody>
         </table>

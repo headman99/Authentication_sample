@@ -1,12 +1,13 @@
 import Table from '../../components/Table';
 import React from 'react'
-import { useEffect, useState,useCallback,useRef } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom'
 import secureLocalStorage from 'react-secure-storage';
 import { getTeamIngredientsByProductRecipe } from '../../components/api/api';
 import styles from '../../css/ingredientsproductlist.module.css'
 import { Audio } from 'react-loader-spinner';
 import Header from '../../components/Header'
+
 
 const IngredientsProductList = () => {
 
@@ -16,8 +17,7 @@ const IngredientsProductList = () => {
     const navigate = useNavigate();
     const [filteredArray, setFilteredArray] = useState()
     const ingredients = useRef([]);
-
-        
+    console.log(state)
     useEffect(() => {
         let isApiSubscribed = true;
         getTeamIngredientsByProductRecipe({
@@ -25,9 +25,9 @@ const IngredientsProductList = () => {
             team_id: team?.id
         }).then(resp => {
             if (isApiSubscribed && resp?.data) {
-                ingredients.current = resp.data.data.map(item =>({
+                ingredients.current = resp.data.data.map(item => ({
                     ...item,
-                    quantity:parseInt(item.quantity) * state.quantity
+                    quantity: parseFloat(item.quantity) * state.quantity
                 }))
                 setFilteredArray(ingredients.current)
             }
@@ -64,6 +64,7 @@ const IngredientsProductList = () => {
         <div className={styles.container}>
             <Header title={`${state.product}`}>
                 <input type='text'
+                    style={{ marginRight: 20 }}
                     className="_filterInput"
                     value={filter}
                     placeholder='Filtra'

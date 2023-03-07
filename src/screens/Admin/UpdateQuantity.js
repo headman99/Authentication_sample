@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styles from '../../css/updatequantity.module.css'
 import { useLocation } from 'react-router-dom'
 import InputSelect from '../../components/InputSelect'
@@ -12,6 +12,16 @@ const UpdateQuantity = () => {
     const navigate = useNavigate();
     const [plusMinus, setPlusMinus] = useState([]);
     const [count, setCount] = useState(1);
+    const [values, setValues] = useState([])
+
+
+    const handleChangeText = (data) => {
+        let copy = [...values];
+        copy[data.index] = data.newValue;
+        setValues([...copy]) 
+    }
+
+
     const handleConfirm = async () => {
         let data = [];
         let allow = true;
@@ -35,7 +45,7 @@ const UpdateQuantity = () => {
                 data.push({
                     ingredient: elem.value,
                     quantity: quantities[index].value,
-                    mode: parseInt(plusMinus[index])
+                    mode: parseFloat(plusMinus[index])
                 });
             }
 
@@ -78,7 +88,11 @@ const UpdateQuantity = () => {
                     Array.from({ length: count }, (_, index) => {
                         return (
                             <div className={styles.row} key={index}>
-                                <InputSelect data={location.state.map(item => item.name)} placeholder='Ingrediente' />
+                                <InputSelect value={values[index]} onChangeText={(newValue) => handleChangeText({
+                                    index: index,
+                                    newValue: newValue
+                                })}
+                                    data={location.state.map(item => item.name)} placeholder='Ingrediente' />
                                 <input type='number' className={styles.inputNumber} placeholder='Quantità' />
                                 <PlusMinusSelect data={plusMinus} setData={setPlusMinus} index={index} width={100} />
                             </div>
@@ -97,7 +111,7 @@ const UpdateQuantity = () => {
                 </div>
                 <div style={{ marginTop: 50, marginBottom: 20 }}>
                     <button type='button' className='button'
-                        style={{ width: 120,fontSize:23 }}
+                        style={{ width: 120, fontSize: 23 }}
                         onClick={handleConfirm}
                     >
                         Conferma

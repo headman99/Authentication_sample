@@ -88,9 +88,10 @@ const ProductionProductList = () => {
                     </div>
                     :
                     <div className={styles.content}>
-                        <Header >
+                        <Header title={`Prodotti da Lavorare --- ${currentTeam.name}`}>
                             <input type='text'
                                 className="_filterInput"
+                                style={{marginRight:20}}
                                 value={filter}
                                 placeholder='Filtra'
                                 onChange={(e) => handleFilter(e.target.value)}

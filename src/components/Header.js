@@ -4,22 +4,21 @@ import BackButton from './BackButton'
 const Header = ({ title, path, disableBackButton, children }) => {
     return (
         <div className={styles.mainContainer}>
-            {
-                !disableBackButton &&
-                (<div className={styles.backButtonContainer}>
-                    <BackButton path={path ? path : -1} />
-                </div>)
-            }
-            <div className={styles.others}>
+            <div className={styles.backButton}>
                 {
-                    title &&
-                    <div className={styles.title}>
-                        <h1>{title}</h1>
-                    </div>
+                    !disableBackButton &&
+                    (<div className={styles.backButton}>
+                        <BackButton path={path ? path : -1} />
+                    </div>)
                 }
-                <div>
-                    {children}
-                </div>
+            </div>
+            <div className={styles.titleContainer}>
+                {
+                    title &&<h1>{title}</h1>
+                }
+            </div>
+            <div className={styles.others}>
+                {children}
             </div>
         </div>
     )

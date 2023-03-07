@@ -29,7 +29,8 @@
     border-radius: 10px;
     box-shadow: 0 4px 2px -1px rgba(0, 0, 0, 0.1);
     background-color: white;
-        
+    height: 400px;
+    max-height: 400px;
 }
 
 .filter{
@@ -120,7 +121,6 @@
     flex: 1;
   
 }
-
 
 
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import styles from "../../css/ordersproductlist.module.css"
-import { getOpenProductsInstance, getProductsInstanceByFilter } from '../../components/api/api'
+import { getOpenProductsInstance, getProductsInstanceByFilter, scanAll } from '../../components/api/api'
 import { Audio } from 'react-loader-spinner'
 import CardTable from '../../components/CardTable'
 import RefreshButton from '../../components/RefreshButton'
@@ -23,6 +23,7 @@ const OrdersProductList = () => {
   const pageLimit = useRef(1)
   const checkbox = useRef(false)
   const products = useRef([])
+  const [scanned, setScanned] = useState(false)
 
   useEffect(() => {
     if (contextBarcode) {
@@ -67,11 +68,12 @@ const OrdersProductList = () => {
   const handleIncrementElements = () => {
     getOpenProductsInstance({
       order: code,
-      start_from: products.current.length
+      start_from: products.current.length,
+      page: currentPage
     }).then(resp => {
-      if (resp.data?.products.length > 0) {
+      if (resp?.data.length > 0) {
         products.current = products.current.concat(resp.data)
-        filter()
+        filter();
       }
     }).catch(e => {
       console.log(e)
@@ -166,19 +168,40 @@ const OrdersProductList = () => {
     };
   }, [])
 
+  const handleScanAll = () => {
+    if (scanned)
+      return
+    scanAll({
+      order: code
+    }).then(resp => {
+      if (resp.data.state === 1) {
+        alert("Tutti i prodotti sono stati scannerizzati");
+        setScanned(true);
+      }
+
+    }).catch(err => {
+      console.log(err)
+      console.log(err.response.data.message)
+    })
+  }
+
   return (
     <div className={styles.mainContainer}>
       <div className='_header'>
         <BackButton path="/admin/orders" replace={true} />
         <div className="_filtersContainer">
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <div>Mostra solo Scannerizzati</div>
-            <input type='checkbox'
-              value={checkbox.current}
-              className="_checkbox"
-              onChange={handleCheckbox}
-            />
+          <div style={{ height: '100%', display: 'flex', gap: 20 }}>
+            <button style={{ fontSize: 20, padding: 10, backgroundColor: 'black', color: 'white', fontWeight: 'bold' }} onClick={handleScanAll}>Scannerizza tutti</button>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <div>Mostra solo Scannerizzati</div>
+              <input type='checkbox'
+                value={checkbox.current}
+                className="_checkbox"
+                onChange={handleCheckbox}
+              />
+            </div>
           </div>
+
           <div className={styles.inputTextContainer}>
             <input type='text'
               className="_filterInput"
@@ -205,8 +228,9 @@ const OrdersProductList = () => {
         <RefreshButton />
       </div>
       <div className={styles.page}>
+        <div style={{ position: 'absolute', left: 0, marginLeft: 20 }}>Risultati: {filteredArray.length}</div>
         <AiFillCaretLeft onClick={() => handlePage(-1)} size={45} />
-        {currentPage} /{pageLimitState ? pageLimitState : ''}
+        {currentPage} / {pageLimitState ? pageLimitState : ''}
         <AiFillCaretRight onClick={() => handlePage(1)} size={45} />
       </div>
       <div className={styles.contentContainer}>
@@ -217,7 +241,7 @@ const OrdersProductList = () => {
               <Audio color='black' />
             </div>
             :
-            <CardTable data={filteredArray} handleIncrements={handleIncrementElements} refreshAction={refreshAction} />
+            <CardTable data={filteredArray} handleIncrements={handleIncrementElements} refreshAction={refreshAction} scanned={scanned} />
         }
       </div>
     </div>

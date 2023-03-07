@@ -11,13 +11,13 @@
 }
 
 .content{
-    flex:0.9;
+    flex:1;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     cursor: pointer;
-    margin: 20px;
     justify-content: space-around;
+    
 }
 .footer{
     flex:0.1

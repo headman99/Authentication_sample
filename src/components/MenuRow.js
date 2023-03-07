@@ -1,12 +1,8 @@
 import React from 'react'
-import { FaTrashAlt } from 'react-icons/fa'
+import { FaTrashAlt, FaAngleRight, FaEdit } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
-const MenuRow = ({ data, color, style, handleIconClick, disableIcons, editable, onEdit }) => {
-
-    const handleCLick = () => {
-        handleIconClick()
-    }
-
+const MenuRow = ({ data, color, style, handleRemoveItem, handleModifyItem, disableIcons, editable, onEdit, disableArrow, goTo, children }) => {
     return (
         <div style={{ padding: 30 }}>
             <div
@@ -19,20 +15,18 @@ const MenuRow = ({ data, color, style, handleIconClick, disableIcons, editable, 
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    marginRight: 20
+                    flexDirection: 'row'
                 }}>
-
-                    {
-                        !disableIcons &&
-                        <FaTrashAlt size={30}
-                            className="trashIcon"
-                            onClick={handleCLick}
-                            style={{
-                                position: 'absolute',
-                                float: 'left',
-                                color: 'black',
-                            }} />
-                    }
+                    <div style={{
+                        float: 'left',
+                        color: 'black',
+                        display: 'flex',
+                        gap: 20,
+                        visibility:!disableIcons?'visible':'hidden'
+                    }}>
+                        <FaTrashAlt className='trashIcon' size={35} onClick={handleRemoveItem} />
+                        <FaEdit className='trashIcon' size={35} onClick={handleModifyItem} />
+                    </div>
                 </div>
 
                 <div
@@ -46,9 +40,9 @@ const MenuRow = ({ data, color, style, handleIconClick, disableIcons, editable, 
                     }}
 
                     onBlur={(e) => {
-                        if (e.target.innerText !== data) {
+                        if (e.target.innerText !== data)
                             onEdit(e.target.innerText)
-                        }
+
                     }}
                     style={{
                         display: 'flex',
@@ -56,9 +50,13 @@ const MenuRow = ({ data, color, style, handleIconClick, disableIcons, editable, 
                         justifyContent: 'center',
                     }}
                 >
-                    {data}
+                    {children ? children : data}
+                </div>
+                <div className='trashIcon' onClick={goTo} style={{ visibility: (!disableIcons && !disableArrow) ? 'visible' : 'hidden' }}>
+                    <FaAngleRight size={40} color={'black'} />
                 </div>
             </div>
+
         </div>
     )
 }

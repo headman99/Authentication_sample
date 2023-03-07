@@ -13,7 +13,6 @@ const MyInput = ({ type, initialValue, onEndEditing, placeholder, label }) => {
 
     const handleBlur = (e) => {
         if (e.target.value !== initialValue) {
-            console.log("entro")
             onEndEditing({
                 key: placeholder,
                 newValue: value
@@ -22,6 +21,7 @@ const MyInput = ({ type, initialValue, onEndEditing, placeholder, label }) => {
 
     }
 
+    console.log(type.values)
 
     return (
         <div className={styles.main}>
@@ -43,20 +43,23 @@ const MyInput = ({ type, initialValue, onEndEditing, placeholder, label }) => {
                         onChange={(e) => setValue(e.target.value)}
                         onKeyDown={(e) => handleEnter(e)}
                         onBlur={(e) => handleBlur(e)}
-                        value={value}
+                        value={value?value:''}
                     >
                         <option value={value}>
-                            {value}
+                            {`${value?value:''}`}
                         </option>
                         {
 
-                            type.values.filter(item => item !== value).length > 0 &&
+                            type?.values?.filter(item => item !== value).length > 0 &&
 
                             type.values.filter(item => item !== value).map((v, index) => (<option key={index} value={v}>{v}</option>))
 
 
                         }
-                        <option value={''}></option>
+                        {
+                            value && <option value={''}>{''}</option>
+                        }
+                        
                     </select>
             }
 
