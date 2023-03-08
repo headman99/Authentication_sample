@@ -10,6 +10,7 @@ import secureLocalStorage from 'react-secure-storage'
 import { useContext } from 'react'
 import { UserContext } from '../../App'
 import { MenuAlternativesContext } from '../../Routes/ClientRoutes'
+import background from '../../assets/logo.jpeg'
 
 const Home = () => {
 
@@ -192,6 +193,7 @@ const Home = () => {
               {
                 menus.map((menu, index) =>
                   <MenuCard
+                    background={background}
                     key={index}
                     handleChangeMenuQuantity={handleChangeMenuQuantity}
                     handleChangeRequest={handleChangeRequest}

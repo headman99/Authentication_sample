@@ -6,6 +6,7 @@ import { UserContext } from '../../App';
 import secureLocalStorage from 'react-secure-storage';
 import { motion } from "framer-motion"
 import { FaArrowLeft } from 'react-icons/fa';
+import background from "../../assets/logo-noback.png"
 
 const Login = () => {
   const { setUser } = useContext(UserContext);
@@ -123,6 +124,9 @@ const Login = () => {
 
   return (
     <div className='background'>
+      <div style={{width:350,position:'absolute',top:30}}>
+        <img src={background} style={{width:'100%',height:'100%'}}/>
+      </div>
       <div className='mainContainer'>
         <div className='formContainer'>
           <div className='contentContainer'>

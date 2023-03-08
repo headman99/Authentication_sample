@@ -70,7 +70,7 @@ const Table = ({ data, headers, editable, disbaleEdit, disableDeletable, handleR
                 )
             }
 
-        })
+        });
     }
 
     return (

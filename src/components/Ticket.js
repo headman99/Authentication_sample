@@ -75,7 +75,7 @@ const Ticket = ({ data, shadow, labels }) => {
               <td>Data evento: {data.event_date}</td>
             </tr>
             <tr>
-              <td>Menu: {data.menu_id}</td>
+              <td>Menu: {data.name.slice(0,20)}</td>
               <td>Invitati: {data.quantity}</td>
             </tr>
             <tr>
