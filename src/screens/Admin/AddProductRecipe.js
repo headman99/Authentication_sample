@@ -11,10 +11,12 @@ import InputSelect from '../../components/InputSelect';
 const AddProductRecipe = () => {
 
     const [availableIngredients, setAvailableIngredients] = useState()
+    const [inputValue,setInputValue] = useState('')
     const [resultArray, setResultArray] = useState([])
     const [selectedIngredient, setSelectedIngredient] = useState();
     const { code } = useParams();
 
+    console.log("render")
     useEffect(() => {
         let isApiSubscribed = true;
         getStock().then((resp) => {
@@ -36,6 +38,7 @@ const AddProductRecipe = () => {
     }, [])
 
     const onChangeInputText = (item) =>{
+        setInputValue(item)
         const ingr = availableIngredients.find( i => i.name === item);
         setSelectedIngredient(ingr)
     }
@@ -90,7 +93,7 @@ const AddProductRecipe = () => {
                                             }
                                         </select>*/
                                     }
-                                    <InputSelect onChangeText={onChangeInputText} data={availableIngredients.map(el => el.name)} placeholder='Ingrediente' />
+                                    <InputSelect onChangeText={onChangeInputText} value={inputValue} data={availableIngredients.map(el => el.name)} placeholder='Ingrediente' />
                                 </div>
 
 

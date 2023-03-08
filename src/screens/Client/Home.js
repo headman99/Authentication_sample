@@ -18,7 +18,7 @@ const Home = () => {
   const { user } = useContext(UserContext);
   const choosenMenu = useRef([])
   const { contextRecipe } = useContext(MenuAlternativesContext);
-  const [wait,setWait] = useState(false)
+  const [wait, setWait] = useState(false)
 
   const handleChangeRequest = useCallback((data) => {
     if (choosenMenu.current.find(menu => menu.menu_id === data.menu_id)?.richiesta === data.richiesta) {
@@ -102,7 +102,7 @@ const Home = () => {
 
   const handleClickConfirm = () => {
     const allow = window.confirm("Inviare l'ordine");
-    if(!allow)
+    if (!allow)
       return
 
     if (choosenMenu.current.length === 0)
@@ -117,18 +117,18 @@ const Home = () => {
 
     let data = choosenMenu.current.map(el => {
       let alternative = [];
-      if (contextRecipe.current.length>0) {
+      if (contextRecipe.current.length > 0) {
         alternative = new Set([...contextRecipe.current.find(i => i.menu.id === el.menu_id)?.products.filter(e => e.alternative !== null).map(s => ({
           alternative: s.alternative,
           gruppo: s.gruppo,
-          sezione: s.sezione?s.sezione:''
+          sezione: s.sezione ? s.sezione : ''
         }))]);
       }
 
 
       return ({
         ...el,
-        alternative:[...alternative]
+        alternative: [...alternative]
       });
     });
 
@@ -136,9 +136,9 @@ const Home = () => {
     addOrderMenu({
       data: data
     }).then(resp => {
-        alert("Richiesta inviata con successo")
-        window.location.reload()
-      
+      alert("Richiesta inviata con successo")
+      window.location.reload()
+
     }).catch(err => {
       console.log(err)
       alert(err.response.data.message)
@@ -163,7 +163,11 @@ const Home = () => {
       }
     }).catch((err) => {
       console.log(err)
-      alert(err.response.data)
+      if (err.response.data?.message)
+        alert(err.response.data?.message)
+      if (err.code === 'ERR_NETWORK' || err.code === 'ERR_CONNECTION_REFUSED')
+        alert("I servizi non rispondono al momento")
+      console.log(err.code)
     })
   }, [])
 

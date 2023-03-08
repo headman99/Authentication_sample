@@ -55,11 +55,13 @@ const Dashboard = () => {
           setTeams([...tms.data])
       } catch (err) {
         console.log(err)
-        console.log(err.response.data.message)
-        if (err.response.data.message === "Unauthorized." || err.response.data.message === "Unauthenticated.") {
+        console.log(err.response.data?.message)
+        if (err.response.data?.message === "Unauthorized." || err.response.data?.message === "Unauthenticated.") {
           alert("effettua il login")
           navigate("/login")
         }
+        if(err.code === 'ERR_NETWORK')
+          alert("I servizi non rispondono al momento")
       }
     })()
 

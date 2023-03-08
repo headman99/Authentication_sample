@@ -21,8 +21,7 @@ const MyInput = ({ type, initialValue, onEndEditing, placeholder, label }) => {
 
     }
 
-    console.log(type.values)
-
+   
     return (
         <div className={styles.main}>
             <label className={styles.label}>

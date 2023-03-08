@@ -12,6 +12,7 @@ const InputSelect = ({ data, placeholder, disableSelect, value, onChangeText, di
     //const [inputValue, setInputValue] = useState(value ? value : '');
 
     const handleChangeText = (txt) => {
+   
         if (onChangeText)
             onChangeText(txt)
         if (txt) {

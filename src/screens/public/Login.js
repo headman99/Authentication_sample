@@ -113,6 +113,8 @@ const Login = () => {
       console.log(err);
       if (err.response.data?.message)
         alert(err.response.data?.message)
+      if(err.code === "ERR_NETWORK")
+        alert("I servizi non rispondono al momento")
     }
 
 

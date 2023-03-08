@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from '../../css/addproduct.module.css'
 import { registerProduct, getProductGroups, getTeams } from '../../components/api/api';
 import BackButton from '../../components/BackButton';
+import InputSelect from '../../components/InputSelect';
 
 const AddProduct = () => {
     const [nome, setNome] = useState('');
@@ -9,6 +10,7 @@ const AddProduct = () => {
     const [gruppo, setGruppo] = useState('');
     const [availableGroups, setAvailableGroups] = useState([])
     const [resultArray, setResultArray] = useState([])
+
 
     useEffect(() => {
         let isApiSubscribed = true;
@@ -40,9 +42,12 @@ const AddProduct = () => {
     }
 
     const handleAddProduct = () => {
+
         if (!checkInput()) {
             return;
         }
+
+        let allow = true;
 
         const product = {
             nome: nome,
@@ -50,17 +55,21 @@ const AddProduct = () => {
             gruppo: gruppo,
         }
 
+        if(!availableGroups.map(el => el.gruppo).includes(gruppo))
+            allow = window.confirm("Il gruppo inserito è nuovo, procedere?");
 
-        registerProduct(product).then(resp => {
-            console.log(resp);
-            alert('Prodotto inserito');
-            setNome('');
-            setCategoria('')
-            setResultArray(prev => [...prev, {...product}])
-        }).catch((err) => {
-            console.log(err)
-            alert(err.response.data.message)
-        })
+        if (allow)
+            registerProduct(product).then(resp => {
+                alert('Prodotto inserito');
+                setNome('');
+                setCategoria('');
+                setGruppo('');
+                setResultArray(prev => [...prev, { ...product }])
+            }).catch((err) => {
+                console.log(err)
+                if (err.response.data?.message)
+                    alert(err.response.data?.message)
+            })
 
     }
 
@@ -80,12 +89,12 @@ const AddProduct = () => {
                         <label className={styles.labell}>Nome</label>
                         <input className={styles.text} type='text'
                             value={nome}
-                            maxLength={150}
+                            maxLength={100}
                             placeholder='Nome'
                             onChange={(text) => setNome(text.target.value)}
                         ></input>
                         <div>
-                            <span style={{ float: 'right' }}>{`${nome?.length ? nome.length : 0}/150`}</span>
+                            <span style={{ float: 'right' }}>{`${nome?.length ? nome.length : 0}/100`}</span>
                         </div>
                     </div>
 
@@ -104,27 +113,28 @@ const AddProduct = () => {
 
                     <div className={styles.inp}>
                         <label className={styles.labell}>Gruppo</label>
-                        <select value={gruppo} onChange={(e) => setGruppo(e.target.value)} className={styles.select}>
+                        {/*<select value={gruppo} onChange={(e) => setGruppo(e.target.value)} className={styles.select}>
                             <option value={''}> </option>
                             {
                                 availableGroups.map(g => <option key={g.gruppo} value={g.gruppo}>{g.gruppo}</option>)
                             }
-                        </select>
-
+                        </select>*/}
+                        <InputSelect data={availableGroups.map(el => el.gruppo)} value={gruppo} onChangeText={(txt) => setGruppo(txt)} />
+                        <span style={{ visibility: (availableGroups.map(e => e.gruppo).includes(gruppo) || gruppo === '') ? 'hidden' : 'visible' }}>*Stai per creare un gruppo nuovo</span>
                     </div>
                 </div>
-                    <div className={styles.results} >
-                        <div className={styles.table}>
-                            {resultArray.map(el => (
-                                <div key={el.name} className={styles.row}>
-                                    {
-                                        Object.values(el).map((v, i) => <div key={i} className={styles.cell}>{v}</div>)
-                                    }
-                                </div>
-                            ))}
-                        </div>
-
+                <div className={styles.results} >
+                    <div className={styles.table}>
+                        {resultArray.map(el => (
+                            <div key={el.name} className={styles.row}>
+                                {
+                                    Object.values(el).map((v, i) => <div key={i} className={styles.cell}>{v}</div>)
+                                }
+                            </div>
+                        ))}
                     </div>
+
+                </div>
             </div>
             <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                 <button type='button' className='button' onClick={handleAddProduct}>

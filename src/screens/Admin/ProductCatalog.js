@@ -13,27 +13,27 @@ import { PanoramaSharp } from '@mui/icons-material';
 
 
 const ProductCatalog = () => {
-  const [products, setProducts] = useState([]);
+  const products = useRef([]);
   const [filteredArray, setFilteredArray] = useState();
   const [selected, setSelected] = useState(0);
   const navigate = useNavigate();
   const headers = ['Id', 'Nome', 'Categoria', 'Gruppo']
-  const availableProductGroups = useRef([])
+  const [availableProductGroups, setAvailableProductsGroup] = useState([])
+  const [inputValue, setinputValue] = useState('');
 
 
   const filterContent = (filter) => {
-    console.log(products)
     if (!filter) {
-      setFilteredArray(products)
+      setFilteredArray([...products.current])
     } else {
       let arr = []
       if (!isNaN(parseInt(filter))) {
-        arr = products.filter(elem => elem.id == parseInt(filter))
+        arr = products.current.filter(elem => elem.id == parseInt(filter))
       } else {
-        if (availableProductGroups.current.map(element => element.gruppo).includes(filter.toUpperCase())) {
-          arr = products.filter(elem => elem.gruppo === filter.toUpperCase())
+        if (availableProductGroups.map(element => element.gruppo).includes(filter.toUpperCase())) {
+          arr = products.current.filter(elem => elem.gruppo === filter.toUpperCase())
         } else {
-          arr = products.filter(elem => (elem.nome.toUpperCase().includes(filter.toUpperCase()) || elem.category?.toUpperCase().includes(filter.toUpperCase()) ))
+          arr = products.current.filter(elem => (elem.nome.toUpperCase().startsWith(filter.toUpperCase()) || elem.category?.toUpperCase().startsWith(filter.toUpperCase())))
         }
       }
       if (JSON.stringify(arr) !== JSON.stringify(filteredArray)) {
@@ -48,13 +48,14 @@ const ProductCatalog = () => {
       removeProduct(data).then((resp) => {
         if (resp.data.state) {
           alert("Prodotto rimosso con successo");
+          const index = products.current.findIndex(e => e.id === data.id);
+          products.current.splice(index,1);
+          filterContent(inputValue);
         }
       }).catch((err) => {
         alert(err.response.data.message ? err.response.data.message : err);
         console.log(err);
-      }).then(() => {
-        window.location.reload();
-      })
+      });
     }
 
   }, [])
@@ -95,10 +96,10 @@ const ProductCatalog = () => {
 
   useEffect(() => {
     let isApiSubscribed = true;
-    if (availableProductGroups.current.length === 0) {
+    if (availableProductGroups.length === 0) {
       getProductGroups().then(resp => {
         if (isApiSubscribed && resp.data) {
-          availableProductGroups.current =  resp.data
+          setAvailableProductsGroup([...resp.data])
         }
       }).catch(e => {
         console.log(e)
@@ -110,38 +111,39 @@ const ProductCatalog = () => {
       })
     }
 
-    if (products.length === 0) {
-      getProductsCatalog().then(resp => {
-        if (isApiSubscribed) {
-          setProducts(resp.data.data);
-          setFilteredArray(resp.data.data)
-        }
 
-      }).catch((e) => {
-        console.log(e);
-        console.log(e.response.data.message)
-        if (e.response.data.message === "Unauthorized." || e.response.data.message === "Unauthenticated.") {
-          alert("effettua il login")
-          navigate("/login")
-        }
-      })
-    }
+    getProductsCatalog().then(resp => {
+      if (isApiSubscribed) {
+        products.current = resp.data.data;
+        setFilteredArray(resp.data.data)
+      }
+
+    }).catch((e) => {
+      console.log(e);
+      console.log(e.response.data.message)
+      if (e.response.data.message === "Unauthorized." || e.response.data.message === "Unauthenticated.") {
+        alert("effettua il login")
+        navigate("/login")
+      }
+    })
+
     return () => {
       // cancel the subscription
       isApiSubscribed = false;
     };
 
-  },[])
+  }, [])
 
   const handleModifyRow = (params) => {
-    console.log(params)
     updateProduct(params).then((resp) => {
       alert("Modifica avvenuta con successo")
-      window.location.reload()
+      const index = products.current.findIndex(el => el.id === params.id);
+      products.current[index] = { ...params };
+      filterContent(inputValue);
     }).catch((err) => {
       console.log(err)
-      console.log(err.response.data.message)
-      if (err.response.data.message === "Unauthorized." || err.response.data.message === "Unauthenticated.") {
+      console.log(err.response.data?.message)
+      if (err.response.data?.message === "Unauthorized." || err.response.data?.message === "Unauthenticated.") {
         alert("effettua il login")
         navigate("/login")
       }
@@ -149,9 +151,9 @@ const ProductCatalog = () => {
     })
   }
 
-  const handleOnClickRow = (item) =>{
-    navigate(`/admin/catalog/productCatalog/${item.id}`,{
-      state:item
+  const handleOnClickRow = (item) => {
+    navigate(`/admin/catalog/productCatalog/${item.id}`, {
+      state: item
     });
   }
 
@@ -177,16 +179,18 @@ const ProductCatalog = () => {
           </div>
 
           <input type='text'
-            className={styles.filterInput}
+            className='_filterInput'
             placeholder='Filtra'
+            value={inputValue}
             onChange={(text) => {
+              setinputValue(text.target.value)
               filterContent(text.target.value);
             }}
           ></input>
         </div>
         <Link className='button'
           to='/admin/catalog/productCatalog/addProduct'
-          disabled={!products}
+          disabled={!filteredArray}
         >
           <IoIosCreate size={22} />
         </Link>
@@ -194,7 +198,7 @@ const ProductCatalog = () => {
       <div className={styles.contentContainer}>
         <div>
           {
-            products.length === 0
+            !filteredArray
               ?
               <div className='AudioContainer'>
                 <Audio color='black' />
@@ -208,10 +212,10 @@ const ProductCatalog = () => {
                 modalOptions={{
                   modalLables: ['Nome', 'Categoria', 'Gruppo'],
                   updatableKeys: ['nome', 'categoria', 'gruppo'],
-                  types: [{ type: 'text' }, { type: 'text' }, { type: 'select',values:availableProductGroups.current.map(el => el.gruppo) }],
-                  title:'Modifica prodotto'
+                  types: [{ type: 'text' }, { type: 'text' }, { type: 'select', values: [...availableProductGroups.map(el => el.gruppo)] }],
+                  title: 'Modifica prodotto'
                 }}
-                onCLickRow = {handleOnClickRow}
+                onCLickRow={handleOnClickRow}
               />
           }
         </div>
