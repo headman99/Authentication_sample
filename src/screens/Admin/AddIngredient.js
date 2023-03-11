@@ -11,6 +11,7 @@ const AddIngredient = () => {
     const [team, setTeam] = useState();
     const [availableTeams, setAvailableTeams] = useState([])
     const [resultArray, setResultArray] = useState([])
+    const [checked, setChekced] = useState(false)
 
 
     const checkInput = () => {
@@ -29,13 +30,17 @@ const AddIngredient = () => {
         if (!checkInput()) {
             return;
         }
+
         const ingredient = {
             name: nome,
             quantity: parseFloat(quantity),
             category: categoria,
             provider: fornitore,
-            team:availableTeams.find(t => t.name === team)?.id
+            team:availableTeams.find(t => t.name === team)?.id,
+            pz:checked
         }
+
+        console.log(ingredient)
 
         registerIngredient(ingredient).then(() => {
             alert('Ingrediente inserito');
@@ -43,6 +48,7 @@ const AddIngredient = () => {
             setQuantity(0);
             setCategoria('')
             setFornitore('')
+            setChekced(false)
             setResultArray(prev => [...prev,{...ingredient,team:team}])
         }).catch((err) => {
             console.log(err)
@@ -88,12 +94,12 @@ const AddIngredient = () => {
                         <label className={styles.labell}>Nome</label>
                         <input className={styles.text} type='text'
                             value={nome}
-                            maxLength={50}
+                            maxLength={100}
                             placeholder='Nome'
                             onChange={(text) => setNome(text.target.value)}
                         ></input>
                         <div>
-                            <span style={{ float: 'right' }}>{`${nome?.length ? nome.length : 0}/50`}</span>
+                            <span style={{ float: 'right' }}>{`${nome?.length ? nome.length : 0}/100`}</span>
                         </div>
                     </div>
 
@@ -102,11 +108,13 @@ const AddIngredient = () => {
                         <input className={styles.text} type='number'
                             value={quantity}
                             placeholder='Nome'
-                            onChange={(text) => setQuantity(parseFloat(text.target.value))}
+                            onChange={(text) => {
+                                if(isNaN(text.target.value))
+                                    setQuantity('')
+                                else
+                                    setQuantity(parseFloat(text.target.value))
+                            }}
                         ></input>
-                        <div>
-                            <span style={{ float: 'right' }}>{`${nome?.length ? nome.length : 0}/50`}</span>
-                        </div>
                     </div>
 
                     <div className={styles.inp}>
@@ -141,6 +149,11 @@ const AddIngredient = () => {
                             }
                         </select>
 
+                    </div>
+
+                    <div className={styles.inp}>
+                        <label className={styles.labell}>Pz</label>
+                        <input type = "checkbox" style={{width:35,height:35}} checked={checked} onChange={() => setChekced(prev => !prev)}/>
                     </div>
                 </div>
                     <div className={styles.results} >

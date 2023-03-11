@@ -12,7 +12,7 @@ import { AiOutlineTeam } from 'react-icons/ai'
 
 const Magazzino = () => {
   const navigate = useNavigate();
-  const [value, setValue] = useState('')
+  const [inputValue, setInputValue] = useState('')
   const stock = useRef([]);
   const headers = ['ID', 'Ingrediente', 'Quantità', 'Categoria', 'Fornitore', 'Team']
   const [filteredArray, setFilteredArray] = useState();
@@ -20,6 +20,7 @@ const Magazzino = () => {
   const teams = useRef([]);
 
 
+  console.log(stock)
   const goToUpdateQuantity = () => {
     navigate('/admin/magazzino/updateQuantity', {
       state: stock.current
@@ -55,7 +56,7 @@ const Magazzino = () => {
       alert("modifica avvenuta con successo");
       const index = stock.current.findIndex(el => el.id === data.id);
       stock.current[index] = { ...data }
-      filterContent(value)
+      filterContent(inputValue)
     }).catch(err => {
       console.log(err)
       if(err.response.data?.message)
@@ -64,7 +65,7 @@ const Magazzino = () => {
   }
 
   const filterContent = (filter) => {
-    if (!filter) {
+    if (!filter || filter ==='') {
       setFilteredArray([...stock.current])
     } else {
       if (!isNaN(parseInt(filter))) {
@@ -115,7 +116,7 @@ const Magazzino = () => {
       // cancel the subscription
       isApiSubscribed = false;
     };
-  });
+  },[]);
 
 
   useEffect(() => {
@@ -127,15 +128,17 @@ const Magazzino = () => {
 
   const handleRemoveItem = (ingredient) => {
 
-    const value = window.confirm('Vuoi rimuoverer l\'ingrediente?')
+    const confirm = window.confirm('Vuoi rimuoverer l\'ingrediente?')
 
-    if (!value) {
+    if (!confirm) {
       return;
     }
     removeIngredient(ingredient).then((resp) => {
       if (resp.data.state === 1) {
-        window.location.reload();
         alert('Ingrediente rimosso con successo');
+        const index = stock.current.findIndex(el => el.id === ingredient.id);
+        stock.current.splice(index,1);
+        filterContent(inputValue)
       }
     }).catch((err) => {
       alert(err)
@@ -196,9 +199,9 @@ const Magazzino = () => {
           <input type='text'
             className="_filterInput"
             placeholder='Filtra'
-            value={value}
+            value={inputValue}
             onChange={(text) => {
-              setValue(text.target.value)
+              setInputValue(text.target.value)
               filterContent(text.target.value);
             }}
           ></input>
