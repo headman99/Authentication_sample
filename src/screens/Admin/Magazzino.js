@@ -20,7 +20,7 @@ const Magazzino = () => {
   const teams = useRef([]);
 
 
-  console.log(stock)
+
   const goToUpdateQuantity = () => {
     navigate('/admin/magazzino/updateQuantity', {
       state: stock.current
@@ -50,9 +50,8 @@ const Magazzino = () => {
   }
 
   const handleModifyRow = (data) => {
-    //console.log(data)
+
     updateIngredient(data).then(resp => {
-      console.log(resp.data.data)
       alert("modifica avvenuta con successo");
       const index = stock.current.findIndex(el => el.id === data.id);
       stock.current[index] = { ...data }

@@ -17,7 +17,7 @@ const HandleTeams = () => {
     const navigate = useNavigate();
 
 
-    console.log(teams)
+
 
     const handleClickRow = (resp) => {
         navigate(`/admin/magazzino/handleTeams/${resp.id}`, {
@@ -29,7 +29,7 @@ const HandleTeams = () => {
         addTeam(data).then(resp => {
             if (resp.data.state === 1) {
                 alert("Modifica avvenuta con successo")
-                console.log(resp.data)
+               
                 /*setTeams(prev => [...prev,{
                     id:resp.data.teams.id,
                     ...data

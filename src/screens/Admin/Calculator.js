@@ -59,7 +59,7 @@ const Calculator = () => {
             setShowPdf(false)
         else {
             navigate("/admin/calculator")
-            console.log('naviget')
+     
         }
 
     };

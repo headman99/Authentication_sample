@@ -58,9 +58,10 @@ const AddProductRecipe = () => {
         }).catch(err => {
             console.log(err)
             alert("Qualcosa è andato storto")
-            console.log(err.response.data.message)
+            if(err.response.data?.message)
+                alert(err.response.data.message)
         })
-        console.log(availableIngredients)
+    
     }
 
     return (

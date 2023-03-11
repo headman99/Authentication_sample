@@ -40,7 +40,7 @@ const AddIngredient = () => {
             pz:checked
         }
 
-        console.log(ingredient)
+   
 
         registerIngredient(ingredient).then(() => {
             alert('Ingrediente inserito');

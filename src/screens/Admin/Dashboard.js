@@ -20,8 +20,7 @@ const Dashboard = () => {
 
 
   const handleChangeteam = (newteam) => {
-    console.log("selected = ", newteam)
-    console.log("available=", teams)
+   
 
     if (selectTeam === newteam)
       return
