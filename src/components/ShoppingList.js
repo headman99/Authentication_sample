@@ -26,7 +26,7 @@ const ShoppingList = ({ data, headers }) => {
                 data && data.map(i => (
                   <View key={i.ingredient} style={{ display: 'flex', flexDirection: 'row', padding: 10, alignItems: 'center', borderWidth: 0.5, borderColor: 'grey', borderStyle: 'solid' }}>
                     <Text style={{ flex: 1 }}>{i.ingredient}</Text>
-                    <Text style={{ flex: 0.5, textAlign:'center'}}>{i.quantity}</Text>
+                    <Text style={{ flex: 0.5, textAlign:'center'}}>{i.quantity} {i?.pz && <Text> pz</Text>}</Text>
                     <Text style={{ flex: 0.5,textAlign:'center' }}>{i.category}</Text>
                     <Text style={{ flex: 0.5,textAlign:'center' }}>{i.provider}</Text>
                   </View>

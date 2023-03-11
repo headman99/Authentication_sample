@@ -21,7 +21,6 @@ const ProductCatalog = () => {
   const [availableProductGroups, setAvailableProductsGroup] = useState([])
   const [inputValue, setinputValue] = useState('');
 
-
   const filterContent = (filter) => {
     if (!filter) {
       setFilteredArray([...products.current])
@@ -49,7 +48,7 @@ const ProductCatalog = () => {
         if (resp.data.state) {
           alert("Prodotto rimosso con successo");
           const index = products.current.findIndex(e => e.id === data.id);
-          products.current.splice(index,1);
+          products.current.splice(index, 1);
           filterContent(inputValue);
         }
       }).catch((err) => {

@@ -244,10 +244,10 @@ const Magazzino = () => {
                 title: 'Modifica Ingrediente'
               }}
 
-              editable={[{
+              /*editable={[{
                 index: 2,
                 handler: modifyIngredientQuantity,
-              }]}
+              }]}*/
             />
         }
 

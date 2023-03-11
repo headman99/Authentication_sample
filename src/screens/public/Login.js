@@ -9,7 +9,7 @@ import { FaArrowLeft } from 'react-icons/fa';
 import background from "../../assets/logo-noback.png"
 
 const Login = () => {
-  const { setUser } = useContext(UserContext);
+  const { user,setUser } = useContext(UserContext);
   const [username, setUsername] = useState('');
   const [password, setPsw] = useState('');
   const [shakeUsername, setShakeUsername] = useState(0);
@@ -111,7 +111,6 @@ const Login = () => {
         replace: true
       })
 
-      console.log("ci arrivo qui")
     } catch (err) {
       console.log(err);
       if (err.response.data?.message)

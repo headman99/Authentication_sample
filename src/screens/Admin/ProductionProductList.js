@@ -88,7 +88,7 @@ const ProductionProductList = () => {
                     </div>
                     :
                     <div className={styles.content}>
-                        <Header title={`Prodotti da Lavorare --- ${currentTeam.name}`}>
+                        <Header title={`Prodotti da Lavorare --- ${currentTeam?.name?currentTeam.name:''}`}>
                             <input type='text'
                                 className="_filterInput"
                                 style={{marginRight:20}}

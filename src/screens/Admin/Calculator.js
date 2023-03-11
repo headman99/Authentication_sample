@@ -19,7 +19,6 @@ const Calculator = () => {
     const { code } = useParams()
     const [showPdf, setShowPdf] = useState(false)
 
-
     useEffect(() => {
         let isApisubscribed = true;
         getIngredientQuantityByOrder({
@@ -58,11 +57,11 @@ const Calculator = () => {
     const handleGoBack = () => {
         if (showPdf)
             setShowPdf(false)
-        else{
+        else {
             navigate("/admin/calculator")
             console.log('naviget')
         }
-            
+
     };
 
     const handleConfirm = () => {
@@ -96,7 +95,7 @@ const Calculator = () => {
 
             <div className={styles.content}>
                 {
-                    showPdf ? <ShoppingList data={ingredients} headers={['Ingrediente',"Quantità",'Categoria',"Fornitore"]}/> :
+                    showPdf ? <ShoppingList data={ingredients} headers={['Ingrediente', "Quantità", 'Categoria', "Fornitore"]} /> :
                         <>
                             {
                                 !ingredients ?
@@ -107,14 +106,15 @@ const Calculator = () => {
                                     <>
                                         <div style={{ overflowY: 'scroll', height: '75vh' }}>
                                             <Table
+                                                pzIndex={1}
                                                 data={ingredients}
-                                                headers={['Ingrediente',"Quantità",'Categoria',"Fornitore"]}
+                                                headers={['Ingrediente', "Quantità", 'Categoria', "Fornitore"]}
                                                 handleRemoveItem={handleRemoveItem}
                                                 handleModifyRow={handleModifyRow}
                                                 modalOptions={{
-                                                    modalLables: ['Quantità',"Fornitore"],
-                                                    updatableKeys: ['quantity',"provider"],
-                                                    types: [{ type: 'number' },{type:'text'}],
+                                                    modalLables: ['Quantità', "Fornitore"],
+                                                    updatableKeys: ['quantity', "provider"],
+                                                    types: [{ type: 'number' }, { type: 'text' }],
                                                     title: 'Modifica ingrediente'
                                                 }}
 

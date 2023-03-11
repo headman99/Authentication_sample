@@ -16,7 +16,7 @@ const AddProductRecipe = () => {
     const [selectedIngredient, setSelectedIngredient] = useState();
     const { code } = useParams();
 
-    console.log("render")
+    
     useEffect(() => {
         let isApiSubscribed = true;
         getStock().then((resp) => {

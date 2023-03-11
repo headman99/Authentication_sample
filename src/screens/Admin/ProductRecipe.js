@@ -17,7 +17,7 @@ const ProductRecipe = () => {
     const [filteredArray, setFilteredArray] = useState()
     const ingredients = useRef([]);
 
-
+    
     useEffect(() => {
         let isApiSubscribed = true;
         getTeamIngredientsByProductRecipe({
@@ -46,7 +46,6 @@ const ProductRecipe = () => {
     }, [])
 
     const handleFilter = (value) => {
-        console.log(value)
         setFilter(value)
         let content = filterContent(value)
         setFilteredArray([...content])
@@ -125,6 +124,7 @@ const ProductRecipe = () => {
                         </div>
                         :
                         <Table
+                            pzIndex={2}
                             data={filteredArray}
                             headers={['ID', 'Ingrediente', 'Quantità']}
                             handleRemoveItem={handleRemoveItem}
