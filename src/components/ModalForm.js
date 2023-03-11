@@ -8,20 +8,17 @@ import MyInput from './MyInput'
 
 const ModalForm = ({ data, title, onConfirm, onCancel, options }) => {
     const { modalLables, updatableKeys, types } = options
-    const inputsValue = useRef(data)
+    const inputsValue = useRef({...data})
 
     const handleChangeInput = (newData) => {
         const { key, newValue } = newData;
-        let copy = { ...inputsValue.current }
-        copy[`${key}`] = newValue
-        inputsValue.current = { ...copy }
+        inputsValue.current[`${key}`] = newValue
     }
 
     const handleOnConfirm = (params) => {
         if (JSON.stringify(params) !== JSON.stringify(data)) {
             onConfirm(params)
         }
-
         onCancel()
     }
 

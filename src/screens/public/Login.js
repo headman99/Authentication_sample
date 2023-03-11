@@ -110,6 +110,8 @@ const Login = () => {
       navigate(`/${route}`, {
         replace: true
       })
+
+      console.log("ci arrivo qui")
     } catch (err) {
       console.log(err);
       if (err.response.data?.message)
@@ -125,7 +127,7 @@ const Login = () => {
   return (
     <div className='background'>
       <div style={{width:350,position:'absolute',top:30}}>
-        <img src={background} style={{width:'100%',height:'100%'}}/>
+        <img src={background} alt="immagine non disponibile" style={{width:'100%',height:'100%'}}/>
       </div>
       <div className='mainContainer'>
         <div className='formContainer'>

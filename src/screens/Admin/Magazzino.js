@@ -12,7 +12,7 @@ import { AiOutlineTeam } from 'react-icons/ai'
 
 const Magazzino = () => {
   const navigate = useNavigate();
-  const [value,setValue] = useState('')
+  const [value, setValue] = useState('')
   const stock = useRef([]);
   const headers = ['ID', 'Ingrediente', 'Quantità', 'Categoria', 'Fornitore', 'Team']
   const [filteredArray, setFilteredArray] = useState();
@@ -37,7 +37,7 @@ const Magazzino = () => {
         quantity: parseFloat(item.data)
       }]
     }
-  
+
     updateIngredientQuantity(data).then((resp) => {
       alert("Quantità modificata con successo")
     }).catch(err => {
@@ -49,15 +49,18 @@ const Magazzino = () => {
   }
 
   const handleModifyRow = (data) => {
+    //console.log(data)
     updateIngredient(data).then(resp => {
+      console.log(resp.data.data)
       alert("modifica avvenuta con successo");
-      let copy = [...stock.current];
-      const index = copy.findIndex(el => el.id === data.id);
-      copy[index] = {...data}
-      console.log(copy)
-      stock.current = [...copy];
+      const index = stock.current.findIndex(el => el.id === data.id);
+      stock.current[index] = { ...data }
       filterContent(value)
-    });
+    }).catch(err => {
+      console.log(err)
+      if(err.response.data?.message)
+        alert(err.response.data?.message)
+    })
   }
 
   const filterContent = (filter) => {
@@ -66,11 +69,11 @@ const Magazzino = () => {
     } else {
       if (!isNaN(parseInt(filter))) {
         const arr = stock.current.filter(elem => elem.ingredient_id == parseInt(filter))
-        setFilteredArray([...arr])
+        setFilteredArray(arr)
       } else {
         const arr = stock.current.filter(elem => (elem.name.toUpperCase().includes(filter.toUpperCase()) || elem.category?.toUpperCase().includes(filter.toUpperCase()) || elem.provider?.toUpperCase().includes(filter.toUpperCase())))
         if (JSON.stringify(arr) !== JSON.stringify(filteredArray)) {
-          setFilteredArray([...arr])
+          setFilteredArray(arr)
         }
       }
     }
@@ -78,11 +81,10 @@ const Magazzino = () => {
 
   useEffect(() => {
     let isApiSubscribed = true;
-
     getTeams().then(resp => {
       if (isApiSubscribed)
         teams.current = [...resp.data]
-        
+
     }).catch((err) => {
       console.log(err)
       console.log(err.response.data.message)
@@ -92,11 +94,11 @@ const Magazzino = () => {
       }
     })
 
-    if (stock.current.length ===0) {
+    if (stock.current.length === 0) {
       getStock().then(resp => {
         if (isApiSubscribed) {
           stock.current = resp.data.data
-          setFilteredArray(resp.data.data)
+          setFilteredArray([...stock.current]);
         }
 
       }).catch((err) => {
@@ -160,7 +162,7 @@ const Magazzino = () => {
       arr = arr.sort((el1, el2) => el2.quantity - el1.quantity)
     }
 
-    setFilteredArray([...arr])
+    setFilteredArray(arr)
   }
 
 
@@ -230,14 +232,15 @@ const Magazzino = () => {
             </div>
             :
             <Table
+              pzIndex = {2}
               data={filteredArray}
               headers={headers}
               handleRemoveItem={handleRemoveItem}
               handleModifyRow={handleModifyRow}
               modalOptions={{
-                modalLabels: ['Nome', 'Quantità', 'Categoria', 'Fornitore', "Team"],
-                updatableKeys: ['name', 'quantity', 'category', 'provider', "team"],
-                types: [{ type: 'text' }, { type: 'number' }, { type: 'text' }, { type: 'text' }, { type: 'select', values: teams.current.map(t => t.name) }],
+                modalLabels: ['Nome', 'Quantità', 'Categoria', 'Fornitore', "Team","pz"],
+                updatableKeys: ['name', 'quantity', 'category', 'provider', "team",'pz'],
+                types: [{ type: 'text' }, { type: 'number' }, { type: 'text' }, { type: 'text' }, { type: 'select', values: teams.current.map(t => t.name) } , { type: 'check'}],
                 title: 'Modifica Ingrediente'
               }}
 

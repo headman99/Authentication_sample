@@ -15,51 +15,67 @@ const MyInput = ({ type, initialValue, onEndEditing, placeholder, label }) => {
         if (e.target.value !== initialValue) {
             onEndEditing({
                 key: placeholder,
-                newValue: value
+                newValue: e.target.value
             })
         }
 
     }
 
-   
+    const handleCheckboxChange = () => {
+        onEndEditing({
+            key: placeholder,
+            newValue: !value
+        })
+        setValue(prev => !prev);
+    }
+
+
     return (
         <div className={styles.main}>
             <label className={styles.label}>
                 {label} :
             </label>
             {
-                type.type === 'number' || type.type === 'text' ?
-                    <input type={type.type}
-                        className={styles.input}
-                        value={value ? value : ''}
-                        placeholder={placeholder}
-                        onChange={(e) => setValue(e.target.value)}
-                        onKeyDown={(e) => handleEnter(e)}
-                        onBlur={(e) => handleBlur(e)}
-                    ></input>
-                    :
-                    <select className={styles.input}
-                        onChange={(e) => setValue(e.target.value)}
-                        onKeyDown={(e) => handleEnter(e)}
-                        onBlur={(e) => handleBlur(e)}
-                        value={value?value:''}
-                    >
-                        <option value={value}>
-                            {`${value?value:''}`}
-                        </option>
-                        {
+                (type.type === 'number' || type.type === 'text') &&
+                <input type={type.type}
+                    className={styles.input}
+                    value={value ? value : ''}
+                    placeholder={placeholder}
+                    onChange={(e) => setValue(e.target.value)}
+                    onKeyDown={(e) => handleEnter(e)}
+                    onBlur={(e) => handleBlur(e)}
+                ></input>
 
-                            type?.values?.filter(item => item !== value).length > 0 &&
+            }
+            {
+                type.type === 'select' &&
+                <select className={styles.input}
+                    onChange={(e) => setValue(e.target.value)}
+                    onKeyDown={(e) => handleEnter(e)}
+                    onBlur={(e) => handleBlur(e)}
+                    value={value ? value : ''}
+                >
+                    <option value={value}>
+                        {`${value ? value : ''}`}
+                    </option>
+                    {
 
-                            type.values.filter(item => item !== value).map((v, index) => (<option key={index} value={v}>{v}</option>))
+                        type?.values?.filter(item => item !== value).length > 0 &&
+
+                        type.values.filter(item => item !== value).map((v, index) => (<option key={index} value={v}>{v}</option>))
 
 
-                        }
-                        {
-                            value && <option value={''}>{''}</option>
-                        }
-                        
-                    </select>
+                    }
+                    {
+                        value && <option value={''}>{''}</option>
+                    }
+
+                </select>
+            }
+
+            {
+                type.type === 'check' &&
+                <input type='checkbox' className='checkbox' style={{ width: 35, height: 35 }} checked={value} onChange={handleCheckboxChange}></input>
             }
 
         </div>

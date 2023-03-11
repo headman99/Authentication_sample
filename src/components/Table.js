@@ -9,7 +9,7 @@ import { confirmAlert } from 'react-confirm-alert'
 import ModalForm from './ModalForm'
 import { FaAngleRight } from 'react-icons/fa'
 
-const Table = ({ data, headers, editable, disbaleEdit, disableDeletable, handleRemoveItem, handleModifyRow, modalOptions, onCLickRow }) => {
+const Table = ({ data, headers, editable, disbaleEdit, disableDeletable, handleRemoveItem, handleModifyRow, modalOptions, onCLickRow,pzIndex }) => {
     const [shownElements, setShownElements] = useState([])
     const [shownIndex, setShownIndex] = useState(20)
     const increment = 50;
@@ -118,7 +118,9 @@ const Table = ({ data, headers, editable, disbaleEdit, disableDeletable, handleR
                         </tr>
                     </thead>
                     <tbody>
-                        {shownElements.map((item, index) => {
+                        {shownElements.map((se, index) => {
+                            
+                            const item = Object.fromEntries(Object.entries(se).slice(0,headers.length));
                             return (
                                 <tr
                                     key={item.id}
@@ -160,6 +162,9 @@ const Table = ({ data, headers, editable, disbaleEdit, disableDeletable, handleR
                                                         {
                                                             !isNaN(el) ? el : !el ? '' : isOverflowing ? (`${el}`.substring(0, 60) + '...') : el
                                                         }
+                                                        {
+                                                            (pzIndex && pzIndex === i && se?.pz ===true) && '  pz'
+                                                        }
                                                     </div>
                                                 </td>
                                             )
@@ -178,7 +183,7 @@ const Table = ({ data, headers, editable, disbaleEdit, disableDeletable, handleR
 
                                             {
                                                 !disbaleEdit &&
-                                                <RxPencil2 style={{ marginLeft: 15 }} size={25} onClick={(e) => openModal(item, e)} />
+                                                <RxPencil2 style={{ marginLeft: 15 }} size={25} onClick={(e) => openModal(se, e)} />
                                             }
 
                                         </td>
@@ -186,7 +191,7 @@ const Table = ({ data, headers, editable, disbaleEdit, disableDeletable, handleR
                                     {
                                         onCLickRow &&
                                         <td style={{ textAlign: 'right', width: '5%' }}
-                                            onClick={() => onCLickRow(item)}
+                                            onClick={() => onCLickRow(se)}
                                         >
                                             <FaAngleRight size={30} />
                                         </td>

@@ -2,8 +2,8 @@ import axios from 'axios';
 import { ROUTES } from './routes'
 import { useNavigate } from 'react-router-dom';
 //export const PATH = 'http://localhost/gestionale_dolci_BE/public/api';
-//export const PATH = 'http://localhost/gestionale_dolci/public/api';
-export const PATH = 'https://multiristo.it/api'
+export const PATH = 'http://localhost/gestionale_dolci/public/api';
+//export const PATH = 'https://multiristo.it/api'
 //export const PATH = 'http://192.168.1.5/api';
 //export const PATH = 'https://gestionale.hopto.org/api';
 //export const PATH = 'https://2.47.119.204/api';
@@ -16,7 +16,8 @@ export const api = axios.create({
         'Content-Type': "application/json",
         "Access-Control-Allow-Methods": 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
         'Accept': 'application/json',
-        'Cache-Control': 'private'
+        'Cache-Control': 'private',
+
     }
 });
 
@@ -39,7 +40,7 @@ export async function login(data) {
 
 
 export async function completeClientRegistration(data) {
-    return api.post(ROUTES.AUTH.COMPLETE_CLIENT_REGISTRATION,data);
+    return api.post(ROUTES.AUTH.COMPLETE_CLIENT_REGISTRATION, data);
 }
 
 export async function logout() {
@@ -137,103 +138,103 @@ export async function getTeams() {
 }
 
 export async function getProductListByTeam(data) {
-    return api.post(ROUTES.ADMIN.GET_PRODUCT_LIST_BY_TEAM,data)
+    return api.post(ROUTES.ADMIN.GET_PRODUCT_LIST_BY_TEAM, data)
 }
 export async function checkProductList(data) {
-    return api.post(ROUTES.ADMIN.CHECK_PRODUCT_LIST,data)
+    return api.post(ROUTES.ADMIN.CHECK_PRODUCT_LIST, data)
 }
 export async function updateIngredient(data) {
-    return api.post(ROUTES.ADMIN.UPDATE_INGREDIENT,data)
+    return api.post(ROUTES.ADMIN.UPDATE_INGREDIENT, data)
 }
 
 export async function updateProduct(data) {
-    return api.post(ROUTES.ADMIN.UPDATE_PRODUCT,data)
+    return api.post(ROUTES.ADMIN.UPDATE_PRODUCT, data)
 }
 
 export async function removeTeam(data) {
-    return api.post(ROUTES.ADMIN.REMOVE_TEAM,data)
+    return api.post(ROUTES.ADMIN.REMOVE_TEAM, data)
 }
 
 export async function updateTeam(data) {
-    return api.post(ROUTES.ADMIN.UPDATE_TEAM,data)
+    return api.post(ROUTES.ADMIN.UPDATE_TEAM, data)
 }
 
 export async function addTeam(data) {
-    return api.post(ROUTES.ADMIN.ADD_TEAM,data)
+    return api.post(ROUTES.ADMIN.ADD_TEAM, data)
 }
 export async function getProductstByTeam(data) {
-    return api.post(ROUTES.ADMIN.GET_PRODUCTS_BY_TEAM,data)
+    return api.post(ROUTES.ADMIN.GET_PRODUCTS_BY_TEAM, data)
 }
 
 export async function updateIngredientsTeam(data) {
-    return api.post(ROUTES.ADMIN.UPDATE_INGREDIENTS_TEAM,data)
+    return api.post(ROUTES.ADMIN.UPDATE_INGREDIENTS_TEAM, data)
 }
 export async function getIngredientsTeam(data) {
-    return api.post(ROUTES.ADMIN.GET_INGREDIENTS_TEAM,data)
+    return api.post(ROUTES.ADMIN.GET_INGREDIENTS_TEAM, data)
 }
 export async function getTeamProductListByOrder(data) {
-    return api.post(ROUTES.ADMIN.GET_PRODUCTS_LIST_BY_ORDER,data)
+    return api.post(ROUTES.ADMIN.GET_PRODUCTS_LIST_BY_ORDER, data)
 }
 export async function getTeamIngredientsByProductRecipe(data) {
-    return api.post(ROUTES.ADMIN.GET_TEAM_INGREDIENTS_BY_PRODUCT_RECIPE,data)
+    return api.post(ROUTES.ADMIN.GET_TEAM_INGREDIENTS_BY_PRODUCT_RECIPE, data)
 }
 
 export async function getIngredientQuantityByOrder(data) {
-    return api.post(ROUTES.ADMIN.GET_INGREDIENT_QUANTITY_BY_ORDER,data)
+    return api.post(ROUTES.ADMIN.GET_INGREDIENT_QUANTITY_BY_ORDER, data)
 }
 
 export async function updateProductRecipe(data) {
-    return api.post(ROUTES.ADMIN.UPDATE_PRODUCT_RECIPE,data)
+    return api.post(ROUTES.ADMIN.UPDATE_PRODUCT_RECIPE, data)
 }
 
 export async function deleteIngredientProductRecipe(data) {
-    return api.post(ROUTES.ADMIN.DELETE_INGREDIENT_PRODUCT_RECIPE,data)
+    return api.post(ROUTES.ADMIN.DELETE_INGREDIENT_PRODUCT_RECIPE, data)
 }
 
 export async function addProductRecipe(data) {
-    return api.post(ROUTES.ADMIN.ADD_PRODUCT_RECIPE,data)
+    return api.post(ROUTES.ADMIN.ADD_PRODUCT_RECIPE, data)
 }
 export async function registerClient(data) {
-    return api.post(ROUTES.ADMIN.REGISTER_CLIENT,data)
+    return api.post(ROUTES.ADMIN.REGISTER_CLIENT, data)
 }
 export async function registerAdmin(data) {
-    return api.post(ROUTES.ADMIN.REGISTER_ADMIN,data)
+    return api.post(ROUTES.ADMIN.REGISTER_ADMIN, data)
 }
 export async function changeUserPsw(data) {
-    return api.post(ROUTES.ADMIN.CHANGE_USER_PSW,data)
+    return api.post(ROUTES.ADMIN.CHANGE_USER_PSW, data)
 }
 export async function getUsersInfo() {
     return api.get(ROUTES.ADMIN.GET_USER_INFO)
 }
 export async function deleteUser(data) {
-    return api.post(ROUTES.ADMIN.DELETE_USER,data)
+    return api.post(ROUTES.ADMIN.DELETE_USER, data)
 }
 
 export async function updateUser(data) {
-    return api.post(ROUTES.ADMIN.UPDATE_USER,data)
+    return api.post(ROUTES.ADMIN.UPDATE_USER, data)
 }
 
 export async function getMenuRecipeAlternative(data) {
-    return api.post(ROUTES.ADMIN.GET_MENU_RECIPE_ALTERNATIVE,data)
+    return api.post(ROUTES.ADMIN.GET_MENU_RECIPE_ALTERNATIVE, data)
 }
 export async function scanAll(data) {
-    return api.post(ROUTES.ADMIN.SCAN_ALL,data)
+    return api.post(ROUTES.ADMIN.SCAN_ALL, data)
 }
 
 export async function updateMenuRecipeRatio(data) {
-    return api.post(ROUTES.ADMIN.UPDATE_MENU_RECIPE_RATIO,data)
+    return api.post(ROUTES.ADMIN.UPDATE_MENU_RECIPE_RATIO, data)
 }
 
 export async function addMenuRecipeGroup(data) {
-    return api.post(ROUTES.ADMIN.ADD_MENU_RECIPE_GROUP,data)
+    return api.post(ROUTES.ADMIN.ADD_MENU_RECIPE_GROUP, data)
 }
 
 export async function createMenu(data) {
-    return api.post(ROUTES.ADMIN.CREATE_MENU,data)
+    return api.post(ROUTES.ADMIN.CREATE_MENU, data)
 }
 
 export async function updateMenuActive(data) {
-    return api.post(ROUTES.ADMIN.UPDATE_MENU_ACTIVE,data)
+    return api.post(ROUTES.ADMIN.UPDATE_MENU_ACTIVE, data)
 }
 
 
